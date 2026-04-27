@@ -18,7 +18,6 @@ function RegisterPage() {
     e.preventDefault();
     setError('');
     
-    // Validări frontend detaliate
     if (!form.name || !form.email || !form.phone || !form.password || !form.confirmPassword) {
       setError('⚠️ Completează toate câmpurile obligatorii');
       return;
@@ -45,7 +44,7 @@ function RegisterPage() {
     }
     
     if (form.password.length < 8) {
-      setError('⚠️ Parola trebuie să aibă minim 8 caractere (litere, cifre, simboluri)');
+      setError('⚠️ Parola trebuie să aibă minim 8 caractere');
       return;
     }
     
@@ -56,10 +55,8 @@ function RegisterPage() {
     if (result.success) {
       navigate('/cont');
     } else {
-      // Traducere mesaje de eroare din backend în română
       let msg = result.error;
       
-      // Erori specifice de la backend
       if (msg === 'Email already registered' || msg?.includes('already registered')) {
         msg = '📧 Acest email este deja înregistrat. Încearcă să te loghezi sau folosește alt email.';
       } else if (msg === 'Invalid email address' || msg?.includes('Invalid email')) {
@@ -83,82 +80,93 @@ function RegisterPage() {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-cream px-4">
-      <div className="max-w-md w-full">
-        <Link to="/" className="inline-flex items-center gap-2 text-wine hover:text-wine-dark mb-8 transition-colors">
+    <div className="min-h-screen flex items-center justify-center bg-[#0a0a0e] px-4 pt-20">
+      {/* Background glow */}
+      <div className="fixed inset-0 pointer-events-none overflow-hidden">
+        <div 
+          className="absolute top-1/3 left-1/2 -translate-x-1/2 w-[600px] h-[400px] rounded-full"
+          style={{
+            background: 'radial-gradient(ellipse, rgba(245,158,11,0.1) 0%, transparent 60%)',
+            filter: 'blur(60px)'
+          }}
+        />
+      </div>
+
+      <div className="max-w-md w-full relative z-10">
+        <Link to="/" className="inline-flex items-center gap-2 text-white/60 hover:text-[#fbbf24] mb-8 transition-colors">
           <ArrowLeft className="w-4 h-4" />
           <span>Înapoi la meniu</span>
         </Link>
 
-        <div className="bg-white rounded-3xl shadow-xl p-8">
+        <div className="bg-white/5 backdrop-blur-sm border border-white/10 rounded-3xl shadow-2xl p-8">
           <div className="text-center mb-8">
-            <h1 className="text-3xl font-serif font-bold text-wine mb-2">Creează cont</h1>
-            <p className="text-dark/60">Comandă mai rapid și urmărește comenzile</p>
+            <h1 className="text-3xl font-cinzel font-bold text-[#fbbf24] mb-2 tracking-wide">Creează cont</h1>
+            <p className="text-white/50">Comandă mai rapid și urmărește comenzile</p>
           </div>
 
           {error && (
-            <div className="bg-red-50 border border-red-200 text-red-600 px-4 py-3 rounded-xl mb-6 text-sm">
+            <div className="bg-red-500/10 border border-red-500/30 text-red-400 px-4 py-3 rounded-xl mb-6 text-sm">
               {error}
             </div>
           )}
 
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
-              <label className="block text-sm font-medium text-dark mb-2">Nume complet</label>
+              <label className="block text-sm font-medium text-white/70 mb-2">Nume complet</label>
               <div className="relative">
-                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-dark/30" />
+                <User className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
                 <input
                   type="text" name="name" value={form.name} onChange={handleChange}
                   placeholder="Andrei Popescu"
-                  className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-wine/10 focus:border-wine focus:ring-2 focus:ring-wine/20 outline-none transition-all"
+                  className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#f59e0b]/50 focus:ring-2 focus:ring-[#f59e0b]/20 outline-none transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-dark mb-2">Email</label>
+              <label className="block text-sm font-medium text-white/70 mb-2">Email</label>
               <div className="relative">
-                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-dark/30" />
+                <Mail className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
                 <input
                   type="email" name="email" value={form.email} onChange={handleChange}
                   placeholder="exemplu@email.com"
-                  className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-wine/10 focus:border-wine focus:ring-2 focus:ring-wine/20 outline-none transition-all"
+                  className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#f59e0b]/50 focus:ring-2 focus:ring-[#f59e0b]/20 outline-none transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-dark mb-2">Telefon</label>
+              <label className="block text-sm font-medium text-white/70 mb-2">Telefon</label>
               <div className="relative">
-                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-dark/30" />
+                <Phone className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
                 <input
                   type="tel" name="phone" value={form.phone} onChange={handleChange}
                   placeholder="0722 123 456"
-                  className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-wine/10 focus:border-wine focus:ring-2 focus:ring-wine/20 outline-none transition-all"
+                  className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#f59e0b]/50 focus:ring-2 focus:ring-[#f59e0b]/20 outline-none transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-dark mb-2">Parolă</label>
+              <label className="block text-sm font-medium text-white/70 mb-2">Parolă</label>
               <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-dark/30" />
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
                 <input
                   type="password" name="password" value={form.password} onChange={handleChange}
-                  placeholder="Minim 6 caractere"
-                  className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-wine/10 focus:border-wine focus:ring-2 focus:ring-wine/20 outline-none transition-all"
+                  placeholder="Minim 8 caractere"
+                  className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#f59e0b]/50 focus:ring-2 focus:ring-[#f59e0b]/20 outline-none transition-all"
                 />
               </div>
             </div>
 
             <div>
-              <label className="block text-sm font-medium text-dark mb-2">Confirmă parola</label>
+              <label className="block text-sm font-medium text-white/70 mb-2">Confirmă parola</label>
               <div className="relative">
-                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-dark/30" />
+                <Lock className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-white/30" />
                 <input
                   type="password" name="confirmPassword" value={form.confirmPassword} onChange={handleChange}
                   placeholder="••••••••"
-                  className="w-full pl-12 pr-4 py-3.5 rounded-xl border border-wine/10 focus:border-wine focus:ring-2 focus:ring-wine/20 outline-none transition-all"
+                  className="w-full pl-12 pr-4 py-3.5 rounded-xl bg-white/5 border border-white/10 text-white placeholder:text-white/30 focus:border-[#f59e0b]/50 focus:ring-2 focus:ring-[#f59e0b]/20 outline-none transition-all"
                 />
               </div>
             </div>
@@ -166,7 +174,7 @@ function RegisterPage() {
             <button
               type="submit"
               disabled={loading}
-              className="w-full bg-wine text-white py-4 rounded-xl font-semibold hover:bg-wine-dark transition-colors flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
+              className="w-full bg-gradient-to-r from-[#f59e0b] to-[#f97316] text-[#020204] py-4 rounded-xl font-semibold hover:shadow-[0_8px_30px_rgba(245,158,11,0.4)] transition-all flex items-center justify-center gap-2 disabled:opacity-70 disabled:cursor-not-allowed"
             >
               {loading ? (
                 <>
@@ -183,9 +191,9 @@ function RegisterPage() {
           </form>
 
           <div className="mt-6 text-center">
-            <p className="text-dark/60 text-sm">
+            <p className="text-white/50 text-sm">
               Ai deja cont?{' '}
-              <Link to="/login" className="text-wine font-semibold hover:underline">
+              <Link to="/login" className="text-[#fbbf24] font-semibold hover:underline">
                 Intră în cont
               </Link>
             </p>

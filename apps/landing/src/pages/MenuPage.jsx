@@ -29,7 +29,6 @@ export default function MenuPage() {
     const fetchData = async () => {
       try {
         setLoading(true);
-        // Fetch settings first to get the limit
         const settingsRes = await client.get('/settings/menuProductLimit').catch(() => ({ data: '50' }));
         const productLimit = Number(settingsRes.data) || 50;
         
@@ -37,7 +36,6 @@ export default function MenuPage() {
           client.get(`/products?limit=${productLimit}`),
           client.get('/categories'),
         ]);
-        // API returns { products: [...], categories: [...] } after interceptor unwrap
         const productList = Array.isArray(productsRes.data) ? productsRes.data : (productsRes.data?.products || []);
         const categoryList = Array.isArray(productsRes.data?.categories) ? productsRes.data.categories : (Array.isArray(categoriesRes.data) ? categoriesRes.data : []);
         setProducts(productList);
@@ -84,49 +82,60 @@ export default function MenuPage() {
   }, [activeCategory, debouncedSearch, sortBy, products]);
 
   return (
-    <div className="min-h-screen bg-cream pt-24 pb-20">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        {/* Page header */}
+    <div className="min-h-screen bg-[#0a0a0e] pt-32 pb-20 relative">
+      {/* Cinematic background glow */}
+      <div className="absolute top-0 left-0 w-full h-96 pointer-events-none overflow-hidden">
+        <div 
+          className="absolute -top-20 left-1/2 -translate-x-1/2 w-[800px] h-[400px] rounded-full"
+          style={{
+            background: 'radial-gradient(ellipse, rgba(245,158,11,0.08) 0%, transparent 60%)',
+            filter: 'blur(60px)'
+          }}
+        />
+      </div>
+      
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+        {/* Page header - Cinematic */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="mb-10"
+          className="mb-12"
         >
-          <h1 className="font-playfair font-bold text-3xl sm:text-4xl text-dark mb-2">
-            Meniul nostru
+          <h1 className="font-cinzel font-semibold text-3xl sm:text-4xl lg:text-5xl text-white mb-3 tracking-wide">
+            MENIUL <span className="text-[#fbbf24]">NOSTRU</span>
           </h1>
-          <p className="text-dark/50">Descoperă preparatele noastre delicioase și comandă acum</p>
+          <p className="text-white/50 text-lg">Descoperă preparatele noastre delicioase și comandă acum</p>
         </motion.div>
 
-        {/* Search and filters */}
-        <div className="flex flex-col sm:flex-row gap-4 mb-8">
+        {/* Search and filters - Cinematic */}
+        <div className="flex flex-col sm:flex-row gap-4 mb-10">
           <div className="relative flex-1">
-            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-dark/30" />
+            <Search size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" />
             <input
               type="text"
               placeholder="Caută preparate..."
               value={searchQuery}
               onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full pl-11 pr-4 py-3 rounded-xl bg-white border border-dark/10 focus:border-primary/50 focus:ring-2 focus:ring-primary/10 outline-none transition-all text-sm"
+              className="w-full pl-11 pr-4 py-3.5 rounded-xl bg-white/5 border border-white/10 focus:border-[#f59e0b]/50 focus:ring-2 focus:ring-[#f59e0b]/10 outline-none transition-all text-sm text-white placeholder:text-white/30"
             />
           </div>
           <div className="relative shrink-0">
-            <SlidersHorizontal size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-dark/30" />
+            <SlidersHorizontal size={18} className="absolute left-4 top-1/2 -translate-y-1/2 text-white/30" />
             <select
               value={sortBy}
               onChange={(e) => setSortBy(e.target.value)}
-              className="pl-11 pr-8 py-3 rounded-xl bg-white border border-dark/10 focus:border-primary/50 focus:ring-2 focus:ring-primary/10 outline-none transition-all text-sm appearance-none cursor-pointer"
+              className="pl-11 pr-10 py-3.5 rounded-xl bg-white/5 border border-white/10 focus:border-[#f59e0b]/50 focus:ring-2 focus:ring-[#f59e0b]/10 outline-none transition-all text-sm text-white appearance-none cursor-pointer"
             >
-              <option value="default">Sortare implicită</option>
-              <option value="price-asc">Preț: crescător</option>
-              <option value="price-desc">Preț: descrescător</option>
-              <option value="name">Nume: A-Z</option>
+              <option value="default" className="bg-[#12121a]">Sortare implicită</option>
+              <option value="price-asc" className="bg-[#12121a]">Preț: crescător</option>
+              <option value="price-desc" className="bg-[#12121a]">Preț: descrescător</option>
+              <option value="name" className="bg-[#12121a]">Nume: A-Z</option>
             </select>
           </div>
         </div>
 
         {/* Category filter */}
-        <div className="mb-10">
+        <div className="mb-12">
           <CategoryFilter
             categories={categories}
             activeCategory={activeCategory}
@@ -134,21 +143,21 @@ export default function MenuPage() {
           />
         </div>
 
-        {/* Loading state */}
+        {/* Loading state - Cinematic */}
         {loading && (
           <div className="flex items-center justify-center py-20">
-            <Loader2 className="w-8 h-8 text-primary animate-spin" />
-            <span className="ml-3 text-dark/50">Se încarcă produsele...</span>
+            <Loader2 className="w-8 h-8 text-[#f59e0b] animate-spin" />
+            <span className="ml-3 text-white/50">Se încarcă produsele...</span>
           </div>
         )}
 
         {/* Error state */}
         {error && !loading && (
           <div className="text-center py-20">
-            <p className="text-red-500 text-lg mb-4">{error}</p>
+            <p className="text-red-400 text-lg mb-4">{error}</p>
             <button
               onClick={() => window.location.reload()}
-              className="text-primary font-medium hover:underline"
+              className="text-[#fbbf24] font-medium hover:underline"
             >
               Reîncearcă
             </button>
@@ -167,10 +176,10 @@ export default function MenuPage() {
           </motion.div>
         ) : !loading && !error && (
           <div className="text-center py-20">
-            <p className="text-dark/40 text-lg">Nu am găsit produse care să corespundă căutării tale.</p>
+            <p className="text-white/40 text-lg">Nu am găsit produse care să corespundă căutării tale.</p>
             <button
               onClick={() => { setActiveCategory('all'); setSearchQuery(''); }}
-              className="mt-4 text-primary font-medium hover:underline"
+              className="mt-4 text-[#fbbf24] font-medium hover:underline"
             >
               Resetează filtrele
             </button>
