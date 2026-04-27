@@ -2,301 +2,67 @@
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Proj #1566 | Platformă Comenzi</title>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --dark: #0f0f12;
+            --dark: #0a0a0f;
             --darker: #08080a;
+            --surface: #12121a;
+            --text: #ffffff;
+            --text-muted: rgba(255,255,255,0.5);
             --accent-red: #e63946;
             --accent-blue: #4361ee;
             --accent-green: #2a9d8f;
-            --text: #ffffff;
-            --text-muted: rgba(255,255,255,0.5);
         }
         
-        html, body {
-            height: 100%;
-            overflow: hidden;
+        html {
+            font-size: 16px;
+        }
+        
+        @media (max-width: 768px) {
+            html { font-size: 14px; }
         }
         
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--darker);
+            background: var(--dark);
+            min-height: 100vh;
             color: var(--text);
+            -webkit-font-smoothing: antialiased;
         }
         
-        /* Mural Container - Full Screen */
-        .mural {
-            display: flex;
-            width: 100vw;
-            height: 100vh;
-        }
-        
-        @media (max-width: 768px) {
-            .mural {
-                flex-direction: column;
-            }
-        }
-        
-        /* Each Panel */
-        .panel {
-            flex: 1;
-            position: relative;
+        /* Container */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 40px 24px;
+            min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 60px 40px;
-            text-decoration: none;
-            color: var(--text);
-            overflow: hidden;
-            transition: flex 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-        }
-        
-        .panel:hover {
-            flex: 1.3;
         }
         
         @media (max-width: 768px) {
-            .panel {
-                padding: 30px 20px;
-                min-height: 33.33vh;
-            }
-            
-            .panel:hover {
-                flex: 1;
+            .container {
+                padding: 24px 16px;
             }
         }
         
-        /* Panel Backgrounds with Art */
-        .panel::before {
-            content: '';
-            position: absolute;
-            inset: 0;
-            opacity: 0.6;
-            transition: opacity 0.4s;
-        }
-        
-        .panel:hover::before {
-            opacity: 0.8;
-        }
-        
-        /* Panel 1 - Customer - Warm/Red tones */
-        .panel.customer {
-            background: linear-gradient(135deg, #1a0f0f 0%, #2d1f1f 50%, #1f1515 100%);
-        }
-        
-        .panel.customer::before {
-            background: 
-                radial-gradient(ellipse 80% 50% at 20% 80%, rgba(230, 57, 70, 0.4) 0%, transparent 50%),
-                radial-gradient(ellipse 60% 40% at 80% 20%, rgba(255, 107, 53, 0.3) 0%, transparent 40%);
-        }
-        
-        /* Panel 2 - Store - Cool/Blue tones */
-        .panel.store {
-            background: linear-gradient(135deg, #0f121a 0%, #1f253d 50%, #151821 100%);
-        }
-        
-        .panel.store::before {
-            background: 
-                radial-gradient(ellipse 70% 60% at 50% 100%, rgba(67, 97, 238, 0.35) 0%, transparent 50%),
-                radial-gradient(ellipse 50% 30% at 30% 30%, rgba(72, 149, 239, 0.25) 0%, transparent 40%);
-        }
-        
-        /* Panel 3 - Admin - Green/Teal tones */
-        .panel.admin {
-            background: linear-gradient(135deg, #0f1a18 0%, #1f3d35 50%, #15211e 100%);
-        }
-        
-        .panel.admin::before {
-            background: 
-                radial-gradient(ellipse 75% 55% at 70% 75%, rgba(42, 157, 143, 0.4) 0%, transparent 50%),
-                radial-gradient(ellipse 45% 35% at 25% 25%, rgba(46, 204, 113, 0.25) 0%, transparent 40%);
-        }
-        
-        /* Geometric Shapes */
-        .panel::after {
-            content: '';
-            position: absolute;
-            inset: 0;
-            background-image: 
-                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 100px 100px;
-            opacity: 0.5;
-        }
-        
-        @media (max-width: 768px) {
-            .panel::after {
-                background-size: 50px 50px;
-            }
-        }
-        
-        /* Content Container */
-        .panel-content {
-            position: relative;
-            z-index: 2;
-            text-align: center;
-            max-width: 320px;
-        }
-        
-        /* Number Badge */
-        .panel-number {
-            font-family: 'Playfair Display', serif;
-            font-size: 14px;
-            font-weight: 400;
-            color: var(--text-muted);
-            letter-spacing: 0.3em;
-            margin-bottom: 30px;
-            opacity: 0.7;
-        }
-        
-        @media (max-width: 768px) {
-            .panel-number {
-                font-size: 12px;
-                margin-bottom: 16px;
-            }
-        }
-        
-        /* Icon Circle */
-        .panel-icon {
-            width: 100px;
-            height: 100px;
-            border-radius: 50%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 40px;
-            margin: 0 auto 30px;
-            position: relative;
-            border: 1px solid rgba(255,255,255,0.1);
-            background: rgba(255,255,255,0.03);
-            backdrop-filter: blur(10px);
-            transition: transform 0.4s, border-color 0.4s;
-        }
-        
-        @media (max-width: 768px) {
-            .panel-icon {
-                width: 70px;
-                height: 70px;
-                font-size: 28px;
-                margin-bottom: 16px;
-            }
-        }
-        
-        .panel:hover .panel-icon {
-            transform: scale(1.1);
-        }
-        
-        .panel.customer .panel-icon {
-            border-color: rgba(230, 57, 70, 0.3);
-            box-shadow: 0 0 60px rgba(230, 57, 70, 0.2);
-        }
-        
-        .panel.store .panel-icon {
-            border-color: rgba(67, 97, 238, 0.3);
-            box-shadow: 0 0 60px rgba(67, 97, 238, 0.2);
-        }
-        
-        .panel.admin .panel-icon {
-            border-color: rgba(42, 157, 143, 0.3);
-            box-shadow: 0 0 60px rgba(42, 157, 143, 0.2);
-        }
-        
-        /* Title */
-        .panel-title {
-            font-family: 'Playfair Display', serif;
-            font-size: 36px;
-            font-weight: 600;
-            margin-bottom: 12px;
-            letter-spacing: 0.02em;
-        }
-        
-        @media (max-width: 768px) {
-            .panel-title {
-                font-size: 24px;
-            }
-        }
-        
-        /* Subtitle */
-        .panel-subtitle {
-            font-size: 13px;
-            color: var(--text-muted);
-            line-height: 1.6;
-            margin-bottom: 30px;
-        }
-        
-        @media (max-width: 768px) {
-            .panel-subtitle {
-                font-size: 11px;
-                margin-bottom: 16px;
-            }
-        }
-        
-        /* Arrow */
-        .panel-arrow {
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: 1px solid rgba(255,255,255,0.2);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            margin: 0 auto;
-            transition: all 0.3s;
-            background: rgba(255,255,255,0.02);
-        }
-        
-        @media (max-width: 768px) {
-            .panel-arrow {
-                width: 40px;
-                height: 40px;
-            }
-        }
-        
-        .panel:hover .panel-arrow {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(255,255,255,0.4);
-            transform: translateX(5px);
-        }
-        
-        .panel-arrow svg {
-            width: 18px;
-            height: 18px;
-            stroke: rgba(255,255,255,0.6);
-            transition: stroke 0.3s;
-        }
-        
-        .panel:hover .panel-arrow svg {
-            stroke: rgba(255,255,255,1);
-        }
-        
-        /* Header Overlay */
-        .header-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            padding: 30px 40px;
+        /* Header */
+        .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            z-index: 100;
-            pointer-events: none;
+            margin-bottom: 40px;
         }
         
         @media (max-width: 768px) {
-            .header-overlay {
-                padding: 20px;
+            .header {
+                margin-bottom: 24px;
             }
-        }
-        
-        .header-overlay > * {
-            pointer-events: auto;
         }
         
         .brand {
@@ -310,31 +76,105 @@
             color: var(--text);
         }
         
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 11px;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Hero */
+        .hero {
+            text-align: center;
+            margin-bottom: 40px;
+        }
+        
         @media (max-width: 768px) {
-            .brand {
-                font-size: 10px;
+            .hero {
+                margin-bottom: 24px;
             }
         }
         
-        /* Test Credentials - Bottom Left */
+        .hero-badge {
+            display: inline-block;
+            padding: 6px 14px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: 100px;
+            font-size: 10px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-badge {
+                font-size: 9px;
+                margin-bottom: 16px;
+            }
+        }
+        
+        .hero-title {
+            font-family: 'Playfair Display', serif;
+            font-size: clamp(2rem, 5vw, 3rem);
+            font-weight: 600;
+            margin-bottom: 8px;
+            background: linear-gradient(135deg, #fff 0%, #888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title {
+                font-size: clamp(1.5rem, 7vw, 2rem);
+            }
+        }
+        
+        .hero-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            max-width: 400px;
+            margin: 0 auto;
+            font-weight: 300;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-subtitle {
+                font-size: 11px;
+                max-width: 280px;
+            }
+        }
+        
+        /* Credentials */
         .credentials {
-            position: fixed;
-            bottom: 30px;
-            left: 40px;
             display: flex;
-            flex-direction: column;
-            gap: 8px;
-            z-index: 100;
+            justify-content: center;
+            gap: 12px;
+            margin-bottom: 40px;
+            flex-wrap: wrap;
         }
         
         @media (max-width: 768px) {
             .credentials {
-                bottom: 20px;
-                left: 20px;
-                right: 20px;
-                flex-direction: row;
-                flex-wrap: wrap;
-                gap: 6px;
+                gap: 8px;
+                margin-bottom: 32px;
             }
         }
         
@@ -342,13 +182,12 @@
             display: inline-flex;
             align-items: center;
             gap: 8px;
-            padding: 8px 14px;
+            padding: 8px 16px;
             background: rgba(255,255,255,0.05);
             border: 1px solid rgba(255,255,255,0.08);
             border-radius: 100px;
             font-size: 11px;
             color: var(--text-muted);
-            backdrop-filter: blur(10px);
             cursor: pointer;
             transition: all 0.2s;
             user-select: all;
@@ -357,13 +196,13 @@
         @media (max-width: 768px) {
             .credential-pill {
                 font-size: 9px;
-                padding: 6px 10px;
+                padding: 6px 12px;
             }
         }
         
         .credential-pill:hover {
-            background: rgba(255,255,255,0.1);
-            border-color: rgba(255,255,255,0.15);
+            background: rgba(255,255,255,0.08);
+            border-color: rgba(255,255,255,0.12);
             color: var(--text);
         }
         
@@ -371,6 +210,7 @@
             font-weight: 500;
             text-transform: uppercase;
             letter-spacing: 0.05em;
+            color: var(--text);
         }
         
         .credential-pill .divider {
@@ -379,18 +219,270 @@
             background: rgba(255,255,255,0.2);
         }
         
-        /* CTA Button - Bottom Right */
-        .cta-corner {
-            position: fixed;
-            bottom: 30px;
-            right: 40px;
-            z-index: 100;
+        /* Mural Section Label */
+        .section-label {
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            text-align: center;
         }
         
         @media (max-width: 768px) {
-            .cta-corner {
-                display: none;
+            .section-label {
+                font-size: 9px;
+                margin-bottom: 16px;
             }
+        }
+        
+        /* Mural - 3 Horizontal Panels */
+        .mural {
+            display: flex;
+            gap: 16px;
+            margin-bottom: 40px;
+        }
+        
+        @media (max-width: 768px) {
+            .mural {
+                flex-direction: column;
+                gap: 12px;
+                margin-bottom: 32px;
+            }
+        }
+        
+        .panel {
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 40px 24px;
+            text-decoration: none;
+            color: var(--text);
+            border-radius: 20px;
+            overflow: hidden;
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            min-height: 280px;
+        }
+        
+        @media (max-width: 768px) {
+            .panel {
+                padding: 24px 20px;
+                min-height: auto;
+                border-radius: 16px;
+            }
+        }
+        
+        /* Panel Backgrounds */
+        .panel.customer {
+            background: linear-gradient(135deg, #1a0f0f 0%, #2d1f1f 100%);
+        }
+        
+        .panel.customer::before {
+            background: radial-gradient(ellipse 80% 50% at 30% 80%, rgba(230, 57, 70, 0.35) 0%, transparent 50%);
+        }
+        
+        .panel.store {
+            background: linear-gradient(135deg, #0f121a 0%, #1f253d 100%);
+        }
+        
+        .panel.store::before {
+            background: radial-gradient(ellipse 70% 60% at 50% 100%, rgba(67, 97, 238, 0.3) 0%, transparent 50%);
+        }
+        
+        .panel.admin {
+            background: linear-gradient(135deg, #0f1a18 0%, #1f3d35 100%);
+        }
+        
+        .panel.admin::before {
+            background: radial-gradient(ellipse 75% 55% at 70% 75%, rgba(42, 157, 143, 0.35) 0%, transparent 50%);
+        }
+        
+        .panel::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            opacity: 0.6;
+            transition: opacity 0.4s;
+        }
+        
+        .panel:hover::before {
+            opacity: 1;
+        }
+        
+        .panel::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 50px 50px;
+        }
+        
+        .panel:hover {
+            transform: translateY(-4px);
+        }
+        
+        .panel-content {
+            position: relative;
+            z-index: 2;
+            text-align: center;
+        }
+        
+        .panel-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 12px;
+            font-weight: 400;
+            color: var(--text-muted);
+            letter-spacing: 0.2em;
+            margin-bottom: 16px;
+            opacity: 0.7;
+        }
+        
+        @media (max-width: 768px) {
+            .panel-number {
+                font-size: 10px;
+                margin-bottom: 12px;
+            }
+        }
+        
+        .panel-icon {
+            width: 70px;
+            height: 70px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 28px;
+            margin: 0 auto 20px;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            transition: transform 0.3s;
+        }
+        
+        @media (max-width: 768px) {
+            .panel-icon {
+                width: 56px;
+                height: 56px;
+                font-size: 22px;
+                margin-bottom: 16px;
+            }
+        }
+        
+        .panel:hover .panel-icon {
+            transform: scale(1.1);
+        }
+        
+        .panel.customer .panel-icon {
+            border-color: rgba(230, 57, 70, 0.3);
+            box-shadow: 0 0 40px rgba(230, 57, 70, 0.15);
+        }
+        
+        .panel.store .panel-icon {
+            border-color: rgba(67, 97, 238, 0.3);
+            box-shadow: 0 0 40px rgba(67, 97, 238, 0.15);
+        }
+        
+        .panel.admin .panel-icon {
+            border-color: rgba(42, 157, 143, 0.3);
+            box-shadow: 0 0 40px rgba(42, 157, 143, 0.15);
+        }
+        
+        .panel-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 24px;
+            font-weight: 600;
+            margin-bottom: 8px;
+        }
+        
+        @media (max-width: 768px) {
+            .panel-title {
+                font-size: 20px;
+            }
+        }
+        
+        .panel-subtitle {
+            font-size: 12px;
+            color: var(--text-muted);
+            line-height: 1.5;
+            margin-bottom: 20px;
+            max-width: 200px;
+        }
+        
+        @media (max-width: 768px) {
+            .panel-subtitle {
+                font-size: 11px;
+                margin-bottom: 16px;
+            }
+        }
+        
+        .panel-arrow {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.2);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.03);
+        }
+        
+        @media (max-width: 768px) {
+            .panel-arrow {
+                width: 36px;
+                height: 36px;
+            }
+        }
+        
+        .panel:hover .panel-arrow {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.4);
+            transform: translateX(4px);
+        }
+        
+        .panel-arrow svg {
+            width: 16px;
+            height: 16px;
+            stroke: rgba(255,255,255,0.6);
+        }
+        
+        .panel:hover .panel-arrow svg {
+            stroke: var(--text);
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: auto;
+            padding-top: 32px;
+            border-top: 1px solid rgba(255,255,255,0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 16px;
+        }
+        
+        @media (max-width: 768px) {
+            .footer {
+                flex-direction: column;
+                text-align: center;
+                gap: 12px;
+            }
+        }
+        
+        .footer-text {
+            font-size: 12px;
+            color: var(--text-muted);
+        }
+        
+        .footer-text span {
+            color: var(--text);
         }
         
         .cta-btn {
@@ -398,132 +490,121 @@
             align-items: center;
             gap: 10px;
             padding: 12px 24px;
-            background: rgba(255,255,255,0.08);
-            border: 1px solid rgba(255,255,255,0.15);
+            background: linear-gradient(135deg, #e63946 0%, #ff6b6b 100%);
             border-radius: 100px;
-            color: var(--text);
+            color: white;
             text-decoration: none;
             font-size: 12px;
             font-weight: 500;
-            letter-spacing: 0.05em;
-            backdrop-filter: blur(10px);
+            letter-spacing: 0.02em;
             transition: all 0.3s;
+            box-shadow: 0 4px 20px rgba(230, 57, 70, 0.3);
+        }
+        
+        @media (max-width: 768px) {
+            .cta-btn {
+                padding: 10px 20px;
+                font-size: 11px;
+            }
         }
         
         .cta-btn:hover {
-            background: rgba(255,255,255,0.15);
-            border-color: rgba(255,255,255,0.3);
             transform: translateY(-2px);
+            box-shadow: 0 8px 30px rgba(230, 57, 70, 0.4);
         }
         
         .cta-btn svg {
             width: 16px;
             height: 16px;
         }
-        
-        /* Vertical Divider Lines */
-        .divider-line {
-            position: absolute;
-            top: 10%;
-            bottom: 10%;
-            width: 1px;
-            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1) 20%, rgba(255,255,255,0.1) 80%, transparent);
-            z-index: 1;
-        }
-        
-        @media (max-width: 768px) {
-            .divider-line {
-                display: none;
-            }
-        }
-        
-        .panel:nth-child(1) .divider-line {
-            right: 0;
-        }
-        
-        .panel:nth-child(2) .divider-line {
-            right: 0;
-        }
     </style>
 </head>
 <body>
-    <!-- Header Overlay -->
-    <div class="header-overlay">
-        <div class="brand">Proj <span>#1566</span></div>
-    </div>
-    
-    <!-- Mural Layout -->
-    <div class="mural">
-        <!-- Customer Panel -->
-        <a href="/customer/" class="panel customer" target="_blank" rel="noopener noreferrer">
-            <div class="divider-line"></div>
-            <div class="panel-content">
-                <div class="panel-number">01</div>
-                <div class="panel-icon">🍕</div>
-                <h2 class="panel-title">Customer</h2>
-                <p class="panel-subtitle">Meniu digital, coș de cumpărături și plată online pentru clienți.</p>
-                <div class="panel-arrow">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </div>
+    <div class="container">
+        <header class="header">
+            <div class="brand">Proj <span>#1566</span></div>
+            <div class="status">
+                <div class="status-dot"></div>
+                <span>Sistem Live</span>
             </div>
-        </a>
+        </header>
         
-        <!-- Store Panel -->
-        <a href="/store/" class="panel store" target="_blank" rel="noopener noreferrer">
-            <div class="divider-line"></div>
-            <div class="panel-content">
-                <div class="panel-number">02</div>
-                <div class="panel-icon">👨‍🍳</div>
-                <h2 class="panel-title">Store</h2>
-                <p class="panel-subtitle">Dashboard KDS pentru bucătărie. Gestionare comenzi în timp real.</p>
-                <div class="panel-arrow">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </div>
-            </div>
-        </a>
+        <section class="hero">
+            <div class="hero-badge">Platformă Comenzi Online</div>
+            <h1 class="hero-title">Rotiserie & Pizza Moinești</h1>
+            <p class="hero-subtitle">Soluție completă de management pentru restaurante și afaceri culinare</p>
+        </section>
         
-        <!-- Admin Panel -->
-        <a href="/admin/" class="panel admin" target="_blank" rel="noopener noreferrer">
-            <div class="panel-content">
-                <div class="panel-number">03</div>
-                <div class="panel-icon">📊</div>
-                <h2 class="panel-title">Admin</h2>
-                <p class="panel-subtitle">Control total: rapoarte, produse, utilizatori și setări.</p>
-                <div class="panel-arrow">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </div>
+        <div class="credentials">
+            <div class="credential-pill" onclick="copyToClipboard('admin@rotiserie.ro')">
+                <span class="label">Admin</span>
+                <span class="divider"></span>
+                <span>admin@rotiserie.ro / admin123</span>
             </div>
-        </a>
-    </div>
-    
-    <!-- Test Credentials -->
-    <div class="credentials">
-        <div class="credential-pill" onclick="copyToClipboard('admin@rotiserie.ro')">
-            <span class="label">Admin</span>
-            <span class="divider"></span>
-            <span>admin@rotiserie.ro / admin123</span>
+            <div class="credential-pill" onclick="copyToClipboard('1234')">
+                <span class="label">Store PIN</span>
+                <span class="divider"></span>
+                <span>1234</span>
+            </div>
         </div>
-        <div class="credential-pill" onclick="copyToClipboard('1234')">
-            <span class="label">Store PIN</span>
-            <span class="divider"></span>
-            <span>1234</span>
+        
+        <div class="section-label">Selectează Modulul</div>
+        
+        <div class="mural">
+            <a href="/customer/" class="panel customer" target="_blank" rel="noopener noreferrer">
+                <div class="panel-content">
+                    <div class="panel-number">01</div>
+                    <div class="panel-icon">🍕</div>
+                    <h3 class="panel-title">Customer</h3>
+                    <p class="panel-subtitle">Meniu digital, coș și plată online.</p>
+                    <div class="panel-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="/store/" class="panel store" target="_blank" rel="noopener noreferrer">
+                <div class="panel-content">
+                    <div class="panel-number">02</div>
+                    <div class="panel-icon">👨‍🍳</div>
+                    <h3 class="panel-title">Store</h3>
+                    <p class="panel-subtitle">Dashboard KDS pentru bucătărie.</p>
+                    <div class="panel-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                </div>
+            </a>
+            
+            <a href="/admin/" class="panel admin" target="_blank" rel="noopener noreferrer">
+                <div class="panel-content">
+                    <div class="panel-number">03</div>
+                    <div class="panel-icon">📊</div>
+                    <h3 class="panel-title">Admin</h3>
+                    <p class="panel-subtitle">Rapoarte, produse și setări.</p>
+                    <div class="panel-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </div>
+                </div>
+            </a>
         </div>
-    </div>
-    
-    <!-- CTA Button -->
-    <div class="cta-corner">
-        <a href="https://wa.me/40722309309?text=Salut!%20Sunt%20interesat%20de%20platforma%20de%20comenzi%20online." class="cta-btn" target="_blank">
-            <svg viewBox="0 0 24 24" fill="currentColor">
-                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/>
-            </svg>
-            Cumpără Platforma
-        </a>
+        
+        <footer class="footer">
+            <div class="footer-text">
+                <span>Demo Project</span> — Rotiserie & Pizza Moinești
+            </div>
+            <a href="https://wa.me/40722309309?text=Salut!%20Sunt%20interesat%20de%20platforma%20de%20comenzi%20online." class="cta-btn" target="_blank">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/>
+                </svg>
+                Cumpără Platforma
+            </a>
+        </footer>
     </div>
     
     <script>
