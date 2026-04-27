@@ -1,0 +1,160 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+model User {
+  id        Int      @id @default(autoincrement())
+  email     String   @unique
+  password  String
+  name      String
+  role      Role     @default(CUSTOMER)
+  pin       String?  @db.VarChar(10)
+  phone     String?
+  address   String?
+  isActive  Boolean  @default(true)
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  orders Order[]
+
+  @@map("users")
+}
+
+model Category {
+  id          Int     @id @default(autoincrement())
+  name        String  @unique
+  slug        String  @unique
+  description String?
+  image       String?
+  sortOrder   Int     @default(0) @map("sort_order")
+  isActive    Boolean @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  products Product[]
+
+  @@map("categories")
+}
+
+model Product {
+  id          Int     @id @default(autoincrement())
+  name        String
+  description String?
+  price       Decimal @db.Decimal(10, 2)
+  image       String?
+  categoryId  Int     @map("category_id")
+  isFeatured  Boolean @default(false) @map("is_featured")
+  isAvailable Boolean @default(true) @map("is_available")
+  sortOrder   Int     @default(0) @map("sort_order")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  category    Category     @relation(fields: [categoryId], references: [id])
+  orderItems  OrderItem[]
+
+  @@index([categoryId, isAvailable, isFeatured])
+  @@index([sortOrder, createdAt])
+  @@map("products")
+}
+
+model Order {
+  id          Int      @id @default(autoincrement())
+  userId      Int?     @map("user_id")
+  customerName String  @map("customer_name")
+  customerPhone String @map("customer_phone")
+  customerAddress String @map("customer_address")
+  total       Decimal  @db.Decimal(10, 2)
+  status      OrderStatus @default(RECEIVED)
+  paymentMethod String @map("payment_method")
+  paymentStatus PaymentStatus @default(PENDING) @map("payment_status")
+  notes       String?
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  user        User?            @relation(fields: [userId], references: [id])
+  items       OrderItem[]
+  statusHistory OrderStatusHistory[]
+
+  @@index([status, createdAt])
+  @@index([customerPhone])
+  @@map("orders")
+}
+
+model OrderItem {
+  id        Int     @id @default(autoincrement())
+  orderId   Int     @map("order_id")
+  productId Int     @map("product_id")
+  name      String
+  price     Decimal @db.Decimal(10, 2)
+  quantity  Int
+  createdAt DateTime @default(now()) @map("created_at")
+
+  order   Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product Product @relation(fields: [productId], references: [id])
+
+  @@map("order_items")
+}
+
+model OrderStatusHistory {
+  id        Int      @id @default(autoincrement())
+  orderId   Int      @map("order_id")
+  status    OrderStatus
+  notes     String?
+  createdAt DateTime @default(now()) @map("created_at")
+
+  order Order @relation(fields: [orderId], references: [id], onDelete: Cascade)
+
+  @@map("order_status_history")
+}
+
+model Setting {
+  id    Int    @id @default(autoincrement())
+  key   String @unique
+  value String
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@map("settings")
+}
+
+model BusinessHour {
+  id        Int      @id @default(autoincrement())
+  dayOfWeek Int      @map("day_of_week") // 0 = Sunday, 1 = Monday, etc.
+  openTime  String   @map("open_time")   // HH:MM format
+  closeTime String   @map("close_time")  // HH:MM format
+  isClosed  Boolean  @default(false) @map("is_closed")
+  createdAt DateTime @default(now()) @map("created_at")
+  updatedAt DateTime @updatedAt @map("updated_at")
+
+  @@unique([dayOfWeek])
+  @@map("business_hours")
+}
+
+enum Role {
+  CUSTOMER
+  KITCHEN
+  ADMIN
+  SUPERADMIN
+}
+
+enum OrderStatus {
+  RECEIVED
+  ACCEPTED
+  PREPARING
+  READY
+  OUT_FOR_DELIVERY
+  DELIVERED
+  CANCELLED
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  FAILED
+  REFUNDED
+}
