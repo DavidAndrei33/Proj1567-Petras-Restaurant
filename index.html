@@ -3,294 +3,534 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demo Proj #1566 | Rotiserie & Pizza Moinesti</title>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <title>Proj #1566 | Platformă Comenzi</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
+        
         :root {
-            --primary: #E63946;
-            --primary-dark: #C62828;
-            --secondary: #2A9D8F;
-            --accent: #F4A261;
-            --dark: #1D1D1D;
-            --light: #FAFAFA;
-            --gray: #6B7280;
-            --cream: #FDF8F3;
+            --bg: #0a0a0f;
+            --surface: #12121a;
+            --surface-hover: #1a1a25;
+            --text: #ffffff;
+            --text-muted: #6b6b7b;
+            --accent: #ff3366;
+            --accent-glow: rgba(255, 51, 102, 0.3);
+            --gradient-1: linear-gradient(135deg, #ff3366 0%, #ff6b6b 50%, #ffa500 100%);
+            --gradient-2: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            --gradient-3: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
         }
+        
         body {
             font-family: 'Inter', sans-serif;
-            background: linear-gradient(135deg, var(--cream) 0%, #fff 50%, var(--cream) 100%);
+            background: var(--bg);
             min-height: 100vh;
-            color: var(--dark);
+            color: var(--text);
+            overflow-x: hidden;
         }
-        .header {
+        
+        /* Animated Background */
+        .bg-animation {
             position: fixed;
             top: 0;
             left: 0;
-            right: 0;
-            padding: 1.5rem 2rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 100;
-            background: linear-gradient(to bottom, rgba(255,255,255,0.95), transparent);
-            backdrop-filter: blur(10px);
+            width: 100%;
+            height: 100%;
+            pointer-events: none;
+            z-index: 0;
+            overflow: hidden;
         }
-        .project-badge {
-            background: var(--dark);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 600;
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
+        
+        .orb {
+            position: absolute;
+            border-radius: 50%;
+            filter: blur(80px);
+            opacity: 0.4;
+            animation: float 20s infinite ease-in-out;
         }
-        .success-badge {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            background: linear-gradient(135deg, #10B981, #059669);
-            color: white;
-            padding: 0.5rem 1rem;
-            border-radius: 50px;
-            font-size: 0.75rem;
-            font-weight: 600;
+        
+        .orb-1 {
+            width: 600px;
+            height: 600px;
+            background: var(--accent);
+            top: -200px;
+            right: -200px;
+            animation-delay: 0s;
         }
-        .main-container {
+        
+        .orb-2 {
+            width: 500px;
+            height: 500px;
+            background: #667eea;
+            bottom: -150px;
+            left: -150px;
+            animation-delay: -7s;
+        }
+        
+        .orb-3 {
+            width: 400px;
+            height: 400px;
+            background: #11998e;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            animation-delay: -14s;
+        }
+        
+        @keyframes float {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            33% { transform: translate(30px, -30px) scale(1.1); }
+            66% { transform: translate(-20px, 20px) scale(0.9); }
+        }
+        
+        /* Grid Pattern Overlay */
+        .grid-pattern {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-image: 
+                linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
+            background-size: 60px 60px;
+            pointer-events: none;
+            z-index: 1;
+        }
+        
+        /* Container */
+        .container {
+            position: relative;
+            z-index: 2;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 60px 40px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            padding: 6rem 2rem 4rem;
-            max-width: 1200px;
-            margin: 0 auto;
         }
+        
+        /* Header */
+        .header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 80px;
+        }
+        
+        .logo {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 14px;
+            font-weight: 500;
+            letter-spacing: 0.2em;
+            color: var(--text-muted);
+            text-transform: uppercase;
+        }
+        
+        .logo span {
+            color: var(--accent);
+        }
+        
+        .status {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 12px;
+            color: var(--text-muted);
+            letter-spacing: 0.1em;
+            text-transform: uppercase;
+        }
+        
+        .status-dot {
+            width: 6px;
+            height: 6px;
+            background: #00ff88;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+        
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+        
+        /* Hero Section */
         .hero {
             text-align: center;
-            margin-bottom: 4rem;
+            margin-bottom: 100px;
         }
-        .hero-label {
+        
+        .hero-badge {
             display: inline-block;
-            background: linear-gradient(135deg, var(--primary), var(--primary-dark));
-            color: white;
-            padding: 0.5rem 1.5rem;
-            border-radius: 50px;
-            font-size: 0.8rem;
-            font-weight: 500;
-            margin-bottom: 1.5rem;
-            letter-spacing: 0.05em;
-            box-shadow: 0 4px 15px rgba(230, 57, 70, 0.3);
+            padding: 8px 16px;
+            background: rgba(255, 255, 255, 0.05);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 100px;
+            font-size: 11px;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+            margin-bottom: 30px;
         }
+        
         .hero-title {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(2.5rem, 8vw, 5rem);
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: clamp(3rem, 8vw, 6rem);
             font-weight: 700;
-            color: var(--dark);
-            margin-bottom: 1rem;
-            line-height: 1.1;
+            line-height: 1;
+            margin-bottom: 20px;
+            background: linear-gradient(135deg, #fff 0%, #888 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
         }
-        .hero-title span {
-            color: var(--primary);
-        }
+        
         .hero-subtitle {
-            font-size: 1.25rem;
-            color: var(--gray);
-            max-width: 600px;
+            font-size: 18px;
+            color: var(--text-muted);
+            max-width: 500px;
             margin: 0 auto;
-            line-height: 1.6;
+            font-weight: 300;
         }
-        .hero-location {
-            display: inline-flex;
-            align-items: center;
-            gap: 0.5rem;
-            margin-top: 1.5rem;
-            color: var(--gray);
-            font-size: 0.9rem;
-        }
-        .stats-bar {
-            display: flex;
-            justify-content: center;
-            gap: 3rem;
-            margin-bottom: 4rem;
-            padding: 1.5rem 2rem;
-            background: white;
-            border-radius: 16px;
-            box-shadow: 0 10px 40px rgba(0,0,0,0.08);
-        }
-        .stat-item {
-            text-align: center;
-        }
-        .stat-number {
-            font-size: 2rem;
-            font-weight: 700;
-            color: var(--primary);
-            display: block;
-        }
-        .stat-label {
-            font-size: 0.8rem;
-            color: var(--gray);
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-        }
+        
+        /* Modules Grid */
         .modules-section {
-            width: 100%;
-            max-width: 900px;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
         }
-        .modules-title {
-            text-align: center;
-            font-size: 1rem;
-            color: var(--gray);
+        
+        .modules-label {
+            font-size: 11px;
+            letter-spacing: 0.3em;
             text-transform: uppercase;
-            letter-spacing: 0.2em;
-            margin-bottom: 2rem;
+            color: var(--text-muted);
+            margin-bottom: 40px;
+            text-align: center;
         }
+        
         .modules-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-            gap: 1.5rem;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
+            max-width: 1100px;
+            margin: 0 auto;
+            width: 100%;
         }
+        
         .module-card {
-            background: white;
+            position: relative;
+            background: var(--surface);
+            border: 1px solid rgba(255, 255, 255, 0.06);
             border-radius: 24px;
-            padding: 2rem;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.4s ease;
-            border: 2px solid transparent;
+            padding: 40px;
             text-decoration: none;
-            color: inherit;
-            display: block;
+            color: var(--text);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+            overflow: hidden;
         }
+        
+        .module-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(600px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.06), transparent 40%);
+            opacity: 0;
+            transition: opacity 0.3s;
+        }
+        
+        .module-card:hover::before {
+            opacity: 1;
+        }
+        
         .module-card:hover {
-            transform: translateY(-8px);
-            box-shadow: 0 25px 50px rgba(0,0,0,0.15);
-            border-color: var(--primary);
+            transform: translateY(-4px);
+            border-color: rgba(255, 255, 255, 0.12);
+            background: var(--surface-hover);
         }
+        
+        .module-glow {
+            position: absolute;
+            top: 0;
+            left: 50%;
+            transform: translateX(-50%);
+            width: 200px;
+            height: 200px;
+            border-radius: 50%;
+            filter: blur(60px);
+            opacity: 0;
+            transition: opacity 0.4s;
+        }
+        
+        .module-card:hover .module-glow {
+            opacity: 0.5;
+        }
+        
+        .module-card.customer .module-glow {
+            background: var(--gradient-1);
+        }
+        
+        .module-card.store .module-glow {
+            background: var(--gradient-2);
+        }
+        
+        .module-card.admin .module-glow {
+            background: var(--gradient-3);
+        }
+        
+        .module-number {
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 12px;
+            font-weight: 600;
+            color: var(--text-muted);
+            margin-bottom: 20px;
+            letter-spacing: 0.1em;
+        }
+        
         .module-icon {
-            width: 70px;
-            height: 70px;
-            margin: 0 auto 1.5rem;
-            border-radius: 20px;
+            width: 56px;
+            height: 56px;
+            border-radius: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 2rem;
+            font-size: 24px;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
         }
+        
         .module-card.customer .module-icon {
-            background: linear-gradient(135deg, #FEE2E2, #FECACA);
+            background: rgba(255, 51, 102, 0.1);
         }
+        
         .module-card.store .module-icon {
-            background: linear-gradient(135deg, #DBEAFE, #BFDBFE);
+            background: rgba(102, 126, 234, 0.1);
         }
+        
         .module-card.admin .module-icon {
-            background: linear-gradient(135deg, #D1FAE5, #A7F3D0);
+            background: rgba(17, 153, 142, 0.1);
         }
+        
         .module-name {
-            font-size: 1.25rem;
+            font-family: 'Space Grotesk', sans-serif;
+            font-size: 24px;
             font-weight: 600;
-            margin-bottom: 0.5rem;
-            color: var(--dark);
+            margin-bottom: 8px;
+            position: relative;
+            z-index: 1;
         }
+        
         .module-desc {
-            font-size: 0.9rem;
-            color: var(--gray);
-            line-height: 1.5;
+            font-size: 14px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 24px;
+            position: relative;
+            z-index: 1;
         }
-        .module-badge {
-            display: inline-block;
-            margin-top: 1rem;
-            padding: 0.25rem 0.75rem;
-            background: var(--light);
-            border-radius: 50px;
-            font-size: 0.7rem;
-            font-weight: 600;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--gray);
-        }
-        .whatsapp-btn {
-            position: fixed;
-            bottom: 2rem;
-            right: 2rem;
-            background: linear-gradient(135deg, #25D366, #128C7E);
-            color: white;
-            padding: 1rem 1.5rem;
-            border-radius: 50px;
-            text-decoration: none;
+        
+        .module-arrow {
+            position: absolute;
+            bottom: 40px;
+            right: 40px;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background: rgba(255, 255, 255, 0.05);
             display: flex;
             align-items: center;
-            gap: 0.75rem;
-            font-weight: 600;
-            box-shadow: 0 10px 30px rgba(37, 211, 102, 0.4);
-            transition: all 0.3s ease;
-            z-index: 1000;
+            justify-content: center;
+            transition: all 0.3s;
         }
-        .whatsapp-btn:hover {
-            transform: translateY(-3px) scale(1.05);
+        
+        .module-card:hover .module-arrow {
+            background: rgba(255, 255, 255, 0.1);
+            transform: translateX(4px);
         }
+        
+        .module-arrow svg {
+            width: 16px;
+            height: 16px;
+            stroke: var(--text-muted);
+            transition: stroke 0.3s;
+        }
+        
+        .module-card:hover .module-arrow svg {
+            stroke: var(--text);
+        }
+        
+        /* Footer */
+        .footer {
+            margin-top: 80px;
+            padding-top: 40px;
+            border-top: 1px solid rgba(255, 255, 255, 0.06);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 20px;
+        }
+        
+        .footer-info {
+            font-size: 13px;
+            color: var(--text-muted);
+        }
+        
+        .footer-info span {
+            color: var(--text);
+        }
+        
+        .cta-button {
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            padding: 14px 28px;
+            background: var(--gradient-1);
+            border-radius: 100px;
+            color: white;
+            text-decoration: none;
+            font-size: 13px;
+            font-weight: 500;
+            letter-spacing: 0.05em;
+            transition: all 0.3s;
+            box-shadow: 0 4px 20px var(--accent-glow);
+        }
+        
+        .cta-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 30px var(--accent-glow);
+        }
+        
+        .cta-button svg {
+            width: 18px;
+            height: 18px;
+        }
+        
+        /* Responsive */
         @media (max-width: 768px) {
-            .header { padding: 1rem; }
-            .main-container { padding: 5rem 1rem 2rem; }
-            .stats-bar { flex-direction: column; gap: 1rem; }
-            .modules-grid { grid-template-columns: 1fr; }
-            .whatsapp-btn { bottom: 1rem; right: 1rem; padding: 0.75rem 1rem; font-size: 0.9rem; }
-            .whatsapp-btn span { display: none; }
+            .container {
+                padding: 40px 20px;
+            }
+            
+            .header {
+                margin-bottom: 60px;
+            }
+            
+            .hero {
+                margin-bottom: 60px;
+            }
+            
+            .modules-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .module-card {
+                padding: 30px;
+            }
+            
+            .footer {
+                flex-direction: column;
+                text-align: center;
+            }
         }
     </style>
 </head>
 <body>
-    <header class="header">
-        <div class="project-badge">Demo proj #1566</div>
-        <div class="success-badge">Sistem Live</div>
-    </header>
-
-    <main class="main-container">
+    <div class="bg-animation">
+        <div class="orb orb-1"></div>
+        <div class="orb orb-2"></div>
+        <div class="orb orb-3"></div>
+    </div>
+    <div class="grid-pattern"></div>
+    
+    <div class="container">
+        <header class="header">
+            <div class="logo">Proj <span>#1566</span></div>
+            <div class="status">
+                <div class="status-dot"></div>
+                <span>Sistem Live</span>
+            </div>
+        </header>
+        
         <section class="hero">
-            <div class="hero-label">Platformă Comenzi Online</div>
-            <h1 class="hero-title">Rotiserie & Pizza<br><span>Moinești</span></h1>
+            <div class="hero-badge">Platformă Comenzi Online</div>
+            <h1 class="hero-title">Rotiserie & Pizza<br>Moinești</h1>
+            <p class="hero-subtitle">Soluție completă de management pentru restaurante și afaceri culinare</p>
         </section>
-
+        
         <section class="modules-section">
-            <h2 class="modules-title">Explorează Modulele</h2>
+            <div class="modules-label">Selectează Modulul</div>
             <div class="modules-grid">
                 <a href="/customer/" class="module-card customer" target="_blank" rel="noopener noreferrer">
+                    <div class="module-glow"></div>
+                    <div class="module-number">01</div>
                     <div class="module-icon">🍕</div>
-                    <h3 class="module-name">Customer Module</h3>
-                    <p class="module-desc">Experiența clientului final. Meniu digital, coș de cumpărături, plată online.</p>
-                    <span class="module-badge">Landing Page</span>
+                    <h3 class="module-name">Customer</h3>
+                    <p class="module-desc">Experiență completă pentru clienți: meniu digital, coș de cumpărături și plată online.</p>
+                    <div class="module-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </div>
                 </a>
+                
                 <a href="/store/" class="module-card store" target="_blank" rel="noopener noreferrer">
+                    <div class="module-glow"></div>
+                    <div class="module-number">02</div>
                     <div class="module-icon">👨‍🍳</div>
-                    <h3 class="module-name">Store Module</h3>
-                    <p class="module-desc">Bucătăria ta digitală. Gestionare comenzi în timp real, KDS Dashboard.</p>
-                    <span class="module-badge">KDS Dashboard</span>
+                    <h3 class="module-name">Store</h3>
+                    <p class="module-desc">Dashboard KDS pentru bucătărie. Gestionare comenzi în timp real.</p>
+                    <div class="module-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </div>
                 </a>
+                
                 <a href="/admin/" class="module-card admin" target="_blank" rel="noopener noreferrer">
+                    <div class="module-glow"></div>
+                    <div class="module-number">03</div>
                     <div class="module-icon">📊</div>
-                    <h3 class="module-name">Admin Module</h3>
-                    <p class="module-desc">Control total. Rapoarte vânzări, gestiune produse, clienți, setări.</p>
-                    <span class="module-badge">Admin Panel</span>
+                    <h3 class="module-name">Admin</h3>
+                    <p class="module-desc">Control total: rapoarte, gestiune produse, utilizatori și setări.</p>
+                    <div class="module-arrow">
+                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <path d="M5 12h14M12 5l7 7-7 7"/>
+                        </svg>
+                    </div>
                 </a>
             </div>
         </section>
-
-        <section class="hero" style="margin-bottom: 2rem;">
-            <p class="hero-subtitle">Descoperă cum poți transforma afacerea ta culinară cu o platformă completă de comenzi online.</p>
-            <div class="hero-location">📍 Str. Tudor Vladimirescu 10, Moinești, Bacău</div>
-        </section>
-
-        <div class="stats-bar">
-            <div class="stat-item"><span class="stat-number">24/7</span><span class="stat-label">Program</span></div>
-            <div class="stat-item"><span class="stat-number">3.9★</span><span class="stat-label">Rating</span></div>
-            <div class="stat-item"><span class="stat-number">3</span><span class="stat-label">Module</span></div>
-        </div>
-    </main>
-
-    <a href="https://wa.me/40722309309?text=Salut!%20Sunt%20interesat%20de%20platforma%20de%20comenzi%20online." class="whatsapp-btn" target="_blank">
-        <svg width="24" height="24" fill="currentColor" viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
-        <span>Cumpără Platforma</span>
-    </a>
+        
+        <footer class="footer">
+            <div class="footer-info">
+                <span>Demo Project</span> — Rotiserie & Pizza Moinești
+            </div>
+            <a href="https://wa.me/40722309309?text=Salut!%20Sunt%20interesat%20de%20platforma%20de%20comenzi%20online." class="cta-button" target="_blank">
+                <svg viewBox="0 0 24 24" fill="currentColor">
+                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/>
+                </svg>
+                Cumpără Platforma
+            </a>
+        </footer>
+    </div>
+    
+    <script>
+        // Mouse tracking for glow effect
+        document.querySelectorAll('.module-card').forEach(card => {
+            card.addEventListener('mousemove', (e) => {
+                const rect = card.getBoundingClientRect();
+                const x = e.clientX - rect.left;
+                const y = e.clientY - rect.top;
+                card.style.setProperty('--mouse-x', `${x}px`);
+                card.style.setProperty('--mouse-y', `${y}px`);
+            });
+        });
+    </script>
 </body>
 </html>
