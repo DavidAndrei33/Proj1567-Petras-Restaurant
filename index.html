@@ -2,793 +2,542 @@
 <html lang="ro">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Proj #1566 | Platformă Comenzi</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&family=Playfair+Display:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --bg: #0a0a0f;
-            --surface: #12121a;
-            --surface-hover: #1a1a25;
+            --dark: #0f0f12;
+            --darker: #08080a;
+            --accent-red: #e63946;
+            --accent-blue: #4361ee;
+            --accent-green: #2a9d8f;
             --text: #ffffff;
-            --text-muted: #6b6b7b;
-            --accent: #ff3366;
-            --accent-glow: rgba(255, 51, 102, 0.3);
-            --gradient-1: linear-gradient(135deg, #ff3366 0%, #ff6b6b 50%, #ffa500 100%);
-            --gradient-2: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
-            --gradient-3: linear-gradient(135deg, #11998e 0%, #38ef7d 100%);
+            --text-muted: rgba(255,255,255,0.5);
         }
         
-        html {
-            font-size: 16px;
-        }
-        
-        @media (max-width: 768px) {
-            html {
-                font-size: 14px;
-            }
+        html, body {
+            height: 100%;
+            overflow: hidden;
         }
         
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--bg);
-            min-height: 100vh;
+            background: var(--darker);
             color: var(--text);
-            overflow-x: hidden;
-            -webkit-font-smoothing: antialiased;
         }
         
-        /* Animated Background */
-        .bg-animation {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            pointer-events: none;
-            z-index: 0;
+        /* Mural Container - Full Screen */
+        .mural {
+            display: flex;
+            width: 100vw;
+            height: 100vh;
+        }
+        
+        @media (max-width: 768px) {
+            .mural {
+                flex-direction: column;
+            }
+        }
+        
+        /* Each Panel */
+        .panel {
+            flex: 1;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            padding: 60px 40px;
+            text-decoration: none;
+            color: var(--text);
             overflow: hidden;
+            transition: flex 0.6s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
-        .orb {
+        .panel:hover {
+            flex: 1.3;
+        }
+        
+        @media (max-width: 768px) {
+            .panel {
+                padding: 30px 20px;
+                min-height: 33.33vh;
+            }
+            
+            .panel:hover {
+                flex: 1;
+            }
+        }
+        
+        /* Panel Backgrounds with Art */
+        .panel::before {
+            content: '';
             position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.4;
-            animation: float 20s infinite ease-in-out;
+            inset: 0;
+            opacity: 0.6;
+            transition: opacity 0.4s;
         }
         
-        @media (max-width: 768px) {
-            .orb {
-                filter: blur(40px);
-            }
+        .panel:hover::before {
+            opacity: 0.8;
         }
         
-        .orb-1 {
-            width: 600px;
-            height: 600px;
-            background: var(--accent);
-            top: -200px;
-            right: -200px;
-            animation-delay: 0s;
+        /* Panel 1 - Customer - Warm/Red tones */
+        .panel.customer {
+            background: linear-gradient(135deg, #1a0f0f 0%, #2d1f1f 50%, #1f1515 100%);
         }
         
-        @media (max-width: 768px) {
-            .orb-1 {
-                width: 300px;
-                height: 300px;
-                top: -100px;
-                right: -100px;
-            }
+        .panel.customer::before {
+            background: 
+                radial-gradient(ellipse 80% 50% at 20% 80%, rgba(230, 57, 70, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 20%, rgba(255, 107, 53, 0.3) 0%, transparent 40%);
         }
         
-        .orb-2 {
-            width: 500px;
-            height: 500px;
-            background: #667eea;
-            bottom: -150px;
-            left: -150px;
-            animation-delay: -7s;
+        /* Panel 2 - Store - Cool/Blue tones */
+        .panel.store {
+            background: linear-gradient(135deg, #0f121a 0%, #1f253d 50%, #151821 100%);
         }
         
-        @media (max-width: 768px) {
-            .orb-2 {
-                width: 250px;
-                height: 250px;
-                bottom: -75px;
-                left: -75px;
-            }
+        .panel.store::before {
+            background: 
+                radial-gradient(ellipse 70% 60% at 50% 100%, rgba(67, 97, 238, 0.35) 0%, transparent 50%),
+                radial-gradient(ellipse 50% 30% at 30% 30%, rgba(72, 149, 239, 0.25) 0%, transparent 40%);
         }
         
-        .orb-3 {
-            width: 400px;
-            height: 400px;
-            background: #11998e;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation-delay: -14s;
+        /* Panel 3 - Admin - Green/Teal tones */
+        .panel.admin {
+            background: linear-gradient(135deg, #0f1a18 0%, #1f3d35 50%, #15211e 100%);
         }
         
-        @media (max-width: 768px) {
-            .orb-3 {
-                width: 200px;
-                height: 200px;
-            }
+        .panel.admin::before {
+            background: 
+                radial-gradient(ellipse 75% 55% at 70% 75%, rgba(42, 157, 143, 0.4) 0%, transparent 50%),
+                radial-gradient(ellipse 45% 35% at 25% 25%, rgba(46, 204, 113, 0.25) 0%, transparent 40%);
         }
         
-        @keyframes float {
-            0%, 100% { transform: translate(0, 0) scale(1); }
-            33% { transform: translate(30px, -30px) scale(1.1); }
-            66% { transform: translate(-20px, 20px) scale(0.9); }
-        }
-        
-        /* Grid Pattern Overlay */
-        .grid-pattern {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
+        /* Geometric Shapes */
+        .panel::after {
+            content: '';
+            position: absolute;
+            inset: 0;
             background-image: 
                 linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
                 linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
-            background-size: 60px 60px;
-            pointer-events: none;
-            z-index: 1;
+            background-size: 100px 100px;
+            opacity: 0.5;
         }
         
         @media (max-width: 768px) {
-            .grid-pattern {
-                background-size: 30px 30px;
+            .panel::after {
+                background-size: 50px 50px;
             }
         }
         
-        /* Container */
-        .container {
+        /* Content Container */
+        .panel-content {
             position: relative;
             z-index: 2;
-            max-width: 1400px;
-            margin: 0 auto;
-            padding: 40px 24px;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        @media (max-width: 768px) {
-            .container {
-                padding: 20px 16px;
-            }
-        }
-        
-        /* Header */
-        .header {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            margin-bottom: 40px;
-        }
-        
-        @media (max-width: 768px) {
-            .header {
-                margin-bottom: 24px;
-            }
-        }
-        
-        .logo {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 0.2em;
-            color: var(--text-muted);
-            text-transform: uppercase;
-        }
-        
-        @media (max-width: 768px) {
-            .logo {
-                font-size: 10px;
-            }
-        }
-        
-        .logo span {
-            color: var(--accent);
-        }
-        
-        .status {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            font-size: 11px;
-            color: var(--text-muted);
-            letter-spacing: 0.1em;
-            text-transform: uppercase;
-        }
-        
-        @media (max-width: 768px) {
-            .status {
-                font-size: 9px;
-            }
-        }
-        
-        .status-dot {
-            width: 6px;
-            height: 6px;
-            background: #00ff88;
-            border-radius: 50%;
-            animation: pulse 2s infinite;
-        }
-        
-        @keyframes pulse {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        /* Hero Section */
-        .hero {
             text-align: center;
-            margin-bottom: 40px;
+            max-width: 320px;
         }
         
-        @media (max-width: 768px) {
-            .hero {
-                margin-bottom: 24px;
-            }
-        }
-        
-        .hero-badge {
-            display: inline-block;
-            padding: 6px 14px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid rgba(255, 255, 255, 0.1);
-            border-radius: 100px;
-            font-size: 10px;
-            letter-spacing: 0.15em;
-            text-transform: uppercase;
+        /* Number Badge */
+        .panel-number {
+            font-family: 'Playfair Display', serif;
+            font-size: 14px;
+            font-weight: 400;
             color: var(--text-muted);
-            margin-bottom: 20px;
+            letter-spacing: 0.3em;
+            margin-bottom: 30px;
+            opacity: 0.7;
         }
         
         @media (max-width: 768px) {
-            .hero-badge {
-                font-size: 9px;
-                padding: 5px 12px;
+            .panel-number {
+                font-size: 12px;
                 margin-bottom: 16px;
             }
         }
         
-        .hero-title {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2rem, 6vw, 4rem);
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 12px;
-            background: linear-gradient(135deg, #fff 0%, #888 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        @media (max-width: 768px) {
-            .hero-title {
-                font-size: clamp(1.5rem, 8vw, 2.5rem);
-            }
-        }
-        
-        .hero-subtitle {
-            font-size: 14px;
-            color: var(--text-muted);
-            max-width: 400px;
-            margin: 0 auto;
-            font-weight: 300;
-            line-height: 1.5;
-        }
-        
-        @media (max-width: 768px) {
-            .hero-subtitle {
-                font-size: 12px;
-                max-width: 280px;
-            }
-        }
-        
-        /* Test Credentials - Discreet */
-        .test-credentials {
+        /* Icon Circle */
+        .panel-icon {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
             display: flex;
+            align-items: center;
             justify-content: center;
-            gap: 16px;
-            margin-bottom: 32px;
-            flex-wrap: wrap;
+            font-size: 40px;
+            margin: 0 auto 30px;
+            position: relative;
+            border: 1px solid rgba(255,255,255,0.1);
+            background: rgba(255,255,255,0.03);
+            backdrop-filter: blur(10px);
+            transition: transform 0.4s, border-color 0.4s;
         }
         
         @media (max-width: 768px) {
-            .test-credentials {
-                gap: 8px;
-                margin-bottom: 20px;
+            .panel-icon {
+                width: 70px;
+                height: 70px;
+                font-size: 28px;
+                margin-bottom: 16px;
             }
         }
         
-        .credential-tag {
+        .panel:hover .panel-icon {
+            transform: scale(1.1);
+        }
+        
+        .panel.customer .panel-icon {
+            border-color: rgba(230, 57, 70, 0.3);
+            box-shadow: 0 0 60px rgba(230, 57, 70, 0.2);
+        }
+        
+        .panel.store .panel-icon {
+            border-color: rgba(67, 97, 238, 0.3);
+            box-shadow: 0 0 60px rgba(67, 97, 238, 0.2);
+        }
+        
+        .panel.admin .panel-icon {
+            border-color: rgba(42, 157, 143, 0.3);
+            box-shadow: 0 0 60px rgba(42, 157, 143, 0.2);
+        }
+        
+        /* Title */
+        .panel-title {
+            font-family: 'Playfair Display', serif;
+            font-size: 36px;
+            font-weight: 600;
+            margin-bottom: 12px;
+            letter-spacing: 0.02em;
+        }
+        
+        @media (max-width: 768px) {
+            .panel-title {
+                font-size: 24px;
+            }
+        }
+        
+        /* Subtitle */
+        .panel-subtitle {
+            font-size: 13px;
+            color: var(--text-muted);
+            line-height: 1.6;
+            margin-bottom: 30px;
+        }
+        
+        @media (max-width: 768px) {
+            .panel-subtitle {
+                font-size: 11px;
+                margin-bottom: 16px;
+            }
+        }
+        
+        /* Arrow */
+        .panel-arrow {
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: 1px solid rgba(255,255,255,0.2);
             display: flex;
+            align-items: center;
+            justify-content: center;
+            margin: 0 auto;
+            transition: all 0.3s;
+            background: rgba(255,255,255,0.02);
+        }
+        
+        @media (max-width: 768px) {
+            .panel-arrow {
+                width: 40px;
+                height: 40px;
+            }
+        }
+        
+        .panel:hover .panel-arrow {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.4);
+            transform: translateX(5px);
+        }
+        
+        .panel-arrow svg {
+            width: 18px;
+            height: 18px;
+            stroke: rgba(255,255,255,0.6);
+            transition: stroke 0.3s;
+        }
+        
+        .panel:hover .panel-arrow svg {
+            stroke: rgba(255,255,255,1);
+        }
+        
+        /* Header Overlay */
+        .header-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            padding: 30px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 100;
+            pointer-events: none;
+        }
+        
+        @media (max-width: 768px) {
+            .header-overlay {
+                padding: 20px;
+            }
+        }
+        
+        .header-overlay > * {
+            pointer-events: auto;
+        }
+        
+        .brand {
+            font-size: 12px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        
+        .brand span {
+            color: var(--text);
+        }
+        
+        @media (max-width: 768px) {
+            .brand {
+                font-size: 10px;
+            }
+        }
+        
+        /* Test Credentials - Bottom Left */
+        .credentials {
+            position: fixed;
+            bottom: 30px;
+            left: 40px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            z-index: 100;
+        }
+        
+        @media (max-width: 768px) {
+            .credentials {
+                bottom: 20px;
+                left: 20px;
+                right: 20px;
+                flex-direction: row;
+                flex-wrap: wrap;
+                gap: 6px;
+            }
+        }
+        
+        .credential-pill {
+            display: inline-flex;
             align-items: center;
             gap: 8px;
             padding: 8px 14px;
-            background: rgba(255, 255, 255, 0.03);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 8px;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.08);
+            border-radius: 100px;
             font-size: 11px;
             color: var(--text-muted);
+            backdrop-filter: blur(10px);
             cursor: pointer;
             transition: all 0.2s;
             user-select: all;
         }
         
         @media (max-width: 768px) {
-            .credential-tag {
-                font-size: 10px;
+            .credential-pill {
+                font-size: 9px;
                 padding: 6px 10px;
             }
         }
         
-        .credential-tag:hover {
-            background: rgba(255, 255, 255, 0.06);
-            border-color: rgba(255, 255, 255, 0.1);
+        .credential-pill:hover {
+            background: rgba(255,255,255,0.1);
+            border-color: rgba(255,255,255,0.15);
+            color: var(--text);
         }
         
-        .credential-tag .label {
+        .credential-pill .label {
             font-weight: 500;
-            color: var(--text);
-        }
-        
-        .credential-tag .value {
-            font-family: 'Space Grotesk', monospace;
-            letter-spacing: 0.02em;
-        }
-        
-        /* Modules Grid */
-        .modules-section {
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-        }
-        
-        .modules-label {
-            font-size: 10px;
-            letter-spacing: 0.3em;
             text-transform: uppercase;
-            color: var(--text-muted);
-            margin-bottom: 24px;
-            text-align: center;
+            letter-spacing: 0.05em;
+        }
+        
+        .credential-pill .divider {
+            width: 1px;
+            height: 10px;
+            background: rgba(255,255,255,0.2);
+        }
+        
+        /* CTA Button - Bottom Right */
+        .cta-corner {
+            position: fixed;
+            bottom: 30px;
+            right: 40px;
+            z-index: 100;
         }
         
         @media (max-width: 768px) {
-            .modules-label {
-                font-size: 9px;
-                margin-bottom: 16px;
+            .cta-corner {
+                display: none;
             }
         }
         
-        .modules-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 20px;
-            max-width: 1000px;
-            margin: 0 auto;
-            width: 100%;
-        }
-        
-        @media (max-width: 900px) {
-            .modules-grid {
-                grid-template-columns: 1fr;
-                max-width: 400px;
-                gap: 12px;
-            }
-        }
-        
-        .module-card {
-            position: relative;
-            background: var(--surface);
-            border: 1px solid rgba(255, 255, 255, 0.06);
-            border-radius: 20px;
-            padding: 28px;
-            text-decoration: none;
-            color: var(--text);
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
-        }
-        
-        @media (max-width: 768px) {
-            .module-card {
-                padding: 20px;
-                border-radius: 16px;
-            }
-        }
-        
-        .module-card::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: radial-gradient(400px circle at var(--mouse-x, 50%) var(--mouse-y, 50%), rgba(255,255,255,0.06), transparent 40%);
-            opacity: 0;
-            transition: opacity 0.3s;
-        }
-        
-        .module-card:hover::before {
-            opacity: 1;
-        }
-        
-        .module-card:hover {
-            transform: translateY(-4px);
-            border-color: rgba(255, 255, 255, 0.12);
-            background: var(--surface-hover);
-        }
-        
-        @media (max-width: 768px) {
-            .module-card:hover {
-                transform: translateY(-2px);
-            }
-        }
-        
-        .module-glow {
-            position: absolute;
-            top: 0;
-            left: 50%;
-            transform: translateX(-50%);
-            width: 150px;
-            height: 150px;
-            border-radius: 50%;
-            filter: blur(50px);
-            opacity: 0;
-            transition: opacity 0.4s;
-        }
-        
-        @media (max-width: 768px) {
-            .module-glow {
-                width: 100px;
-                height: 100px;
-                filter: blur(30px);
-            }
-        }
-        
-        .module-card:hover .module-glow {
-            opacity: 0.5;
-        }
-        
-        .module-card.customer .module-glow {
-            background: var(--gradient-1);
-        }
-        
-        .module-card.store .module-glow {
-            background: var(--gradient-2);
-        }
-        
-        .module-card.admin .module-glow {
-            background: var(--gradient-3);
-        }
-        
-        .module-header {
-            display: flex;
-            align-items: center;
-            gap: 12px;
-            margin-bottom: 16px;
-        }
-        
-        @media (max-width: 768px) {
-            .module-header {
-                margin-bottom: 12px;
-            }
-        }
-        
-        .module-number {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 10px;
-            font-weight: 600;
-            color: var(--text-muted);
-            letter-spacing: 0.1em;
-        }
-        
-        .module-icon {
-            width: 44px;
-            height: 44px;
-            border-radius: 12px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 20px;
-        }
-        
-        @media (max-width: 768px) {
-            .module-icon {
-                width: 40px;
-                height: 40px;
-                font-size: 18px;
-            }
-        }
-        
-        .module-card.customer .module-icon {
-            background: rgba(255, 51, 102, 0.1);
-        }
-        
-        .module-card.store .module-icon {
-            background: rgba(102, 126, 234, 0.1);
-        }
-        
-        .module-card.admin .module-icon {
-            background: rgba(17, 153, 142, 0.1);
-        }
-        
-        .module-name {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 18px;
-            font-weight: 600;
-            margin-bottom: 6px;
-        }
-        
-        @media (max-width: 768px) {
-            .module-name {
-                font-size: 16px;
-            }
-        }
-        
-        .module-desc {
-            font-size: 12px;
-            color: var(--text-muted);
-            line-height: 1.5;
-            margin-bottom: 16px;
-        }
-        
-        @media (max-width: 768px) {
-            .module-desc {
-                font-size: 11px;
-                margin-bottom: 12px;
-            }
-        }
-        
-        .module-arrow {
-            position: absolute;
-            bottom: 24px;
-            right: 24px;
-            width: 32px;
-            height: 32px;
-            border-radius: 50%;
-            background: rgba(255, 255, 255, 0.05);
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            transition: all 0.3s;
-        }
-        
-        @media (max-width: 768px) {
-            .module-arrow {
-                width: 28px;
-                height: 28px;
-                bottom: 16px;
-                right: 16px;
-            }
-        }
-        
-        .module-card:hover .module-arrow {
-            background: rgba(255, 255, 255, 0.1);
-            transform: translateX(2px);
-        }
-        
-        .module-arrow svg {
-            width: 14px;
-            height: 14px;
-            stroke: var(--text-muted);
-            transition: stroke 0.3s;
-        }
-        
-        @media (max-width: 768px) {
-            .module-arrow svg {
-                width: 12px;
-                height: 12px;
-            }
-        }
-        
-        .module-card:hover .module-arrow svg {
-            stroke: var(--text);
-        }
-        
-        /* Footer */
-        .footer {
-            margin-top: 40px;
-            padding-top: 24px;
-            border-top: 1px solid rgba(255, 255, 255, 0.06);
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            flex-wrap: wrap;
-            gap: 16px;
-        }
-        
-        @media (max-width: 768px) {
-            .footer {
-                margin-top: 24px;
-                padding-top: 16px;
-                flex-direction: column;
-                text-align: center;
-                gap: 12px;
-            }
-        }
-        
-        .footer-info {
-            font-size: 11px;
-            color: var(--text-muted);
-        }
-        
-        @media (max-width: 768px) {
-            .footer-info {
-                font-size: 10px;
-            }
-        }
-        
-        .footer-info span {
-            color: var(--text);
-        }
-        
-        .cta-button {
+        .cta-btn {
             display: inline-flex;
             align-items: center;
-            gap: 8px;
-            padding: 10px 20px;
-            background: var(--gradient-1);
+            gap: 10px;
+            padding: 12px 24px;
+            background: rgba(255,255,255,0.08);
+            border: 1px solid rgba(255,255,255,0.15);
             border-radius: 100px;
-            color: white;
+            color: var(--text);
             text-decoration: none;
-            font-size: 11px;
+            font-size: 12px;
             font-weight: 500;
             letter-spacing: 0.05em;
+            backdrop-filter: blur(10px);
             transition: all 0.3s;
-            box-shadow: 0 4px 15px var(--accent-glow);
+        }
+        
+        .cta-btn:hover {
+            background: rgba(255,255,255,0.15);
+            border-color: rgba(255,255,255,0.3);
+            transform: translateY(-2px);
+        }
+        
+        .cta-btn svg {
+            width: 16px;
+            height: 16px;
+        }
+        
+        /* Vertical Divider Lines */
+        .divider-line {
+            position: absolute;
+            top: 10%;
+            bottom: 10%;
+            width: 1px;
+            background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.1) 20%, rgba(255,255,255,0.1) 80%, transparent);
+            z-index: 1;
         }
         
         @media (max-width: 768px) {
-            .cta-button {
-                padding: 8px 16px;
-                font-size: 10px;
+            .divider-line {
+                display: none;
             }
         }
         
-        .cta-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 25px var(--accent-glow);
+        .panel:nth-child(1) .divider-line {
+            right: 0;
         }
         
-        .cta-button svg {
-            width: 14px;
-            height: 14px;
+        .panel:nth-child(2) .divider-line {
+            right: 0;
         }
     </style>
 </head>
 <body>
-    <div class="bg-animation">
-        <div class="orb orb-1"></div>
-        <div class="orb orb-2"></div>
-        <div class="orb orb-3"></div>
+    <!-- Header Overlay -->
+    <div class="header-overlay">
+        <div class="brand">Proj <span>#1566</span></div>
     </div>
-    <div class="grid-pattern"></div>
     
-    <div class="container">
-        <header class="header">
-            <div class="logo">Proj <span>#1566</span></div>
-            <div class="status">
-                <div class="status-dot"></div>
-                <span>Sistem Live</span>
+    <!-- Mural Layout -->
+    <div class="mural">
+        <!-- Customer Panel -->
+        <a href="/customer/" class="panel customer" target="_blank" rel="noopener noreferrer">
+            <div class="divider-line"></div>
+            <div class="panel-content">
+                <div class="panel-number">01</div>
+                <div class="panel-icon">🍕</div>
+                <h2 class="panel-title">Customer</h2>
+                <p class="panel-subtitle">Meniu digital, coș de cumpărături și plată online pentru clienți.</p>
+                <div class="panel-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </div>
             </div>
-        </header>
+        </a>
         
-        <section class="hero">
-            <div class="hero-badge">Platformă Comenzi Online</div>
-            <h1 class="hero-title">Rotiserie & Pizza<br>Moinești</h1>
-            <p class="hero-subtitle">Soluție completă de management pentru restaurante și afaceri culinare</p>
-        </section>
+        <!-- Store Panel -->
+        <a href="/store/" class="panel store" target="_blank" rel="noopener noreferrer">
+            <div class="divider-line"></div>
+            <div class="panel-content">
+                <div class="panel-number">02</div>
+                <div class="panel-icon">👨‍🍳</div>
+                <h2 class="panel-title">Store</h2>
+                <p class="panel-subtitle">Dashboard KDS pentru bucătărie. Gestionare comenzi în timp real.</p>
+                <div class="panel-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </div>
+            </div>
+        </a>
         
-        <!-- Test Credentials - Discreet -->
-        <div class="test-credentials">
-            <div class="credential-tag" onclick="copyToClipboard('admin@rotiserie.ro')">
-                <span class="label">Admin:</span>
-                <span class="value">admin@rotiserie.ro / admin123</span>
+        <!-- Admin Panel -->
+        <a href="/admin/" class="panel admin" target="_blank" rel="noopener noreferrer">
+            <div class="panel-content">
+                <div class="panel-number">03</div>
+                <div class="panel-icon">📊</div>
+                <h2 class="panel-title">Admin</h2>
+                <p class="panel-subtitle">Control total: rapoarte, produse, utilizatori și setări.</p>
+                <div class="panel-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
+                    </svg>
+                </div>
             </div>
-            <div class="credential-tag" onclick="copyToClipboard('1234')">
-                <span class="label">Store PIN:</span>
-                <span class="value">1234</span>
-            </div>
+        </a>
+    </div>
+    
+    <!-- Test Credentials -->
+    <div class="credentials">
+        <div class="credential-pill" onclick="copyToClipboard('admin@rotiserie.ro')">
+            <span class="label">Admin</span>
+            <span class="divider"></span>
+            <span>admin@rotiserie.ro / admin123</span>
         </div>
-        
-        <section class="modules-section">
-            <div class="modules-label">Selectează Modulul</div>
-            <div class="modules-grid">
-                <a href="/customer/" class="module-card customer" target="_blank" rel="noopener noreferrer">
-                    <div class="module-glow"></div>
-                    <div class="module-header">
-                        <div class="module-icon">🍕</div>
-                        <div class="module-number">01</div>
-                    </div>
-                    <h3 class="module-name">Customer</h3>
-                    <p class="module-desc">Experiență completă pentru clienți: meniu digital, coș de cumpărături și plată online.</p>
-                    <div class="module-arrow">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </div>
-                </a>
-                
-                <a href="/store/" class="module-card store" target="_blank" rel="noopener noreferrer">
-                    <div class="module-glow"></div>
-                    <div class="module-header">
-                        <div class="module-icon">👨‍🍳</div>
-                        <div class="module-number">02</div>
-                    </div>
-                    <h3 class="module-name">Store</h3>
-                    <p class="module-desc">Dashboard KDS pentru bucătărie. Gestionare comenzi în timp real.</p>
-                    <div class="module-arrow">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </div>
-                </a>
-                
-                <a href="/admin/" class="module-card admin" target="_blank" rel="noopener noreferrer">
-                    <div class="module-glow"></div>
-                    <div class="module-header">
-                        <div class="module-icon">📊</div>
-                        <div class="module-number">03</div>
-                    </div>
-                    <h3 class="module-name">Admin</h3>
-                    <p class="module-desc">Control total: rapoarte, gestiune produse, utilizatori și setări.</p>
-                    <div class="module-arrow">
-                        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                            <path d="M5 12h14M12 5l7 7-7 7"/>
-                        </svg>
-                    </div>
-                </a>
-            </div>
-        </section>
-        
-        <footer class="footer">
-            <div class="footer-info">
-                <span>Demo Project</span> — Rotiserie & Pizza Moinești
-            </div>
-            <a href="https://wa.me/40722309309?text=Salut!%20Sunt%20interesat%20de%20platforma%20de%20comenzi%20online." class="cta-button" target="_blank">
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/>
-                </svg>
-                Cumpără Platforma
-            </a>
-        </footer>
+        <div class="credential-pill" onclick="copyToClipboard('1234')">
+            <span class="label">Store PIN</span>
+            <span class="divider"></span>
+            <span>1234</span>
+        </div>
+    </div>
+    
+    <!-- CTA Button -->
+    <div class="cta-corner">
+        <a href="https://wa.me/40722309309?text=Salut!%20Sunt%20interesat%20de%20platforma%20de%20comenzi%20online." class="cta-btn" target="_blank">
+            <svg viewBox="0 0 24 24" fill="currentColor">
+                <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884"/>
+            </svg>
+            Cumpără Platforma
+        </a>
     </div>
     
     <script>
-        // Mouse tracking for glow effect
-        document.querySelectorAll('.module-card').forEach(card => {
-            card.addEventListener('mousemove', (e) => {
-                const rect = card.getBoundingClientRect();
-                const x = e.clientX - rect.left;
-                const y = e.clientY - rect.top;
-                card.style.setProperty('--mouse-x', `${x}px`);
-                card.style.setProperty('--mouse-y', `${y}px`);
-            });
-        });
-        
-        // Copy to clipboard
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
-                // Visual feedback
-                const tags = document.querySelectorAll('.credential-tag');
-                tags.forEach(tag => {
-                    if (tag.textContent.includes(text) || (text === '1234' && tag.textContent.includes('Store'))) {
-                        tag.style.background = 'rgba(0, 255, 136, 0.1)';
-                        tag.style.borderColor = 'rgba(0, 255, 136, 0.3)';
+                const pills = document.querySelectorAll('.credential-pill');
+                pills.forEach(pill => {
+                    if (pill.textContent.includes(text) || (text === '1234' && pill.textContent.includes('Store'))) {
+                        pill.style.background = 'rgba(0, 255, 136, 0.15)';
+                        pill.style.borderColor = 'rgba(0, 255, 136, 0.4)';
                         setTimeout(() => {
-                            tag.style.background = '';
-                            tag.style.borderColor = '';
-                        }, 500);
+                            pill.style.background = '';
+                            pill.style.borderColor = '';
+                        }, 600);
                     }
                 });
             });
