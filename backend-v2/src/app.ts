@@ -22,6 +22,7 @@ import { sseRoutes } from "./routes/sse.routes.js";
 import { settingsRoutes } from "./routes/settings.routes.js";
 import { paymentRoutes } from "./routes/payment.routes.js";
 import { reportRoutes } from "./routes/report.routes.js";
+import { uploadRoutes } from "./routes/upload.routes.js";
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
@@ -184,6 +185,7 @@ export async function buildApp() {
   await app.register(settingsRoutes, { prefix: "/api/settings" });
   await app.register(paymentRoutes, { prefix: "/api/payments" });
   await app.register(reportRoutes, { prefix: "/api/reports" });
+  await app.register(uploadRoutes, { prefix: "/api/upload" });
 
   return app;
 }
