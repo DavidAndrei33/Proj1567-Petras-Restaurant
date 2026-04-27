@@ -2,49 +2,161 @@
 @tailwind components;
 @tailwind utilities;
 
+/* Cinematic Dark Theme with Honey Accents */
+:root {
+  --void: #020204;
+  --depth: #0a0a0e;
+  --surface: #12121a;
+  --elevated: #1a1a22;
+  --honey: #f59e0b;
+  --honey-bright: #fbbf24;
+  --honey-glow: rgba(245, 158, 11, 0.4);
+  --amber: #f97316;
+  --amber-glow: rgba(249, 115, 22, 0.3);
+  --text-primary: #ffffff;
+  --text-secondary: rgba(255, 255, 255, 0.75);
+  --text-muted: rgba(255, 255, 255, 0.45);
+}
+
 @layer base {
   html {
     scroll-behavior: smooth;
   }
+  
   body {
     font-family: 'Inter', sans-serif;
-    background-color: #FFF8F0;
-    color: #1D1D1D;
+    background-color: #020204 !important;
+    color: #ffffff;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
+    overflow-x: hidden;
+  }
+  
+  /* Cinematic Background */
+  body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: 
+      radial-gradient(ellipse 80% 50% at 20% 40%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
+      radial-gradient(ellipse 70% 40% at 80% 60%, rgba(249, 115, 22, 0.05) 0%, transparent 45%),
+      radial-gradient(ellipse 60% 50% at 50% 100%, rgba(234, 179, 8, 0.04) 0%, transparent 50%);
+    z-index: -2;
+    pointer-events: none;
+    animation: slow-pan 60s ease-in-out infinite alternate;
+  }
+  
+  /* Vignette */
+  body::after {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(ellipse at center, transparent 0%, transparent 50%, var(--void) 100%);
+    z-index: -1;
+    pointer-events: none;
   }
 }
 
+@keyframes slow-pan {
+  0% { transform: translate(-2%, -2%) scale(1.1); }
+  100% { transform: translate(2%, 2%) scale(1.15); }
+}
+
 @layer utilities {
-  .glass {
-    background: rgba(255, 255, 255, 0.7);
+  /* Cinematic Glass */
+  .glass-cinematic {
+    background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
-  .glass-dark {
-    background: rgba(29, 29, 29, 0.8);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+  
+  .glass-cinematic-hover:hover {
+    background: rgba(245, 158, 11, 0.05);
+    border-color: rgba(245, 158, 11, 0.3);
+    box-shadow: 0 0 40px rgba(245, 158, 11, 0.15);
   }
-  .gradient-primary {
-    background: linear-gradient(135deg, #E63946 0%, #F4A261 100%);
+  
+  /* Honey Gradients */
+  .gradient-honey {
+    background: linear-gradient(135deg, var(--honey) 0%, var(--amber) 100%);
   }
-  .gradient-secondary {
-    background: linear-gradient(135deg, #2A9D8F 0%, #264653 100%);
-  }
-  .text-gradient {
-    background: linear-gradient(135deg, #E63946 0%, #F4A261 100%);
+  
+  .gradient-honey-text {
+    background: linear-gradient(135deg, var(--honey-bright) 0%, var(--amber) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
-  .card-shadow {
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+  
+  /* Honey Glow */
+  .glow-honey {
+    box-shadow: 0 0 30px var(--honey-glow);
   }
-  .card-shadow-hover {
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+  
+  .glow-honey-hover:hover {
+    box-shadow: 0 0 50px var(--honey-glow), 0 0 80px var(--amber-glow);
   }
+  
+  /* Cinematic Card */
+  .card-cinematic {
+    background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .card-cinematic:hover {
+    background: linear-gradient(180deg, rgba(245, 158, 11, 0.05) 0%, rgba(255,255,255,0.02) 100%);
+    border-color: rgba(245, 158, 11, 0.25);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(245, 158, 11, 0.1);
+  }
+  
+  /* Honey Button */
+  .btn-honey {
+    background: transparent;
+    border: 2px solid var(--honey);
+    color: var(--honey-bright);
+    transition: all 0.4s ease;
+    position: relative;
+    overflow: hidden;
+  }
+  
+  .btn-honey::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: -100%;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(135deg, var(--honey) 0%, var(--amber) 100%);
+    transition: left 0.4s ease;
+    z-index: -1;
+  }
+  
+  .btn-honey:hover {
+    color: var(--void);
+    border-color: var(--honey-bright);
+    box-shadow: 0 0 40px var(--honey-glow);
+  }
+  
+  .btn-honey:hover::before {
+    left: 0;
+  }
+  
+  /* Cinematic Text */
+  .text-cinematic {
+    font-family: 'Cinzel', serif;
+    letter-spacing: 0.05em;
+  }
+  
+  /* Hide scrollbar */
   .hide-scrollbar::-webkit-scrollbar {
     display: none;
   }
@@ -54,21 +166,7 @@
   }
 }
 
-/* Smooth scrolling for category filter */
-.category-scroll {
-  scroll-snap-type: x mandatory;
-}
-.category-scroll > * {
-  scroll-snap-align: start;
-}
-
-/* Product card entrance animation - replaces Framer Motion for lists */
-.product-card-entrance {
-  animation: fadeInUp 0.4s ease-out forwards;
-  animation-delay: var(--delay, 0s);
-  opacity: 0;
-}
-
+/* Animations */
 @keyframes fadeInUp {
   from {
     opacity: 0;
@@ -80,61 +178,56 @@
   }
 }
 
-/* Hero section stagger animations - replaces multiple motion.div */
-.hero-stagger-item {
-  animation: heroFadeInUp 0.6s ease-out forwards;
-  animation-delay: var(--hero-delay, 0s);
+@keyframes fadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 15px var(--honey-glow); }
+  50% { box-shadow: 0 0 35px var(--honey-glow), 0 0 60px var(--amber-glow); }
+}
+
+/* Product Card Cinematic */
+.product-card-cinematic {
+  animation: fadeInUp 0.5s ease-out forwards;
+  animation-delay: var(--delay, 0s);
   opacity: 0;
 }
 
-.hero-stagger-item:nth-child(1) { --hero-delay: 0s; }
-.hero-stagger-item:nth-child(2) { --hero-delay: 0.1s; }
-.hero-stagger-item:nth-child(3) { --hero-delay: 0.2s; }
-.hero-stagger-item:nth-child(4) { --hero-delay: 0.3s; }
-.hero-stagger-item:nth-child(5) { --hero-delay: 0.4s; }
+/* Stagger animations */
+.stagger-1 { --delay: 0s; }
+.stagger-2 { --delay: 0.1s; }
+.stagger-3 { --delay: 0.2s; }
+.stagger-4 { --delay: 0.3s; }
+.stagger-5 { --delay: 0.4s; }
+.stagger-6 { --delay: 0.5s; }
 
-@keyframes heroFadeInUp {
-  from {
-    opacity: 0;
-    transform: translateY(30px);
-  }
-  to {
-    opacity: 1;
-    transform: translateY(0);
-  }
+/* Category Filter Cinematic */
+.category-cinematic {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
+  transition: all 0.3s ease;
 }
 
-/* Hero badges - CSS slide animations */
-.hero-badge-right {
-  animation: slideInRight 0.5s ease-out forwards;
-  animation-delay: 0.8s;
-  opacity: 0;
+.category-cinematic:hover,
+.category-cinematic.active {
+  background: rgba(245, 158, 11, 0.1);
+  border-color: rgba(245, 158, 11, 0.4);
+  color: var(--honey-bright);
 }
 
-.hero-badge-left {
-  animation: slideInLeft 0.5s ease-out forwards;
-  animation-delay: 1s;
-  opacity: 0;
+/* Header Glass Cinematic */
+.header-glass {
+  background: rgba(10, 10, 14, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
 }
 
-@keyframes slideInRight {
-  from {
-    opacity: 0;
-    transform: translateX(50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
-}
-
-@keyframes slideInLeft {
-  from {
-    opacity: 0;
-    transform: translateX(-50px);
-  }
-  to {
-    opacity: 1;
-    transform: translateX(0);
-  }
+/* Cart Badge Honey */
+.cart-badge {
+  background: var(--honey);
+  color: var(--void);
+  box-shadow: 0 0 15px var(--honey-glow);
 }
