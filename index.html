@@ -9,40 +9,34 @@
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --pure-black: #000000;
-            --rich-black: #0a0a0b;
-            --void: #121214;
-            --charcoal: #1a1a1d;
-            --graphite: #242428;
-            --text-primary: #ffffff;
-            --text-secondary: rgba(255,255,255,0.7);
-            --text-tertiary: rgba(255,255,255,0.4);
-            --lux-gold: #c9a962;
-            --lux-gold-dim: rgba(201, 169, 98, 0.3);
-            --accent-focus: #d4af37;
+            --void: #080808;
+            --depth: #0d0d0f;
+            --surface: #141416;
+            --elevated: #1c1c1f;
+            --border: rgba(255,255,255,0.06);
+            --text-primary: #fafafa;
+            --text-secondary: rgba(255,255,255,0.65);
+            --text-muted: rgba(255,255,255,0.4);
+            --warm-accent: #e07b39;
+            --warm-glow: rgba(224, 123, 57, 0.25);
+            --copper: #b87333;
+            --amber: #f4a261;
         }
         
-        html { 
-            font-size: 16px;
-            scroll-behavior: smooth;
-        }
-        
-        @media (max-width: 768px) { 
-            html { font-size: 14px; } 
-        }
+        html { font-size: 16px; }
+        @media (max-width: 768px) { html { font-size: 14px; } }
         
         body {
             font-family: 'Inter', sans-serif;
-            background: var(--pure-black);
+            background: var(--void);
             min-height: 100vh;
             color: var(--text-primary);
             -webkit-font-smoothing: antialiased;
-            -moz-osx-font-smoothing: grayscale;
-            overflow-x: hidden;
+            line-height: 1.6;
         }
         
-        /* Ambient Glow Background */
-        .ambient-glow {
+        /* Subtle Warm Glow Background */
+        .ambient-light {
             position: fixed;
             top: 0;
             left: 0;
@@ -53,198 +47,161 @@
             overflow: hidden;
         }
         
-        .glow-orb {
+        .warm-orb {
             position: absolute;
             border-radius: 50%;
-            filter: blur(120px);
-            opacity: 0.08;
+            filter: blur(100px);
         }
         
-        .glow-1 {
-            width: 800px;
-            height: 800px;
-            background: var(--lux-gold);
-            top: -300px;
-            right: -200px;
-            animation: gentle-float 20s ease-in-out infinite;
+        .warm-orb-1 {
+            width: 500px;
+            height: 500px;
+            background: var(--warm-glow);
+            top: -150px;
+            right: -100px;
+            animation: drift 25s ease-in-out infinite;
         }
         
-        .glow-2 {
-            width: 600px;
-            height: 600px;
-            background: var(--lux-gold);
-            bottom: -200px;
-            left: -100px;
-            animation: gentle-float 25s ease-in-out infinite reverse;
-        }
-        
-        .glow-3 {
+        .warm-orb-2 {
             width: 400px;
             height: 400px;
-            background: rgba(255,255,255,0.5);
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            animation: gentle-pulse 15s ease-in-out infinite;
+            background: rgba(244, 162, 97, 0.15);
+            bottom: -100px;
+            left: -50px;
+            animation: drift 20s ease-in-out infinite reverse;
         }
         
-        @keyframes gentle-float {
-            0%, 100% { transform: translate(0, 0); }
-            50% { transform: translate(30px, -30px); }
+        @keyframes drift {
+            0%, 100% { transform: translate(0, 0) scale(1); }
+            50% { transform: translate(20px, -20px) scale(1.05); }
         }
         
-        @keyframes gentle-pulse {
-            0%, 100% { opacity: 0.05; transform: translate(-50%, -50%) scale(1); }
-            50% { opacity: 0.1; transform: translate(-50%, -50%) scale(1.1); }
-        }
-        
-        /* Noise Texture */
-        .texture-overlay {
+        /* Fine Grain Texture */
+        .grain {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            opacity: 0.025;
+            opacity: 0.03;
             z-index: 1;
             pointer-events: none;
-            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.8' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)'/%3E%3C/svg%3E");
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 400 400' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
         }
         
-        /* Main Container */
-        .container {
+        /* Container */
+        .wrapper {
             position: relative;
             z-index: 2;
-            max-width: 1140px;
+            max-width: 1100px;
             margin: 0 auto;
-            padding: 60px 40px;
+            padding: 48px 32px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
         
         @media (max-width: 768px) {
-            .container { padding: 32px 20px; }
+            .wrapper { padding: 32px 20px; }
         }
         
-        /* Header - Premium */
+        /* Elegant Header */
         .header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 80px;
-            padding-bottom: 24px;
-            border-bottom: 1px solid rgba(255,255,255,0.06);
+            padding-bottom: 20px;
+            border-bottom: 1px solid var(--border);
+            margin-bottom: 64px;
         }
         
         @media (max-width: 768px) {
-            .header { 
-                margin-bottom: 48px; 
-                padding-bottom: 16px;
-            }
+            .header { margin-bottom: 48px; padding-bottom: 16px; }
         }
         
         .brand {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 18px;
+            font-size: 20px;
             font-weight: 600;
-            letter-spacing: 0.3em;
+            letter-spacing: 0.2em;
             text-transform: uppercase;
             color: var(--text-primary);
         }
         
         .brand span {
-            color: var(--lux-gold);
+            color: var(--warm-accent);
             font-weight: 700;
         }
         
-        .status-indicator {
+        .status {
             display: flex;
             align-items: center;
             gap: 10px;
             font-size: 11px;
-            letter-spacing: 0.15em;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            color: var(--text-tertiary);
+            color: var(--text-muted);
         }
         
         .status-dot {
             width: 6px;
             height: 6px;
-            background: var(--lux-gold);
+            background: var(--amber);
             border-radius: 50%;
-            box-shadow: 0 0 12px var(--lux-gold-dim);
-            animation: status-pulse 3s ease-in-out infinite;
+            box-shadow: 0 0 12px rgba(244, 162, 97, 0.5);
         }
         
-        @keyframes status-pulse {
-            0%, 100% { opacity: 1; box-shadow: 0 0 12px var(--lux-gold-dim); }
-            50% { opacity: 0.6; box-shadow: 0 0 20px var(--lux-gold-dim); }
-        }
-        
-        /* Hero - Focus */
+        /* Hero Section */
         .hero {
             text-align: center;
             margin-bottom: 48px;
         }
         
-        .hero-kicker {
+        .hero-label {
             font-size: 11px;
             letter-spacing: 0.4em;
             text-transform: uppercase;
-            color: var(--lux-gold);
-            margin-bottom: 24px;
+            color: var(--warm-accent);
+            margin-bottom: 20px;
             font-weight: 500;
         }
         
         @media (max-width: 768px) {
-            .hero-kicker { 
-                font-size: 10px; 
-                margin-bottom: 16px;
-                letter-spacing: 0.3em;
-            }
+            .hero-label { font-size: 10px; margin-bottom: 16px; }
         }
         
         .hero-title {
             font-family: 'Cormorant Garamond', serif;
-            font-size: clamp(2.8rem, 5vw, 4.5rem);
+            font-size: clamp(3rem, 6vw, 5rem);
             font-weight: 600;
-            line-height: 1.1;
+            line-height: 1;
             margin-bottom: 16px;
             letter-spacing: -0.02em;
         }
         
         @media (max-width: 768px) {
-            .hero-title { 
-                font-size: clamp(2rem, 7vw, 2.8rem);
-                line-height: 1.15;
-            }
+            .hero-title { font-size: clamp(2.2rem, 8vw, 3rem); }
         }
         
-        .hero-title .highlight {
-            color: var(--lux-gold);
+        .hero-title .accent {
+            color: var(--amber);
             font-weight: 700;
         }
         
         .hero-subtitle {
             font-size: 15px;
             color: var(--text-secondary);
-            max-width: 420px;
+            max-width: 400px;
             margin: 0 auto;
             font-weight: 300;
-            line-height: 1.7;
-            letter-spacing: 0.02em;
         }
         
         @media (max-width: 768px) {
-            .hero-subtitle { 
-                font-size: 13px; 
-                max-width: 300px;
-            }
+            .hero-subtitle { font-size: 13px; max-width: 300px; }
         }
         
-        /* Credentials - Discreet Luxury */
-        .credentials-section {
+        /* Credentials - Elegant */
+        .credentials {
             display: flex;
             justify-content: center;
             gap: 16px;
@@ -253,61 +210,47 @@
         }
         
         @media (max-width: 768px) {
-            .credentials-section {
-                gap: 12px;
-                margin-bottom: 48px;
-            }
+            .credentials { gap: 12px; margin-bottom: 48px; }
         }
         
-        .credential-card {
-            display: inline-flex;
+        .cred-item {
+            display: flex;
             align-items: center;
             gap: 12px;
-            padding: 14px 24px;
-            background: var(--void);
-            border: 1px solid rgba(255,255,255,0.08);
-            border-radius: 4px;
+            padding: 14px 22px;
+            background: var(--surface);
+            border: 1px solid var(--border);
             font-size: 12px;
-            color: var(--text-tertiary);
+            color: var(--text-muted);
             cursor: pointer;
             transition: all 0.3s ease;
-            user-select: all;
         }
         
         @media (max-width: 768px) {
-            .credential-card {
-                padding: 12px 18px;
-                font-size: 11px;
-            }
+            .cred-item { padding: 12px 18px; font-size: 11px; }
         }
         
-        .credential-card:hover {
-            background: var(--charcoal);
-            border-color: rgba(201, 169, 98, 0.3);
-            transform: translateY(-2px);
+        .cred-item:hover {
+            border-color: var(--warm-accent);
+            background: var(--elevated);
         }
         
-        .credential-card .label {
+        .cred-item .tag {
+            font-size: 10px;
             font-weight: 600;
             text-transform: uppercase;
             letter-spacing: 0.1em;
-            color: var(--lux-gold);
-            font-size: 10px;
+            color: var(--warm-accent);
         }
         
-        .credential-card .divider {
+        .cred-item .sep {
             width: 1px;
             height: 14px;
-            background: rgba(255,255,255,0.15);
+            background: var(--border);
         }
         
-        .credential-card .value {
-            font-family: 'Cormorant Garamond', serif;
-            letter-spacing: 0.03em;
-        }
-        
-        /* Section Divider */
-        .section-divider {
+        /* Divider */
+        .divider {
             display: flex;
             align-items: center;
             gap: 20px;
@@ -315,44 +258,41 @@
             justify-content: center;
         }
         
-        .section-line {
-            flex: 1;
-            max-width: 100px;
+        .divider-line {
+            width: 60px;
             height: 1px;
-            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.15), transparent);
+            background: linear-gradient(90deg, transparent, var(--warm-accent), transparent);
+            opacity: 0.5;
         }
         
-        .section-label {
+        .divider-text {
             font-size: 10px;
             letter-spacing: 0.5em;
             text-transform: uppercase;
-            color: var(--text-tertiary);
-            font-weight: 500;
+            color: var(--text-muted);
         }
         
-        /* The Trinity - Horizontal Cards */
-        .trinity {
+        /* The Three Cards - Horizontal */
+        .cards-row {
             display: flex;
             flex-direction: row;
-            gap: 24px;
+            gap: 20px;
             margin-bottom: 80px;
         }
         
         @media (max-width: 900px) {
-            .trinity {
-                gap: 16px;
-            }
+            .cards-row { gap: 16px; }
         }
         
         @media (max-width: 768px) {
-            .trinity {
+            .cards-row {
                 flex-direction: column;
-                gap: 16px;
+                gap: 12px;
                 margin-bottom: 48px;
             }
         }
         
-        .module-card {
+        .card {
             flex: 1;
             position: relative;
             display: flex;
@@ -361,21 +301,17 @@
             padding: 48px 32px;
             text-decoration: none;
             color: var(--text-primary);
-            background: var(--void);
-            border: 1px solid rgba(255,255,255,0.06);
-            border-radius: 2px;
+            background: var(--surface);
+            border: 1px solid var(--border);
             transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            overflow: hidden;
         }
         
         @media (max-width: 900px) {
-            .module-card {
-                padding: 36px 24px;
-            }
+            .card { padding: 36px 24px; }
         }
         
         @media (max-width: 768px) {
-            .module-card {
+            .card {
                 flex-direction: row;
                 align-items: center;
                 justify-content: flex-start;
@@ -384,122 +320,69 @@
             }
         }
         
-        /* Focus Border Animation */
-        .module-card::before {
+        .card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
-            right: 0;
-            bottom: 0;
-            border: 1px solid transparent;
-            border-radius: 2px;
-            transition: all 0.4s;
-            pointer-events: none;
-        }
-        
-        .module-card:hover::before {
-            border-color: var(--lux-gold-dim);
-        }
-        
-        /* Corner Accents */
-        .module-card::after {
-            content: '';
-            position: absolute;
-            width: 30px;
-            height: 30px;
-            border: 1px solid var(--lux-gold);
+            width: 100%;
+            height: 2px;
+            background: linear-gradient(90deg, transparent, var(--warm-accent), transparent);
             opacity: 0;
-            transition: all 0.4s;
+            transition: opacity 0.4s;
         }
         
-        .module-card:hover::after {
-            opacity: 0.5;
+        .card:hover::before {
+            opacity: 1;
         }
         
-        .module-card.customer::after {
-            top: -1px;
-            left: -1px;
-            border-right: none;
-            border-bottom: none;
-        }
-        
-        .module-card.store::after {
-            top: 50%;
-            left: -1px;
-            transform: translateY(-50%);
-            border-right: none;
-            border-top: none;
-            border-bottom: none;
-            height: 60px;
-        }
-        
-        @media (max-width: 768px) {
-            .module-card.store::after {
-                top: -1px;
-                left: -1px;
-                transform: none;
-                height: 30px;
-                border-right: none;
-                border-bottom: none;
-            }
-        }
-        
-        .module-card.admin::after {
-            top: -1px;
-            right: -1px;
-            border-left: none;
-            border-bottom: none;
-        }
-        
-        .module-card:hover {
-            background: var(--charcoal);
+        .card:hover {
+            background: var(--elevated);
+            border-color: rgba(224, 123, 57, 0.3);
             transform: translateY(-4px);
-            box-shadow: 0 20px 60px rgba(0,0,0,0.5);
+            box-shadow: 0 20px 40px rgba(0,0,0,0.4);
         }
         
         @media (max-width: 768px) {
-            .module-card:hover {
+            .card:hover {
                 transform: translateX(4px);
             }
         }
         
-        .module-number {
+        .card-num {
             position: absolute;
-            top: 20px;
+            top: 16px;
             right: 20px;
             font-family: 'Cormorant Garamond', serif;
-            font-size: 14px;
-            font-weight: 300;
-            color: var(--text-tertiary);
-            letter-spacing: 0.1em;
+            font-size: 13px;
+            color: var(--text-muted);
+            font-style: italic;
         }
         
         @media (max-width: 768px) {
-            .module-number {
+            .card-num {
                 top: auto;
                 bottom: 16px;
                 right: 16px;
-                font-size: 12px;
             }
         }
         
-        .module-icon {
-            width: 64px;
-            height: 64px;
+        .card-icon {
+            width: 72px;
+            height: 72px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 28px;
+            font-size: 32px;
             margin-bottom: 28px;
-            border: 1px solid rgba(255,255,255,0.1);
+            border: 1px solid var(--border);
             border-radius: 50%;
-            background: rgba(255,255,255,0.02);
+            background: var(--elevated);
             transition: all 0.3s;
         }
         
         @media (max-width: 768px) {
-            .module-icon {
+            .card-icon {
                 width: 56px;
                 height: 56px;
                 font-size: 24px;
@@ -507,52 +390,42 @@
             }
         }
         
-        .module-card:hover .module-icon {
-            border-color: var(--lux-gold-dim);
-            background: rgba(201, 169, 98, 0.05);
+        .card:hover .card-icon {
+            border-color: var(--warm-accent);
+            background: rgba(224, 123, 57, 0.1);
+            transform: scale(1.05);
         }
         
-        .module-content {
+        .card-body {
             text-align: center;
         }
         
         @media (max-width: 768px) {
-            .module-content {
-                text-align: left;
-                flex: 1;
-            }
+            .card-body { text-align: left; flex: 1; }
         }
         
-        .module-title {
+        .card-title {
             font-family: 'Cormorant Garamond', serif;
-            font-size: 24px;
+            font-size: 26px;
             font-weight: 600;
             margin-bottom: 8px;
-            letter-spacing: 0.02em;
         }
         
         @media (max-width: 768px) {
-            .module-title {
-                font-size: 20px;
-                margin-bottom: 4px;
-            }
+            .card-title { font-size: 22px; margin-bottom: 4px; }
         }
         
-        .module-desc {
+        .card-desc {
             font-size: 13px;
-            color: var(--text-tertiary);
+            color: var(--text-muted);
             line-height: 1.6;
-            max-width: 200px;
         }
         
         @media (max-width: 768px) {
-            .module-desc {
-                font-size: 12px;
-                max-width: none;
-            }
+            .card-desc { font-size: 12px; }
         }
         
-        .module-arrow {
+        .card-arrow {
             position: absolute;
             bottom: 24px;
             left: 50%;
@@ -562,27 +435,25 @@
         }
         
         @media (max-width: 768px) {
-            .module-arrow {
-                display: none;
-            }
+            .card-arrow { display: none; }
         }
         
-        .module-card:hover .module-arrow {
+        .card:hover .card-arrow {
             opacity: 1;
             bottom: 28px;
         }
         
-        .module-arrow svg {
-            width: 24px;
-            height: 24px;
-            stroke: var(--lux-gold);
+        .card-arrow svg {
+            width: 20px;
+            height: 20px;
+            stroke: var(--warm-accent);
         }
         
-        /* Footer - Premium */
+        /* Footer */
         .footer {
             margin-top: auto;
             padding-top: 32px;
-            border-top: 1px solid rgba(255,255,255,0.06);
+            border-top: 1px solid var(--border);
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -596,169 +467,146 @@
             }
         }
         
-        .footer-brand {
-            font-size: 12px;
-            color: var(--text-tertiary);
-            letter-spacing: 0.1em;
+        .footer-text {
+            font-size: 13px;
+            color: var(--text-muted);
         }
         
-        .footer-brand strong {
+        .footer-text strong {
             color: var(--text-primary);
             font-weight: 500;
         }
         
-        .cta-luxury {
+        .btn-primary {
             display: inline-flex;
             align-items: center;
             gap: 12px;
             padding: 16px 32px;
-            background: transparent;
-            border: 1px solid var(--lux-gold);
-            border-radius: 2px;
-            color: var(--lux-gold);
+            background: var(--warm-accent);
+            color: var(--void);
             text-decoration: none;
             font-size: 12px;
-            font-weight: 500;
-            letter-spacing: 0.15em;
+            font-weight: 600;
+            letter-spacing: 0.1em;
             text-transform: uppercase;
-            transition: all 0.4s;
-            position: relative;
-            overflow: hidden;
+            border: none;
+            cursor: pointer;
+            transition: all 0.3s;
         }
         
         @media (max-width: 768px) {
-            .cta-luxury {
-                padding: 14px 28px;
-                font-size: 11px;
-            }
+            .btn-primary { padding: 14px 28px; font-size: 11px; }
         }
         
-        .cta-luxury::before {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: -100%;
-            width: 100%;
-            height: 100%;
-            background: var(--lux-gold);
-            transition: left 0.4s;
-            z-index: -1;
+        .btn-primary:hover {
+            background: var(--amber);
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px var(--warm-glow);
         }
         
-        .cta-luxury:hover {
-            color: var(--pure-black);
-        }
-        
-        .cta-luxury:hover::before {
-            left: 0;
-        }
-        
-        .cta-luxury svg {
+        .btn-primary svg {
             width: 16px;
             height: 16px;
             transition: transform 0.3s;
         }
         
-        .cta-luxury:hover svg {
+        .btn-primary:hover svg {
             transform: translateX(4px);
         }
     </style>
 </head>
 <body>
-    <!-- Ambient Background -->
-    <div class="ambient-glow">
-        <div class="glow-orb glow-1"></div>
-        <div class="glow-orb glow-2"></div>
-        <div class="glow-orb glow-3"></div>
+    <div class="ambient-light">
+        <div class="warm-orb warm-orb-1"></div>
+        <div class="warm-orb warm-orb-2"></div>
     </div>
-    <div class="texture-overlay"></div>
+    <div class="grain"></div>
     
-    <div class="container">
+    <div class="wrapper">
         <header class="header">
             <div class="brand">Proj <span>#1566</span></div>
-            <div class="status-indicator">
+            <div class="status">
                 <div class="status-dot"></div>
                 <span>Sistem Live</span>
             </div>
         </header>
         
         <section class="hero">
-            <div class="hero-kicker">Platformă Comenzi Online</div>
+            <div class="hero-label">Platformă Comenzi Online</div>
             <h1 class="hero-title">
-                Rotiserie &<br><span class="highlight">Pizza Moinești</span>
+                Rotiserie & <span class="accent">Pizza</span><br>Moinești
             </h1>
             <p class="hero-subtitle">Soluție completă de management pentru restaurante și afaceri culinare</p>
         </section>
         
-        <div class="credentials-section">
-            <div class="credential-card" onclick="copyToClipboard('admin@rotiserie.ro')">
-                <span class="label">Admin</span>
-                <span class="divider"></span>
-                <span class="value">admin@rotiserie.ro / admin123</span>
+        <div class="credentials">
+            <div class="cred-item" onclick="copyToClipboard('admin@rotiserie.ro')">
+                <span class="tag">Admin</span>
+                <span class="sep"></span>
+                <span>admin@rotiserie.ro / admin123</span>
             </div>
-            <div class="credential-card" onclick="copyToClipboard('1234')">
-                <span class="label">Store PIN</span>
-                <span class="divider"></span>
-                <span class="value">1234</span>
+            <div class="cred-item" onclick="copyToClipboard('1234')">
+                <span class="tag">Store PIN</span>
+                <span class="sep"></span>
+                <span>1234</span>
             </div>
         </div>
         
-        <div class="section-divider">
-            <div class="section-line"></div>
-            <div class="section-label">Selectează</div>
-            <div class="section-line"></div>
+        <div class="divider">
+            <div class="divider-line"></div>
+            <div class="divider-text">Selectează Modulul</div>
+            <div class="divider-line"></div>
         </div>
         
-        <!-- Trinity - 3 Cards Horizontal -->
-        <div class="trinity">
-            <a href="/customer/" class="module-card customer" target="_blank" rel="noopener noreferrer">
-                <div class="module-number">01</div>
-                <div class="module-icon">🍕</div>
-                <div class="module-content">
-                    <h3 class="module-title">Customer</h3>
-                    <p class="module-desc">Meniu digital, coș și plată online</p>
+        <div class="cards-row">
+            <a href="/customer/" class="card" target="_blank" rel="noopener noreferrer">
+                <div class="card-num">01</div>
+                <div class="card-icon">🍕</div>
+                <div class="card-body">
+                    <h3 class="card-title">Customer</h3>
+                    <p class="card-desc">Meniu digital, coș și plată online</p>
                 </div>
-                <div class="module-arrow">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                <div class="card-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
                 </div>
             </a>
             
-            <a href="/store/" class="module-card store" target="_blank" rel="noopener noreferrer">
-                <div class="module-number">02</div>
-                <div class="module-icon">👨‍🍳</div>
-                <div class="module-content">
-                    <h3 class="module-title">Store</h3>
-                    <p class="module-desc">Dashboard KDS pentru bucătărie</p>
+            <a href="/store/" class="card" target="_blank" rel="noopener noreferrer">
+                <div class="card-num">02</div>
+                <div class="card-icon">👨‍🍳</div>
+                <div class="card-body">
+                    <h3 class="card-title">Store</h3>
+                    <p class="card-desc">Dashboard KDS pentru bucătărie</p>
                 </div>
-                <div class="module-arrow">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                <div class="card-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
                 </div>
             </a>
             
-            <a href="/admin/" class="module-card admin" target="_blank" rel="noopener noreferrer">
-                <div class="module-number">03</div>
-                <div class="module-icon">📊</div>
-                <div class="module-content">
-                    <h3 class="module-title">Admin</h3>
-                    <p class="module-desc">Rapoarte, produse și setări</p>
+            <a href="/admin/" class="card" target="_blank" rel="noopener noreferrer">
+                <div class="card-num">03</div>
+                <div class="card-icon">📊</div>
+                <div class="card-body">
+                    <h3 class="card-title">Admin</h3>
+                    <p class="card-desc">Rapoarte, produse și setări</p>
                 </div>
-                <div class="module-arrow">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
-                        <path d="M7 17L17 7M17 7H7M17 7V17"/>
+                <div class="card-arrow">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M5 12h14M12 5l7 7-7 7"/>
                     </svg>
                 </div>
             </a>
         </div>
         
         <footer class="footer">
-            <div class="footer-brand">
+            <div class="footer-text">
                 <strong>Demo Project</strong> — Rotiserie & Pizza Moinești
             </div>
-            <a href="https://wa.me/40722309309?text=Salut!%20Sunt%20interesat%20de%20platforma%20de%20comenzi%20online." class="cta-luxury" target="_blank">
+            <a href="https://wa.me/40722309309?text=Salut!%20Sunt%20interesat%20de%20platforma%20de%20comenzi%20online." class="btn-primary" target="_blank">
                 Cumpără Platforma
                 <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                     <path d="M5 12h14M12 5l7 7-7 7"/>
@@ -770,15 +618,15 @@
     <script>
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
-                const cards = document.querySelectorAll('.credential-card');
-                cards.forEach(card => {
-                    if (card.textContent.includes(text) || (text === '1234' && card.textContent.includes('Store'))) {
-                        card.style.borderColor = 'var(--lux-gold)';
-                        card.style.background = 'rgba(201, 169, 98, 0.1)';
+                const items = document.querySelectorAll('.cred-item');
+                items.forEach(item => {
+                    if (item.textContent.includes(text) || (text === '1234' && item.textContent.includes('Store'))) {
+                        item.style.borderColor = 'var(--warm-accent)';
+                        item.style.background = 'rgba(224, 123, 57, 0.1)';
                         setTimeout(() => {
-                            card.style.borderColor = '';
-                            card.style.background = '';
-                        }, 800);
+                            item.style.borderColor = '';
+                            item.style.background = '';
+                        }, 600);
                     }
                 });
             });
