@@ -4,641 +4,771 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
     <title>Proj #1566 | Platformă Comenzi</title>
-    <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;700&family=Space+Grotesk:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;500;600;700&family=Inter:wght@200;300;400;500&display=swap" rel="stylesheet">
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         
         :root {
-            --bg: #fafafa;
-            --surface: #ffffff;
-            --surface-hover: #f5f5f5;
-            --border: #e8e8e8;
-            --border-light: #f0f0f0;
-            --text-primary: #1a1a1a;
-            --text-secondary: #666666;
-            --text-muted: #999999;
-            --fresh-mint: #10b981;
-            --fresh-coral: #f97316;
-            --fresh-sky: #0ea5e9;
-            --fresh-lavender: #8b5cf6;
+            --void: #020204;
+            --depth: #0a0a0e;
+            --midnight: #12121a;
+            --gold: #c9a227;
+            --gold-dim: rgba(201, 162, 39, 0.3);
+            --copper: #b87333;
+            --ember: rgba(184, 115, 51, 0.2);
+            --text-primary: #f5f5f0;
+            --text-secondary: rgba(245, 245, 240, 0.6);
+            --text-muted: rgba(245, 245, 240, 0.35);
         }
         
-        html { font-size: 16px; }
+        html { 
+            font-size: 16px;
+            scroll-behavior: smooth;
+        }
+        
         @media (max-width: 768px) { html { font-size: 14px; } }
         
         body {
-            font-family: 'DM Sans', sans-serif;
-            background: var(--bg);
+            font-family: 'Inter', sans-serif;
+            background: var(--void);
             min-height: 100vh;
             color: var(--text-primary);
             -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
         }
         
-        /* Minimal Background */
-        .minimal-bg {
+        /* Cinematic Background Stage */
+        .cinematic-stage {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
             z-index: 0;
-            pointer-events: none;
+            overflow: hidden;
         }
         
-        .gradient-blob {
+        .stage-layer {
             position: absolute;
-            border-radius: 50%;
-            filter: blur(80px);
-            opacity: 0.4;
+            inset: -10%;
+            animation: slow-pan 60s ease-in-out infinite alternate;
         }
         
-        .blob-1 {
-            width: 500px;
-            height: 500px;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.2), rgba(14, 165, 233, 0.2));
-            top: -150px;
-            right: -100px;
+        @keyframes slow-pan {
+            0% { transform: translate(-2%, -2%) scale(1.1); }
+            100% { transform: translate(2%, 2%) scale(1.15); }
         }
         
-        .blob-2 {
-            width: 400px;
-            height: 400px;
-            background: linear-gradient(135deg, rgba(249, 115, 22, 0.15), rgba(139, 92, 246, 0.15));
-            bottom: -100px;
-            left: -100px;
+        .stage-gradient {
+            background: 
+                radial-gradient(ellipse 80% 50% at 20% 40%, rgba(120, 60, 20, 0.15) 0%, transparent 50%),
+                radial-gradient(ellipse 60% 40% at 80% 60%, rgba(60, 40, 100, 0.1) 0%, transparent 40%),
+                radial-gradient(ellipse 50% 30% at 50% 100%, rgba(184, 115, 51, 0.08) 0%, transparent 50%);
         }
         
-        /* Dot Grid Pattern */
-        .dot-grid {
+        /* Vignette Overlay */
+        .vignette {
             position: fixed;
             top: 0;
             left: 0;
             width: 100%;
             height: 100%;
-            background-image: radial-gradient(circle, #e0e0e0 1px, transparent 1px);
-            background-size: 40px 40px;
-            opacity: 0.5;
-            z-index: 0;
+            background: radial-gradient(ellipse at center, transparent 0%, transparent 50%, var(--void) 100%);
+            z-index: 1;
             pointer-events: none;
         }
         
-        /* Container */
-        .wrapper {
-            position: relative;
+        /* Film Grain */
+        .film-grain {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.035;
+            z-index: 2;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 200 200' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+            animation: grain 0.5s steps(10) infinite;
+        }
+        
+        @keyframes grain {
+            0%, 100% { transform: translate(0, 0); }
+            10% { transform: translate(-2%, -2%); }
+            20% { transform: translate(2%, 2%); }
+            30% { transform: translate(-1%, 1%); }
+            40% { transform: translate(1%, -1%); }
+            50% { transform: translate(-2%, 2%); }
+            60% { transform: translate(2%, -2%); }
+            70% { transform: translate(-1%, -1%); }
+            80% { transform: translate(1%, 1%); }
+            90% { transform: translate(-2%, -1%); }
+        }
+        
+        /* Light Rays */
+        .light-rays {
+            position: fixed;
+            top: -50%;
+            left: -50%;
+            width: 200%;
+            height: 200%;
+            background: conic-gradient(from 0deg at 50% 50%, 
+                transparent 0deg, 
+                rgba(201, 162, 39, 0.03) 20deg, 
+                transparent 40deg,
+                transparent 60deg,
+                rgba(201, 162, 39, 0.02) 80deg,
+                transparent 100deg,
+                transparent 280deg,
+                rgba(201, 162, 39, 0.02) 300deg,
+                transparent 320deg
+            );
             z-index: 1;
-            max-width: 1100px;
+            pointer-events: none;
+            animation: ray-rotate 120s linear infinite;
+        }
+        
+        @keyframes ray-rotate {
+            0% { transform: rotate(0deg); }
+            100% { transform: rotate(360deg); }
+        }
+        
+        /* Main Container */
+        .frame {
+            position: relative;
+            z-index: 10;
+            max-width: 1200px;
             margin: 0 auto;
-            padding: 48px 32px;
+            padding: 48px;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
         
         @media (max-width: 768px) {
-            .wrapper { padding: 32px 20px; }
+            .frame { padding: 32px 24px; }
         }
         
-        /* Minimal Header */
-        .header-min {
+        /* Cinematic Header */
+        .header-cine {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 64px;
+            margin-bottom: 80px;
+            opacity: 0;
+            animation: fade-in-down 2s ease-out 0.5s forwards;
         }
         
         @media (max-width: 768px) {
-            .header-min { margin-bottom: 48px; }
+            .header-cine { margin-bottom: 56px; }
         }
         
-        .logo-min {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 18px;
-            font-weight: 700;
-            letter-spacing: -0.02em;
+        @keyframes fade-in-down {
+            0% { opacity: 0; transform: translateY(-30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        .logo-cine {
+            font-family: 'Cinzel', serif;
+            font-size: 16px;
+            font-weight: 500;
+            letter-spacing: 0.4em;
+            text-transform: uppercase;
             color: var(--text-primary);
         }
         
-        .logo-min span {
-            color: var(--fresh-mint);
+        .logo-cine span {
+            color: var(--gold);
+            font-weight: 600;
         }
         
-        .badge-min {
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            padding: 8px 16px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 100px;
-            font-size: 12px;
-            color: var(--text-secondary);
-        }
-        
-        .badge-dot {
-            width: 6px;
-            height: 6px;
-            background: var(--fresh-mint);
-            border-radius: 50%;
-            animation: pulse-soft 2s ease-in-out infinite;
-        }
-        
-        @keyframes pulse-soft {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
-        
-        /* Hero Section */
-        .hero-min {
-            text-align: center;
-            margin-bottom: 48px;
-        }
-        
-        .hero-tag-min {
-            display: inline-block;
-            padding: 8px 20px;
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(14, 165, 233, 0.1));
-            border-radius: 100px;
-            font-size: 12px;
-            font-weight: 500;
-            color: var(--fresh-mint);
-            margin-bottom: 24px;
-        }
-        
-        @media (max-width: 768px) {
-            .hero-tag-min { font-size: 11px; margin-bottom: 20px; }
-        }
-        
-        .hero-title-min {
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: clamp(2.8rem, 5vw, 4rem);
-            font-weight: 700;
-            line-height: 1.1;
-            margin-bottom: 16px;
-            letter-spacing: -0.03em;
-        }
-        
-        @media (max-width: 768px) {
-            .hero-title-min { font-size: clamp(2rem, 7vw, 2.8rem); }
-        }
-        
-        .hero-title-min .fresh {
-            background: linear-gradient(135deg, var(--fresh-mint), var(--fresh-sky));
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            background-clip: text;
-        }
-        
-        .hero-sub-min {
-            font-size: 16px;
-            color: var(--text-secondary);
-            max-width: 420px;
-            margin: 0 auto;
-            font-weight: 400;
-            line-height: 1.6;
-        }
-        
-        @media (max-width: 768px) {
-            .hero-sub-min { font-size: 14px; max-width: 300px; }
-        }
-        
-        /* Fresh Credentials */
-        .creds-fresh {
-            display: flex;
-            justify-content: center;
-            gap: 16px;
-            margin-bottom: 56px;
-            flex-wrap: wrap;
-        }
-        
-        @media (max-width: 768px) {
-            .creds-fresh { gap: 12px; margin-bottom: 44px; }
-        }
-        
-        .fresh-pill {
+        .status-cine {
             display: flex;
             align-items: center;
             gap: 12px;
-            padding: 14px 24px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 12px;
-            font-size: 13px;
-            color: var(--text-secondary);
-            cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 2px 8px rgba(0,0,0,0.04);
-        }
-        
-        @media (max-width: 768px) {
-            .fresh-pill { padding: 12px 18px; font-size: 12px; }
-        }
-        
-        .fresh-pill:hover {
-            border-color: var(--fresh-mint);
-            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.15);
-            transform: translateY(-2px);
-        }
-        
-        .fresh-pill .fresh-label {
-            font-size: 11px;
-            font-weight: 700;
-            text-transform: uppercase;
-            letter-spacing: 0.05em;
-            color: var(--fresh-mint);
-        }
-        
-        .fresh-pill .fresh-div {
-            width: 1px;
-            height: 16px;
-            background: var(--border);
-        }
-        
-        /* Section Title */
-        .section-title {
-            font-size: 12px;
-            font-weight: 600;
-            letter-spacing: 0.2em;
+            font-size: 10px;
+            letter-spacing: 0.3em;
             text-transform: uppercase;
             color: var(--text-muted);
-            margin-bottom: 24px;
-            text-align: center;
         }
         
-        /* Fresh Cards */
-        .fresh-grid {
-            display: flex;
-            flex-direction: row;
-            gap: 20px;
+        .status-dot-cine {
+            width: 5px;
+            height: 5px;
+            background: var(--gold);
+            border-radius: 50%;
+            box-shadow: 0 0 15px var(--gold-dim);
+            animation: slow-pulse 4s ease-in-out infinite;
+        }
+        
+        @keyframes slow-pulse {
+            0%, 100% { opacity: 0.8; box-shadow: 0 0 10px var(--gold-dim); }
+            50% { opacity: 1; box-shadow: 0 0 25px var(--gold-dim); }
+        }
+        
+        /* Cinematic Hero */
+        .hero-cine {
+            text-align: center;
             margin-bottom: 64px;
         }
         
-        @media (max-width: 900px) {
-            .fresh-grid { gap: 16px; }
+        .hero-kicker {
+            font-size: 11px;
+            letter-spacing: 0.6em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 32px;
+            opacity: 0;
+            animation: fade-in 2s ease-out 1s forwards;
+        }
+        
+        @keyframes fade-in {
+            0% { opacity: 0; }
+            100% { opacity: 1; }
         }
         
         @media (max-width: 768px) {
-            .fresh-grid {
-                flex-direction: column;
-                gap: 16px;
-                margin-bottom: 48px;
+            .hero-kicker { 
+                font-size: 10px; 
+                letter-spacing: 0.4em;
+                margin-bottom: 24px;
             }
         }
         
-        .fresh-card {
+        .hero-title-cine {
+            font-family: 'Cinzel', serif;
+            font-size: clamp(3rem, 6vw, 5.5rem);
+            font-weight: 600;
+            line-height: 1.1;
+            margin-bottom: 24px;
+            letter-spacing: 0.05em;
+            opacity: 0;
+            animation: cinematic-reveal 2.5s ease-out 1.5s forwards;
+        }
+        
+        @keyframes cinematic-reveal {
+            0% { 
+                opacity: 0; 
+                transform: translateY(40px) scale(0.95);
+                letter-spacing: 0.2em;
+            }
+            50% {
+                opacity: 0.5;
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) scale(1);
+                letter-spacing: 0.05em;
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .hero-title-cine { font-size: clamp(2.2rem, 8vw, 3rem); }
+        }
+        
+        .hero-title-cine .line-1 {
+            display: block;
+            opacity: 0;
+            animation: fade-in-up 2s ease-out 1.5s forwards;
+        }
+        
+        .hero-title-cine .line-2 {
+            display: block;
+            color: var(--gold);
+            opacity: 0;
+            animation: fade-in-up 2s ease-out 2s forwards;
+        }
+        
+        @keyframes fade-in-up {
+            0% { opacity: 0; transform: translateY(30px); }
+            100% { opacity: 1; transform: translateY(0); }
+        }
+        
+        .hero-subtitle-cine {
+            font-size: 14px;
+            color: var(--text-secondary);
+            max-width: 450px;
+            margin: 0 auto;
+            font-weight: 300;
+            line-height: 1.8;
+            letter-spacing: 0.05em;
+            opacity: 0;
+            animation: fade-in 2s ease-out 2.5s forwards;
+        }
+        
+        @media (max-width: 768px) {
+            .hero-subtitle-cine { font-size: 12px; max-width: 300px; }
+        }
+        
+        /* Cinematic Divider */
+        .divider-cine {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 24px;
+            margin-bottom: 48px;
+            opacity: 0;
+            animation: fade-in 2s ease-out 3s forwards;
+        }
+        
+        .divider-line-cine {
+            width: 100px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
+            opacity: 0.4;
+        }
+        
+        .divider-text-cine {
+            font-family: 'Cinzel', serif;
+            font-size: 10px;
+            letter-spacing: 0.5em;
+            text-transform: uppercase;
+            color: var(--text-muted);
+        }
+        
+        /* Cinematic Credentials */
+        .creds-cine {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin-bottom: 64px;
+            flex-wrap: wrap;
+            opacity: 0;
+            animation: fade-in 2s ease-out 3.2s forwards;
+        }
+        
+        @media (max-width: 768px) {
+            .creds-cine { gap: 12px; margin-bottom: 48px; }
+        }
+        
+        .creds-item {
+            display: flex;
+            align-items: center;
+            gap: 14px;
+            padding: 16px 28px;
+            background: rgba(255,255,255,0.02);
+            border: 1px solid rgba(201, 162, 39, 0.15);
+            font-size: 12px;
+            color: var(--text-secondary);
+            cursor: pointer;
+            transition: all 0.6s ease;
+            backdrop-filter: blur(10px);
+        }
+        
+        @media (max-width: 768px) {
+            .creds-item { padding: 12px 20px; font-size: 11px; }
+        }
+        
+        .creds-item:hover {
+            background: rgba(201, 162, 39, 0.05);
+            border-color: var(--gold);
+            transform: translateY(-2px);
+            transition: all 0.3s ease;
+        }
+        
+        .creds-item .creds-label {
+            font-family: 'Cinzel', serif;
+            font-size: 10px;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.15em;
+            color: var(--gold);
+        }
+        
+        .creds-item .creds-sep {
+            width: 1px;
+            height: 16px;
+            background: rgba(201, 162, 39, 0.3);
+        }
+        
+        /* Cinematic Cards - The Scene */
+        .scene {
+            display: flex;
+            flex-direction: row;
+            gap: 24px;
+            margin-bottom: 80px;
+            perspective: 1000px;
+        }
+        
+        @media (max-width: 900px) {
+            .scene { gap: 16px; }
+        }
+        
+        @media (max-width: 768px) {
+            .scene {
+                flex-direction: column;
+                gap: 16px;
+                margin-bottom: 56px;
+            }
+        }
+        
+        .scene-card {
             flex: 1;
             position: relative;
             display: flex;
             flex-direction: column;
             align-items: center;
-            padding: 40px 32px;
+            padding: 56px 36px;
             text-decoration: none;
             color: var(--text-primary);
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 20px;
-            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.03);
-            overflow: hidden;
+            background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+            border: 1px solid rgba(255,255,255,0.08);
+            transform-style: preserve-3d;
+            opacity: 0;
+            animation: card-enter 1.5s ease-out forwards;
+            transition: all 0.8s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+        
+        .scene-card:nth-child(1) { animation-delay: 3.5s; }
+        .scene-card:nth-child(2) { animation-delay: 3.8s; }
+        .scene-card:nth-child(3) { animation-delay: 4.1s; }
+        
+        @keyframes card-enter {
+            0% { 
+                opacity: 0; 
+                transform: translateY(60px) rotateX(15deg);
+            }
+            100% { 
+                opacity: 1; 
+                transform: translateY(0) rotateX(0);
+            }
         }
         
         @media (max-width: 900px) {
-            .fresh-card { padding: 32px 24px; }
+            .scene-card { padding: 40px 24px; }
         }
         
         @media (max-width: 768px) {
-            .fresh-card {
+            .scene-card {
                 flex-direction: row;
                 align-items: center;
                 justify-content: flex-start;
                 gap: 24px;
-                padding: 24px;
-                border-radius: 16px;
+                padding: 28px 24px;
+                animation: card-enter-mobile 1.5s ease-out forwards;
+            }
+            
+            @keyframes card-enter-mobile {
+                0% { opacity: 0; transform: translateX(-40px); }
+                100% { opacity: 1; transform: translateX(0); }
             }
         }
         
-        .fresh-card::before {
+        .scene-card::before {
             content: '';
             position: absolute;
             top: 0;
             left: 0;
             right: 0;
-            height: 3px;
+            height: 1px;
+            background: linear-gradient(90deg, transparent, var(--gold), transparent);
             opacity: 0;
-            transition: opacity 0.3s;
+            transition: opacity 0.6s;
         }
         
-        .fresh-card:nth-child(1)::before {
-            background: linear-gradient(90deg, var(--fresh-mint), var(--fresh-sky));
+        .scene-card:hover::before {
+            opacity: 0.6;
         }
         
-        .fresh-card:nth-child(2)::before {
-            background: linear-gradient(90deg, var(--fresh-coral), var(--fresh-lavender));
-        }
-        
-        .fresh-card:nth-child(3)::before {
-            background: linear-gradient(90deg, var(--fresh-sky), var(--fresh-mint));
-        }
-        
-        .fresh-card:hover::before {
-            opacity: 1;
-        }
-        
-        .fresh-card:hover {
-            transform: translateY(-6px);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.08);
-            border-color: transparent;
+        .scene-card:hover {
+            background: linear-gradient(180deg, rgba(255,255,255,0.05) 0%, rgba(255,255,255,0.02) 100%);
+            border-color: rgba(201, 162, 39, 0.25);
+            transform: translateY(-8px) scale(1.02);
+            box-shadow: 
+                0 40px 80px rgba(0,0,0,0.5),
+                0 0 0 1px rgba(201, 162, 39, 0.1);
+            transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
         }
         
         @media (max-width: 768px) {
-            .fresh-card:hover {
-                transform: translateX(4px);
+            .scene-card:hover {
+                transform: translateX(8px) scale(1.01);
             }
         }
         
-        .card-num-fresh {
+        .card-chapter {
             position: absolute;
             top: 20px;
             right: 24px;
-            font-family: 'Space Grotesk', sans-serif;
-            font-size: 13px;
-            font-weight: 600;
+            font-family: 'Cinzel', serif;
+            font-size: 12px;
             color: var(--text-muted);
+            font-style: italic;
+            letter-spacing: 0.1em;
         }
         
         @media (max-width: 768px) {
-            .card-num-fresh {
+            .card-chapter {
                 top: auto;
                 bottom: 16px;
                 right: 16px;
             }
         }
         
-        .card-icon-fresh {
-            width: 72px;
-            height: 72px;
+        .card-icon-cine {
+            width: 90px;
+            height: 90px;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-size: 32px;
-            margin-bottom: 24px;
-            border-radius: 20px;
-            transition: all 0.3s;
+            font-size: 36px;
+            margin-bottom: 32px;
+            border: 1px solid rgba(201, 162, 39, 0.2);
+            border-radius: 50%;
+            background: radial-gradient(circle, rgba(201, 162, 39, 0.1) 0%, transparent 70%);
+            box-shadow: 0 0 60px rgba(201, 162, 39, 0.1);
+            transition: all 0.6s ease;
         }
         
         @media (max-width: 768px) {
-            .card-icon-fresh {
-                width: 60px;
-                height: 60px;
-                font-size: 26px;
+            .card-icon-cine {
+                width: 64px;
+                height: 64px;
+                font-size: 28px;
                 margin-bottom: 0;
-                border-radius: 16px;
             }
         }
         
-        .fresh-card:nth-child(1) .card-icon-fresh {
-            background: linear-gradient(135deg, rgba(16, 185, 129, 0.1), rgba(16, 185, 129, 0.05));
+        .scene-card:hover .card-icon-cine {
+            border-color: var(--gold);
+            box-shadow: 0 0 80px var(--gold-dim);
+            transform: scale(1.1);
         }
         
-        .fresh-card:nth-child(2) .card-icon-fresh {
-            background: linear-gradient(135deg, rgba(249, 115, 22, 0.1), rgba(249, 115, 22, 0.05));
-        }
-        
-        .fresh-card:nth-child(3) .card-icon-fresh {
-            background: linear-gradient(135deg, rgba(14, 165, 233, 0.1), rgba(14, 165, 233, 0.05));
-        }
-        
-        .fresh-card:hover .card-icon-fresh {
-            transform: scale(1.1) rotate(-5deg);
-        }
-        
-        .card-info-fresh {
+        .card-content-cine {
             text-align: center;
         }
         
         @media (max-width: 768px) {
-            .card-info-fresh { text-align: left; flex: 1; }
+            .card-content-cine { text-align: left; flex: 1; }
         }
         
-        .card-title-fresh {
-            font-family: 'Space Grotesk', sans-serif;
+        .card-title-cine {
+            font-family: 'Cinzel', serif;
             font-size: 22px;
-            font-weight: 700;
-            margin-bottom: 6px;
+            font-weight: 600;
+            margin-bottom: 10px;
+            letter-spacing: 0.1em;
         }
         
         @media (max-width: 768px) {
-            .card-title-fresh { font-size: 18px; }
+            .card-title-cine { font-size: 18px; margin-bottom: 6px; }
         }
         
-        .card-desc-fresh {
-            font-size: 13px;
+        .card-desc-cine {
+            font-size: 12px;
             color: var(--text-muted);
-            line-height: 1.5;
+            line-height: 1.7;
+            letter-spacing: 0.03em;
         }
         
         @media (max-width: 768px) {
-            .card-desc-fresh { font-size: 12px; }
+            .card-desc-cine { font-size: 11px; }
         }
         
-        .card-arrow-fresh {
+        .card-action {
             position: absolute;
-            bottom: 24px;
-            right: 24px;
-            width: 40px;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            border-radius: 50%;
-            background: var(--bg);
+            bottom: 28px;
+            left: 50%;
+            transform: translateX(-50%);
+            font-family: 'Cinzel', serif;
+            font-size: 10px;
+            letter-spacing: 0.3em;
+            text-transform: uppercase;
+            color: var(--gold);
             opacity: 0;
-            transform: translateX(-10px);
-            transition: all 0.3s;
+            transition: all 0.5s ease;
         }
         
         @media (max-width: 768px) {
-            .card-arrow-fresh {
-                position: relative;
-                bottom: auto;
-                right: auto;
-                opacity: 1;
-                transform: none;
-                width: 36px;
-                height: 36px;
-            }
+            .card-action { display: none; }
         }
         
-        .fresh-card:hover .card-arrow-fresh {
+        .scene-card:hover .card-action {
             opacity: 1;
-            transform: translateX(0);
+            bottom: 32px;
         }
         
-        .card-arrow-fresh svg {
-            width: 18px;
-            height: 18px;
-            stroke: var(--text-secondary);
-        }
-        
-        /* Fresh Footer */
-        .footer-fresh {
+        /* Cinematic Footer */
+        .footer-cine {
             margin-top: auto;
-            padding: 24px 32px;
-            background: var(--surface);
-            border: 1px solid var(--border);
-            border-radius: 16px;
+            padding-top: 32px;
+            border-top: 1px solid rgba(255,255,255,0.06);
             display: flex;
             justify-content: space-between;
             align-items: center;
+            opacity: 0;
+            animation: fade-in 2s ease-out 4.5s forwards;
         }
         
         @media (max-width: 768px) {
-            .footer-fresh {
+            .footer-cine {
                 flex-direction: column;
-                gap: 20px;
+                gap: 24px;
                 text-align: center;
-                padding: 24px;
             }
         }
         
-        .footer-text-fresh {
-            font-size: 14px;
+        .footer-text-cine {
+            font-size: 12px;
             color: var(--text-muted);
+            letter-spacing: 0.1em;
         }
         
-        .footer-text-fresh strong {
+        .footer-text-cine strong {
             color: var(--text-primary);
-            font-weight: 600;
+            font-weight: 400;
         }
         
-        .btn-fresh {
+        .btn-cinematic {
             display: inline-flex;
             align-items: center;
-            gap: 10px;
-            padding: 14px 28px;
-            background: var(--fresh-mint);
-            border: none;
-            border-radius: 12px;
-            color: white;
+            gap: 14px;
+            padding: 18px 36px;
+            background: transparent;
+            border: 1px solid var(--gold);
+            color: var(--gold);
             text-decoration: none;
-            font-size: 13px;
-            font-weight: 600;
-            transition: all 0.3s;
-            box-shadow: 0 4px 16px rgba(16, 185, 129, 0.3);
+            font-family: 'Cinzel', serif;
+            font-size: 11px;
+            font-weight: 500;
+            letter-spacing: 0.25em;
+            text-transform: uppercase;
+            transition: all 0.6s ease;
+            position: relative;
+            overflow: hidden;
         }
         
         @media (max-width: 768px) {
-            .btn-fresh { padding: 12px 24px; font-size: 12px; }
+            .btn-cinematic { padding: 16px 28px; font-size: 10px; }
         }
         
-        .btn-fresh:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 8px 24px rgba(16, 185, 129, 0.4);
+        .btn-cinematic::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: var(--gold);
+            transition: left 0.6s ease;
+            z-index: -1;
         }
         
-        .btn-fresh svg {
+        .btn-cinematic:hover {
+            color: var(--void);
+            box-shadow: 0 0 40px var(--gold-dim);
+        }
+        
+        .btn-cinematic:hover::before {
+            left: 0;
+        }
+        
+        .btn-cinematic svg {
             width: 16px;
             height: 16px;
+            transition: transform 0.4s ease;
+        }
+        
+        .btn-cinematic:hover svg {
+            transform: translateX(6px);
         }
     </style>
 </head>
 <body>
-    <!-- Minimal Background -->
-    <div class="minimal-bg">
-        <div class="gradient-blob blob-1"></div>
-        <div class="gradient-blob blob-2"></div>
+    <!-- Cinematic Stage -->
+    <div class="cinematic-stage">
+        <div class="stage-layer stage-gradient"></div>
     </div>
-    <div class="dot-grid"></div>
     
-    <div class="wrapper">
+    <!-- Effects -->
+    <div class="vignette"></div>
+    <div class="film-grain"></div>
+    <div class="light-rays"></div>
+    
+    <div class="frame">
         <!-- Header -->
-        <header class="header-min">
-            <div class="logo-min">Proj <span>#1566</span></div>
-            <div class="badge-min">
-                <div class="badge-dot"></div>
+        <header class="header-cine">
+            <div class="logo-cine">Proj <span>#1566</span></div>
+            <div class="status-cine">
+                <div class="status-dot-cine"></div>
                 <span>Sistem Live</span>
             </div>
         </header>
         
         <!-- Hero -->
-        <section class="hero-min">
-            <div class="hero-tag-min">Platformă Comenzi Online</div>
-            <h1 class="hero-title-min">
-                Rotiserie & <span class="fresh">Pizza Moinești</span>
+        <section class="hero-cine">
+            <div class="hero-kicker">Platformă Comenzi Online</div>
+            <h1 class="hero-title-cine">
+                <span class="line-1">Rotiserie & Pizza</span>
+                <span class="line-2">Moinești</span>
             </h1>
-            <p class="hero-sub-min">Soluție completă de management pentru restaurante și afaceri culinare</p>
+            <p class="hero-subtitle-cine">Soluție completă de management pentru restaurante și afaceri culinare</p>
         </section>
         
+        <!-- Divider -->
+        <div class="divider-cine">
+            <div class="divider-line-cine"></div>
+            <div class="divider-text-cine">Selectează</div>
+            <div class="divider-line-cine"></div>
+        </div>
+        
         <!-- Credentials -->
-        <div class="creds-fresh">
-            <div class="fresh-pill" onclick="copyToClipboard('admin@rotiserie.ro')">
-                <span class="fresh-label">Admin</span>
-                <span class="fresh-div"></span>
+        <div class="creds-cine">
+            <div class="creds-item" onclick="copyToClipboard('admin@rotiserie.ro')">
+                <span class="creds-label">Admin</span>
+                <span class="creds-sep"></span>
                 <span>admin@rotiserie.ro / admin123</span>
             </div>
-            <div class="fresh-pill" onclick="copyToClipboard('1234')">
-                <span class="fresh-label">Store PIN</span>
-                <span class="fresh-div"></span>
+            <div class="creds-item" onclick="copyToClipboard('1234')">
+                <span class="creds-label">Store PIN</span>
+                <span class="creds-sep"></span>
                 <span>1234</span>
             </div>
         </div>
         
-        <!-- Section Title -->
-        <div class="section-title">Selectează Modulul</div>
-        
-        <!-- Fresh Cards -->
-        <div class="fresh-grid">
-            <a href="/customer/" class="fresh-card" target="_blank" rel="noopener noreferrer">
-                <div class="card-num-fresh">01</div>
-                <div class="card-icon-fresh">🍕</div>
-                <div class="card-info-fresh">
-                    <h3 class="card-title-fresh">Customer</h3>
-                    <p class="card-desc-fresh">Meniu digital, coș și plată online</p>
+        <!-- Scene Cards -->
+        <div class="scene">
+            <a href="/customer/" class="scene-card" target="_blank" rel="noopener noreferrer">
+                <div class="card-chapter">I</div>
+                <div class="card-icon-cine">🍕</div>
+                <div class="card-content-cine">
+                    <h3 class="card-title-cine">Customer</h3>
+                    <p class="card-desc-cine">Meniu digital, coș și plată online</p>
                 </div>
-                <div class="card-arrow-fresh">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </div>
+                <div class="card-action">Accesează →</div>
             </a>
             
-            <a href="/store/" class="fresh-card" target="_blank" rel="noopener noreferrer">
-                <div class="card-num-fresh">02</div>
-                <div class="card-icon-fresh">👨‍🍳</div>
-                <div class="card-info-fresh">
-                    <h3 class="card-title-fresh">Store</h3>
-                    <p class="card-desc-fresh">Dashboard KDS pentru bucătărie</p>
+            <a href="/store/" class="scene-card" target="_blank" rel="noopener noreferrer">
+                <div class="card-chapter">II</div>
+                <div class="card-icon-cine">👨‍🍳</div>
+                <div class="card-content-cine">
+                    <h3 class="card-title-cine">Store</h3>
+                    <p class="card-desc-cine">Dashboard KDS pentru bucătărie</p>
                 </div>
-                <div class="card-arrow-fresh">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </div>
+                <div class="card-action">Accesează →</div>
             </a>
             
-            <a href="/admin/" class="fresh-card" target="_blank" rel="noopener noreferrer">
-                <div class="card-num-fresh">03</div>
-                <div class="card-icon-fresh">📊</div>
-                <div class="card-info-fresh">
-                    <h3 class="card-title-fresh">Admin</h3>
-                    <p class="card-desc-fresh">Rapoarte, produse și setări</p>
+            <a href="/admin/" class="scene-card" target="_blank" rel="noopener noreferrer">
+                <div class="card-chapter">III</div>
+                <div class="card-icon-cine">📊</div>
+                <div class="card-content-cine">
+                    <h3 class="card-title-cine">Admin</h3>
+                    <p class="card-desc-cine">Rapoarte, produse și setări</p>
                 </div>
-                <div class="card-arrow-fresh">
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M5 12h14M12 5l7 7-7 7"/>
-                    </svg>
-                </div>
+                <div class="card-action">Accesează →</div>
             </a>
         </div>
         
         <!-- Footer -->
-        <footer class="footer-fresh">
-            <div class="footer-text-fresh">
+        <footer class="footer-cine">
+            <div class="footer-text-cine">
                 <strong>Demo Project</strong> — Rotiserie & Pizza Moinești
             </div>
-            <a href="https://wa.me/40722309309?text=Salut!%20Sunt%20interesat%20de%20platforma%20de%20comenzi%20online." class="btn-fresh" target="_blank">
+            <a href="https://wa.me/40722309309?text=Salut!%20Sunt%20interesat%20de%20platforma%20de%20comenzi%20online." class="btn-cinematic" target="_blank">
                 Cumpără Platforma
-                <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437-9.884-9.885-9.884"/>
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M5 12h14M12 5l7 7-7 7"/>
                 </svg>
             </a>
         </footer>
@@ -647,15 +777,15 @@
     <script>
         function copyToClipboard(text) {
             navigator.clipboard.writeText(text).then(() => {
-                const pills = document.querySelectorAll('.fresh-pill');
-                pills.forEach(pill => {
-                    if (pill.textContent.includes(text) || (text === '1234' && pill.textContent.includes('Store'))) {
-                        pill.style.borderColor = 'var(--fresh-mint)';
-                        pill.style.background = 'rgba(16, 185, 129, 0.05)';
+                const items = document.querySelectorAll('.creds-item');
+                items.forEach(item => {
+                    if (item.textContent.includes(text) || (text === '1234' && item.textContent.includes('Store'))) {
+                        item.style.borderColor = 'var(--gold)';
+                        item.style.background = 'rgba(201, 162, 39, 0.1)';
                         setTimeout(() => {
-                            pill.style.borderColor = '';
-                            pill.style.background = '';
-                        }, 600);
+                            item.style.borderColor = '';
+                            item.style.background = '';
+                        }, 800);
                     }
                 });
             });
