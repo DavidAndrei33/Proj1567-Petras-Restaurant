@@ -222,21 +222,6 @@ export default function Settings() {
             <SaveButton section="profile" loading={profileLoading} onClick={handleSaveProfile} />
           </motion.div>
 
-          <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.2 }} className="card p-6">
-            <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2"><CalendarDays className="w-5 h-5 text-primary" />Program</h3>
-            <div className="space-y-2">
-              {DAYS.map((day) => (
-                <div key={day.key} className="flex items-center gap-4 py-2">
-                  <span className="w-24 text-sm">{day.label}</span>
-                  <button onClick={() => toggleDay(day.key)} className="text-sm">{schedule[day.key].open ? <ToggleRight className="w-6 h-6 text-green-500" /> : <ToggleLeft className="w-6 h-6 text-gray-400" />}</button>
-                  <input type="time" value={schedule[day.key].from} onChange={(e) => handleScheduleChange(day.key, 'from', e.target.value)} disabled={!schedule[day.key].open} className="input-field w-24 text-sm" />
-                  <input type="time" value={schedule[day.key].to} onChange={(e) => handleScheduleChange(day.key, 'to', e.target.value)} disabled={!schedule[day.key].open} className="input-field w-24 text-sm" />
-                </div>
-              ))}
-            </div>
-            <SaveButton section="schedule" />
-          </motion.div>
-
           {user?.role === 'ADMIN' && (
             <motion.div initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }} className="card p-6">
               <h3 className="font-bold text-text-primary mb-4 flex items-center gap-2"><Shield className="w-5 h-5 text-primary" />Creează Admin</h3>
