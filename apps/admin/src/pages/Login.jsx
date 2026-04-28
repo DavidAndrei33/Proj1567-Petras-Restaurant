@@ -1,7 +1,7 @@
 import React, { useState, useContext } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { AuthContext } from '../context/AuthContext.jsx';
-import { Flame, Eye, EyeOff, Loader2 } from 'lucide-react';
+import { Utensils, Eye, EyeOff, Loader2 } from 'lucide-react';
 import { motion } from 'framer-motion';
 
 export default function Login() {
@@ -39,9 +39,9 @@ export default function Login() {
           {/* Logo */}
           <div className="text-center mb-8">
             <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <Flame className="w-8 h-8 text-white" />
+              <Utensils className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-text-primary">Rotiserie & Pizza</h1>
+            <h1 className="text-2xl font-bold text-text-primary">La Trattoria Petra's</h1>
             <p className="text-text-muted mt-1">Moinești - Panou Administrare</p>
           </div>
 

@@ -33,10 +33,10 @@ export default function Settings() {
   const [savedSections, setSavedSections] = useState({});
   const [settingsLoading, setSettingsLoading] = useState(true);
   const [settings, setSettings] = useState({
-    restaurantName: 'Rotiserie & Pizza Moinești',
-    address: 'Strada Principală nr. 45, Moinești, Bacău',
-    phone: '0234-123-456',
-    email: 'contact@rotiserie-moinesti.ro',
+    restaurantName: 'La Trattoria Petra\'s',
+    address: 'Str. Eremia Grigorescu nr. 2, Moinești, Bacău',
+    phone: '+40 749 107 787',
+    email: 'contact@petras.ro',
     deliveryEnabled: true,
     deliveryFee: 10,
     minOrder: 30,
