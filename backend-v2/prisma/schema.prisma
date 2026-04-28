@@ -119,7 +119,7 @@ model OrderStatusHistory {
 
 model Table {
   id          Int     @id @default(autoincrement())
-  tableNumber String  @unique
+  tableNumber String  @unique @map("table_number")
   capacity    Int
   location    String
   isActive    Boolean @default(true) @map("is_active")
