@@ -5,11 +5,11 @@ import { User, LogOut, MapPin, Phone, Mail, Package, Clock, CheckCircle, Truck, 
 import client from '../api/client';
 
 const statusConfig = {
-  RECEIVED: { label: 'Nouă', color: 'bg-red-100 text-red-700', icon: Package },
-  PREPARING: { label: 'În preparare', color: 'bg-amber-100 text-amber-700', icon: Clock },
-  READY: { label: 'Gata', color: 'bg-green-100 text-green-700', icon: CheckCircle },
-  OUT_FOR_DELIVERY: { label: 'În livrare', color: 'bg-purple-100 text-purple-700', icon: Truck },
-  DELIVERED: { label: 'Livrată', color: 'bg-gray-100 text-gray-700', icon: CheckCircle },
+  RECEIVED: { label: 'Nouă', color: 'bg-red-500/20 text-red-400', icon: Package },
+  PREPARING: { label: 'În preparare', color: 'bg-[#f59e0b]/20 text-[#fbbf24]', icon: Clock },
+  READY: { label: 'Gata', color: 'bg-green-500/20 text-green-400', icon: CheckCircle },
+  OUT_FOR_DELIVERY: { label: 'În livrare', color: 'bg-[#8b5cf6]/20 text-[#a78bfa]', icon: Truck },
+  DELIVERED: { label: 'Livrată', color: 'bg-white/10 text-white/60', icon: CheckCircle },
 };
 
 function AccountPage() {
@@ -37,15 +37,15 @@ function AccountPage() {
 
   if (!isLoggedIn) {
     return (
-      <div className="min-h-screen flex items-center justify-center bg-cream px-4">
+      <div className="min-h-screen flex items-center justify-center bg-[#0a0a0e] px-4">
         <div className="text-center">
-          <h1 className="text-2xl font-serif font-bold text-wine mb-4">Intră în cont</h1>
-          <p className="text-dark/60 mb-6">Trebuie să fii autentificat pentru a vedea contul</p>
+          <h1 className="text-2xl font-cinzel font-bold text-[#fbbf24] mb-4">Intră în cont</h1>
+          <p className="text-white/60 mb-6">Trebuie să fii autentificat pentru a vedea contul</p>
           <div className="flex gap-4 justify-center">
-            <Link to="/login" className="bg-wine text-white px-6 py-3 rounded-xl font-semibold hover:bg-wine-dark transition-colors">
+            <Link to="/login" className="bg-gradient-to-r from-[#f59e0b] to-[#f97316] text-[#020204] px-6 py-3 rounded-xl font-semibold hover:shadow-[0_10px_40px_rgba(245,158,11,0.3)] transition-shadow">
               Login
             </Link>
-            <Link to="/inregistrare" className="border-2 border-wine text-wine px-6 py-3 rounded-xl font-semibold hover:bg-wine hover:text-white transition-colors">
+            <Link to="/inregistrare" className="border-2 border-[#f59e0b] text-[#fbbf24] px-6 py-3 rounded-xl font-semibold hover:bg-[#f59e0b]/10 transition-colors">
               Creează cont
             </Link>
           </div>
@@ -61,18 +61,18 @@ function AccountPage() {
   };
 
   return (
-    <div className="min-h-screen bg-cream py-12 px-4">
+    <div className="min-h-screen bg-[#0a0a0e] py-12 px-4">
       <div className="max-w-4xl mx-auto">
         {/* Profile Header */}
-        <div className="bg-white rounded-3xl shadow-xl p-8 mb-8">
+        <div className="bg-[#12121a] rounded-3xl border border-white/[0.06] p-8 mb-8">
           <div className="flex items-start justify-between mb-6">
             <div className="flex items-center gap-4">
-              <div className="w-16 h-16 bg-wine/10 rounded-2xl flex items-center justify-center">
-                <User className="w-8 h-8 text-wine" />
+              <div className="w-16 h-16 bg-[#f59e0b]/10 rounded-2xl flex items-center justify-center border border-[#f59e0b]/20">
+                <User className="w-8 h-8 text-[#fbbf24]" />
               </div>
               <div>
-                <h1 className="text-2xl font-serif font-bold text-wine">{user?.name}</h1>
-                <div className="flex items-center gap-4 mt-1 text-dark/60 text-sm flex-wrap">
+                <h1 className="text-2xl font-cinzel font-bold text-[#fbbf24]">{user?.name}</h1>
+                <div className="flex items-center gap-4 mt-1 text-white/60 text-sm flex-wrap">
                   <span className="flex items-center gap-1"><Mail className="w-4 h-4" /> {user?.email}</span>
                   <span className="flex items-center gap-1"><Phone className="w-4 h-4" /> {user?.phone}</span>
                 </div>
@@ -80,41 +80,41 @@ function AccountPage() {
             </div>
             <button
               onClick={() => { logout(); navigate('/'); }}
-              className="flex items-center gap-2 text-red-500 hover:text-red-700 transition-colors"
+              className="flex items-center gap-2 text-red-400 hover:text-red-400 transition-colors"
             >
               <LogOut className="w-5 h-5" />
               <span className="text-sm font-medium">Ieșire</span>
             </button>
           </div>
 
-          <div className="border-t border-wine/10 pt-6">
-            <h2 className="text-lg font-semibold text-dark mb-4 flex items-center gap-2">
-              <MapPin className="w-5 h-5 text-wine" />
+          <div className="border-t border-white/10 pt-6">
+            <h2 className="text-lg font-cinzel font-semibold text-white mb-4 flex items-center gap-2">
+              <MapPin className="w-5 h-5 text-[#f59e0b]" />
               Adresele mele
             </h2>
-            <div className="bg-cream rounded-xl p-4">
-              <p className="text-dark/60 text-sm">Str. Principală 10, Moinești, 605400</p>
+            <div className="bg-[#0a0a0e] rounded-xl p-4 border border-white/[0.06]">
+              <p className="text-white/60 text-sm">Str. Principală 10, Moinești, 605400</p>
             </div>
           </div>
         </div>
 
         {/* Orders */}
-        <div className="bg-white rounded-3xl shadow-xl p-8">
-          <h2 className="text-xl font-serif font-bold text-wine mb-6">Comenzile mele</h2>
+        <div className="bg-[#12121a] rounded-3xl border border-white/[0.06] p-8">
+          <h2 className="text-xl font-cinzel font-bold text-[#fbbf24] mb-6">Comenzile mele</h2>
 
           {loading && (
             <div className="flex items-center justify-center py-12">
-              <Loader2 className="w-6 h-6 text-wine animate-spin" />
-              <span className="ml-3 text-dark/50">Se încarcă comenzile...</span>
+              <Loader2 className="w-6 h-6 text-[#f59e0b] animate-spin" />
+              <span className="ml-3 text-white/50">Se încarcă comenzile...</span>
             </div>
           )}
 
           {error && !loading && (
-            <p className="text-red-500 text-center py-8">{error}</p>
+            <p className="text-red-400 text-center py-8">{error}</p>
           )}
 
           {!loading && !error && orders.length === 0 && (
-            <p className="text-dark/50 text-center py-8">Nu ai plasat nicio comandă încă.</p>
+            <p className="text-white/50 text-center py-8">Nu ai plasat nicio comandă încă.</p>
           )}
 
           <div className="space-y-4">
@@ -126,22 +126,22 @@ function AccountPage() {
                 <Link
                   key={order.id}
                   to={`/comanda/${order.id}`}
-                  className="block bg-cream rounded-2xl p-5 hover:shadow-md transition-shadow"
+                  className="block bg-[#0a0a0e] rounded-2xl p-5 border border-white/[0.06] hover:border-[#f59e0b]/30 hover:shadow-[0_8px_30px_rgba(245,158,11,0.1)] transition-all"
                 >
                   <div className="flex items-center justify-between mb-3">
                     <div className="flex items-center gap-3">
-                      <span className="text-lg font-bold text-wine">#{order.id}</span>
+                      <span className="text-lg font-bold text-[#fbbf24]">#{order.id}</span>
                       <span className={`text-xs font-semibold px-3 py-1 rounded-full flex items-center gap-1 ${status.color}`}>
                         <StatusIcon className="w-3.5 h-3.5" />
                         {status.label}
                       </span>
                     </div>
-                    <ChevronRight className="w-5 h-5 text-dark/30" />
+                    <ChevronRight className="w-5 h-5 text-white/30" />
                   </div>
-                  <p className="text-dark/60 text-sm mb-2">{itemNames}</p>
+                  <p className="text-white/60 text-sm mb-2">{itemNames}</p>
                   <div className="flex items-center justify-between">
-                    <span className="text-sm text-dark/40">{formatDate(order.createdAt)}</span>
-                    <span className="text-lg font-bold text-wine">{order.total} lei</span>
+                    <span className="text-sm text-white/40">{formatDate(order.createdAt)}</span>
+                    <span className="text-lg font-bold text-[#fbbf24]">{order.total} lei</span>
                   </div>
                 </Link>
               );

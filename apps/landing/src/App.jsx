@@ -20,7 +20,7 @@ function App() {
   return (
     <ToastProvider>
       <AuthProvider>
-        <div className="min-h-screen flex flex-col bg-cream">
+        <div className="min-h-screen flex flex-col bg-[#0a0a0e]">
           <Header />
           <CartDrawer />
           <main className="flex-1">

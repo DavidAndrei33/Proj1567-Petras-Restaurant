@@ -12,7 +12,7 @@ const CartItem = memo(function CartItem({ item, index, updateQuantity, removeIte
       initial={{ opacity: 0, y: 20 }}
       animate={{ opacity: 1, y: 0 }}
       transition={{ delay: index * 0.05 }}
-      className="bg-white rounded-2xl p-4 flex gap-4 card-shadow"
+      className="bg-[#12121a] rounded-2xl p-4 flex gap-4 border border-white/[0.06]"
     >
       <img
         src={item.image}
@@ -23,30 +23,30 @@ const CartItem = memo(function CartItem({ item, index, updateQuantity, removeIte
       />
       <div className="flex-1 min-w-0">
         <div className="flex items-start justify-between gap-2">
-          <h3 className="font-playfair font-semibold text-dark truncate">{item.name}</h3>
+          <h3 className="font-cinzel font-semibold text-white truncate">{item.name}</h3>
           <button
             onClick={() => removeItem(item.id)}
-            className="shrink-0 w-8 h-8 rounded-lg bg-red-50 text-red-400 hover:text-red-600 hover:bg-red-100 flex items-center justify-center transition-colors"
+            className="shrink-0 w-8 h-8 rounded-lg bg-red-500/10 text-red-400 hover:text-red-400 hover:bg-red-500/20 flex items-center justify-center transition-colors"
           >
             <Trash2 size={14} />
           </button>
         </div>
-        <p className="text-dark/40 text-xs mt-1 line-clamp-2">{item.description}</p>
+        <p className="text-white/40 text-xs mt-1 line-clamp-2">{item.description}</p>
         <div className="flex items-center justify-between mt-3">
-          <span className="font-playfair font-bold text-lg text-primary">{item.price} lei</span>
-          <div className="flex items-center bg-light rounded-lg overflow-hidden">
+          <span className="font-cinzel font-bold text-lg text-[#fbbf24]">{item.price} lei</span>
+          <div className="flex items-center bg-white/10 rounded-lg overflow-hidden border border-white/10">
             <button
               onClick={() => updateQuantity(item.id, item.quantity - 1)}
-              className="w-9 h-9 flex items-center justify-center text-dark/50 hover:text-dark hover:bg-dark/5 transition-colors"
+              className="w-9 h-9 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-colors"
             >
               <Minus size={14} />
             </button>
-            <span className="w-9 h-9 flex items-center justify-center text-sm font-semibold text-dark">
+            <span className="w-9 h-9 flex items-center justify-center text-sm font-semibold text-white">
               {item.quantity}
             </span>
             <button
               onClick={() => updateQuantity(item.id, item.quantity + 1)}
-              className="w-9 h-9 flex items-center justify-center text-dark/50 hover:text-dark hover:bg-dark/5 transition-colors"
+              className="w-9 h-9 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-colors"
             >
               <Plus size={14} />
             </button>
@@ -72,20 +72,20 @@ export default function CartPage() {
 
   if (items.length === 0) {
     return (
-      <div className="min-h-screen bg-cream pt-32 pb-20 flex items-center justify-center">
+      <div className="min-h-screen bg-[#0a0a0e] pt-32 pb-20 flex items-center justify-center">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
           className="text-center"
         >
-          <div className="w-24 h-24 rounded-full bg-light flex items-center justify-center mx-auto mb-6">
-            <ShoppingBag size={40} className="text-dark/20" />
+          <div className="w-24 h-24 rounded-full bg-white/10 flex items-center justify-center mx-auto mb-6 border border-white/10">
+            <ShoppingBag size={40} className="text-white/20" />
           </div>
-          <h1 className="font-playfair font-bold text-2xl text-dark mb-2">Coșul tău este gol</h1>
-          <p className="text-dark/50 mb-8">Adaugă produse delicioase din meniul nostru!</p>
+          <h1 className="font-cinzel font-bold text-2xl text-white mb-2">Coșul tău este gol</h1>
+          <p className="text-white/50 mb-8">Adaugă produse delicioase din meniul nostru!</p>
           <Link
             to="/meniu"
-            className="inline-flex items-center gap-2 px-8 py-3 gradient-primary text-white font-semibold rounded-xl shadow-lg shadow-primary/30"
+            className="inline-flex items-center gap-2 px-8 py-3 bg-gradient-to-r from-[#f59e0b] to-[#f97316] text-[#020204] font-semibold rounded-xl shadow-[0_10px_40px_rgba(245,158,11,0.3)]"
           >
             <ArrowLeft size={18} />
             Înapoi la meniu
@@ -96,14 +96,14 @@ export default function CartPage() {
   }
 
   return (
-    <div className="min-h-screen bg-cream pt-28 pb-20">
+    <div className="min-h-screen bg-[#0a0a0e] pt-28 pb-20">
       <div className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8">
         <motion.div
           initial={{ opacity: 0, y: 20 }}
           animate={{ opacity: 1, y: 0 }}
         >
-          <h1 className="font-playfair font-bold text-3xl text-dark mb-2">Coșul tău</h1>
-          <p className="text-dark/50 mb-8">{totalItems} {totalItems === 1 ? 'produs' : 'produse'} în coș</p>
+          <h1 className="font-cinzel font-bold text-3xl text-white mb-2">Coșul tău</h1>
+          <p className="text-white/50 mb-8">{totalItems} {totalItems === 1 ? 'produs' : 'produse'} în coș</p>
         </motion.div>
 
         <div className="grid lg:grid-cols-3 gap-8">
@@ -121,7 +121,7 @@ export default function CartPage() {
 
             <button
               onClick={clearCart}
-              className="text-red-400 hover:text-red-600 text-sm font-medium transition-colors"
+              className="text-red-400 hover:text-red-400 text-sm font-medium transition-colors"
             >
               Golește coșul
             </button>
@@ -133,26 +133,26 @@ export default function CartPage() {
               initial={{ opacity: 0, x: 20 }}
               animate={{ opacity: 1, x: 0 }}
               transition={{ delay: 0.2 }}
-              className="bg-white rounded-2xl p-6 card-shadow sticky top-28"
+              className="bg-[#12121a] rounded-2xl p-6 border border-white/[0.06] sticky top-28"
             >
-              <h2 className="font-playfair font-semibold text-lg text-dark mb-6">Rezumat comandă</h2>
+              <h2 className="font-cinzel font-semibold text-lg text-white mb-6">Rezumat comandă</h2>
 
               <div className="space-y-3 mb-6">
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-dark/60">Subtotal</span>
-                  <span className="font-medium text-dark">{totalPrice} lei</span>
+                  <span className="text-white/60">Subtotal</span>
+                  <span className="font-medium text-white">{totalPrice} lei</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-dark/60">Livrare</span>
-                  <span className="text-secondary font-medium">Gratuită</span>
+                  <span className="text-white/60">Livrare</span>
+                  <span className="text-[#10b981] font-medium">Gratuită</span>
                 </div>
                 <div className="flex items-center justify-between text-sm">
-                  <span className="text-dark/60">Reducere prima comandă</span>
-                  <span className="text-primary font-medium">-20%</span>
+                  <span className="text-white/60">Reducere prima comandă</span>
+                  <span className="text-[#f59e0b] font-medium">-20%</span>
                 </div>
-                <div className="border-t border-light pt-3 flex items-center justify-between">
-                  <span className="font-semibold text-dark">Total</span>
-                  <span className="font-playfair font-bold text-2xl text-primary">
+                <div className="border-t border-white/10 pt-3 flex items-center justify-between">
+                  <span className="font-semibold text-white">Total</span>
+                  <span className="font-cinzel font-bold text-2xl text-[#fbbf24]">
                     {Math.round(totalPrice * 0.8)} lei
                   </span>
                 </div>
@@ -163,7 +163,7 @@ export default function CartPage() {
                   onClick={() => navigate('/checkout')}
                   whileHover={{ scale: 1.02 }}
                   whileTap={{ scale: 0.98 }}
-                  className="w-full py-4 gradient-primary text-white font-semibold rounded-xl shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-shadow flex items-center justify-center gap-2"
+                  className="w-full py-4 bg-gradient-to-r from-[#f59e0b] to-[#f97316] text-[#020204] font-semibold rounded-xl shadow-[0_10px_40px_rgba(245,158,11,0.3)] hover:shadow-[0_15px_50px_rgba(245,158,11,0.4)] transition-shadow flex items-center justify-center gap-2"
                 >
                   Continuă la plată
                   <ArrowRight size={18} />
@@ -172,14 +172,14 @@ export default function CartPage() {
                 <div className="space-y-3">
                   <Link
                     to="/login"
-                    className="w-full py-4 gradient-primary text-white font-semibold rounded-xl shadow-lg shadow-primary/30 hover:shadow-primary/50 transition-shadow flex items-center justify-center gap-2"
+                    className="w-full py-4 bg-gradient-to-r from-[#f59e0b] to-[#f97316] text-[#020204] font-semibold rounded-xl shadow-[0_10px_40px_rgba(245,158,11,0.3)] hover:shadow-[0_15px_50px_rgba(245,158,11,0.4)] transition-shadow flex items-center justify-center gap-2"
                   >
                     <LogIn size={18} />
                     Intră în cont pentru a comanda
                   </Link>
-                  <p className="text-center text-dark/50 text-sm">
+                  <p className="text-center text-white/50 text-sm">
                     Nu ai cont?{' '}
-                    <Link to="/inregistrare" className="text-wine font-medium hover:underline">
+                    <Link to="/inregistrare" className="text-[#fbbf24] font-medium hover:underline">
                       Înregistrează-te
                     </Link>
                   </p>
@@ -188,7 +188,7 @@ export default function CartPage() {
 
               <Link
                 to="/meniu"
-                className="block text-center mt-4 text-dark/50 hover:text-dark text-sm transition-colors"
+                className="block text-center mt-4 text-white/50 hover:text-white text-sm transition-colors"
               >
                 Continuă cumpărăturile
               </Link>
