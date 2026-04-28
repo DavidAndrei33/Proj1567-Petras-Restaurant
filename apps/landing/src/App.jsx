@@ -2,6 +2,7 @@ import React from 'react';
 import { Routes, Route } from 'react-router-dom';
 import { AuthProvider } from './context/AuthContext';
 import { ToastProvider } from './context/ToastContext';
+import { ThemeProvider } from './context/ThemeContext';
 import Header from './components/Header';
 import Footer from './components/Footer';
 import CartDrawer from './components/CartDrawer';
@@ -20,7 +21,8 @@ function App() {
   return (
     <ToastProvider>
       <AuthProvider>
-        <div className="min-h-screen flex flex-col bg-[#0a0a0e]">
+        <ThemeProvider>
+          <div className="min-h-screen flex flex-col app-container">
           <Header />
           <CartDrawer />
           <main className="flex-1">
@@ -39,6 +41,7 @@ function App() {
           <Footer />
           <StickyCart />
         </div>
+      </ThemeProvider>
       </AuthProvider>
     </ToastProvider>
   );

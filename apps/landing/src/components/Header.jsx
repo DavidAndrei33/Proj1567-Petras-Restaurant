@@ -1,9 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, Menu, X, Flame, MapPin, Phone, LogIn, User, UserPlus } from 'lucide-react';
+import { ShoppingCart, Menu, X, Flame, MapPin, Phone, LogIn, User, UserPlus, Moon, Sun } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
+import { useTheme } from '../context/ThemeContext';
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -11,6 +12,7 @@ export default function Header() {
   const [authMenuOpen, setAuthMenuOpen] = useState(false);
   const { totalItems, setIsOpen } = useCart();
   const { isLoggedIn, user, logout } = useAuth();
+  const { isCinematic, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -188,6 +190,21 @@ export default function Header() {
                 </AnimatePresence>
               </div>
 
+              {/* Theme toggle button */}
+              <motion.button
+                onClick={toggleTheme}
+                className={`relative p-2.5 rounded-xl transition-all duration-300 border ${
+                  isCinematic
+                    ? 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:text-white'
+                    : 'bg-amber-50 border-amber-200 text-amber-600 hover:bg-amber-100'
+                }`}
+                whileHover={{ scale: 1.05 }}
+                whileTap={{ scale: 0.95 }}
+                title={isCinematic ? 'Tema Light' : 'Tema Cinematic'}
+              >
+                {isCinematic ? <Sun size={20} /> : <Moon size={20} />}
+              </motion.button>
+
               {/* Cart button - Cinematic */}
               <motion.button
                 onClick={() => {
@@ -196,7 +213,11 @@ export default function Header() {
                   }
                   setIsOpen(true);
                 }}
-                className="relative p-2.5 rounded-xl bg-white/5 border border-white/10 text-white/70 hover:bg-white/10 hover:text-white transition-all duration-300"
+                className={`relative p-2.5 rounded-xl transition-all duration-300 border ${
+                  isCinematic
+                    ? 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:text-white'
+                    : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'
+                }`}
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
