@@ -1,5 +1,5 @@
 import { motion } from 'framer-motion';
-import { Clock, Phone, MapPin, User, CreditCard, Banknote, AlertTriangle, ChevronRight, ChevronLeft, Loader2, X } from 'lucide-react';
+import { Clock, Phone, User, CreditCard, Banknote, AlertTriangle, ChevronRight, ChevronLeft, Loader2, X } from 'lucide-react';
 import type { Order, OrderStatus } from '../types';
 import { formatTimeAgo } from '../utils/time';
 import { useKDSStore } from '../store';
@@ -29,6 +29,14 @@ const statusConfig: Record<
     next: 'PREPARING',
     prev: null,
   },
+  ACCEPTED: {
+    label: 'Acceptată',
+    color: 'text-[#06b6d4]',
+    bg: 'bg-[#06b6d4]/10',
+    border: 'border-[#06b6d4]/30',
+    next: 'PREPARING',
+    prev: null,
+  },
   PREPARING: {
     label: 'În Preparare',
     color: 'text-status-preparing',
@@ -42,24 +50,16 @@ const statusConfig: Record<
     color: 'text-status-ready',
     bg: 'bg-status-ready/10',
     border: 'border-status-ready/30',
-    next: 'OUT_FOR_DELIVERY',
+    next: 'PICKED_UP',
     prev: 'PREPARING',
   },
-  OUT_FOR_DELIVERY: {
-    label: 'În Livrare',
-    color: 'text-purple-400',
-    bg: 'bg-purple-400/10',
-    border: 'border-purple-400/30',
-    next: 'DELIVERED',
-    prev: 'READY',
-  },
-  DELIVERED: {
-    label: 'Livrată',
+  PICKED_UP: {
+    label: 'Ridicată',
     color: 'text-cyan-400',
     bg: 'bg-cyan-400/10',
     border: 'border-cyan-400/30',
     next: null,
-    prev: 'OUT_FOR_DELIVERY',
+    prev: 'READY',
   },
   CANCELLED: {
     label: 'Anulată',
@@ -135,10 +135,12 @@ export function OrderCardMobile({ order, index }: OrderCardMobileProps) {
           <Phone className="w-3.5 h-3.5 text-text-muted" />
           <span className="text-xs">{order.phone}</span>
         </div>
-        <div className="flex items-center gap-2 text-text-secondary">
-          <MapPin className="w-3.5 h-3.5 text-text-muted" />
-          <span className="text-xs text-text-muted truncate">{order.customerAddress}</span>
-        </div>
+        {order.pickupTime && (
+          <div className="flex items-center gap-2 text-text-secondary">
+            <Clock className="w-3.5 h-3.5 text-text-muted" />
+            <span className="text-xs text-text-muted">Ridicare: {order.pickupTime}</span>
+          </div>
+        )}
         <div className="flex items-center gap-2">
           {(() => {
             const pm = paymentConfig[order.paymentMethod] || paymentConfig.cash;

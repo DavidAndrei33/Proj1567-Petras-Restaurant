@@ -4,8 +4,9 @@ import { logger } from "./logger.js";
 export const ORDER_EVENTS_CHANNEL = "order:events";
 
 export interface OrderEvent {
-  type: "ORDER_CREATED" | "ORDER_STATUS_CHANGED";
-  orderId: number;
+  type: "ORDER_CREATED" | "ORDER_STATUS_CHANGED" | "RESERVATION_CREATED" | "RESERVATION_UPDATED";
+  orderId?: number;
+  reservationId?: number;
   status?: string;
   timestamp: string;
   data?: any;

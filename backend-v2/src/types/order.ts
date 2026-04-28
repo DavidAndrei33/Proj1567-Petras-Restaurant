@@ -5,8 +5,7 @@ export const STATUS_FLOW: OrderStatus[] = [
   OrderStatus.ACCEPTED,
   OrderStatus.PREPARING,
   OrderStatus.READY,
-  OrderStatus.OUT_FOR_DELIVERY,
-  OrderStatus.DELIVERED,
+  OrderStatus.PICKED_UP,
 ];
 
 export const CANCELLABLE_STATUSES: OrderStatus[] = [
@@ -19,9 +18,8 @@ export const STATUS_LABELS: Record<OrderStatus, string> = {
   [OrderStatus.RECEIVED]: "Primita",
   [OrderStatus.ACCEPTED]: "Acceptata",
   [OrderStatus.PREPARING]: "In preparare",
-  [OrderStatus.READY]: "Gata",
-  [OrderStatus.OUT_FOR_DELIVERY]: "In livrare",
-  [OrderStatus.DELIVERED]: "Livrata",
+  [OrderStatus.READY]: "Gata de ridicare",
+  [OrderStatus.PICKED_UP]: "Ridicata",
   [OrderStatus.CANCELLED]: "Anulata",
 };
 

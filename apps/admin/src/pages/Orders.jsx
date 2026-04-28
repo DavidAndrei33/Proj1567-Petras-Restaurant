@@ -7,17 +7,15 @@ const statusColors = {
   RECEIVED: 'bg-red-100 text-red-700 border-red-200',
   PREPARING: 'bg-amber-100 text-amber-700 border-amber-200',
   READY: 'bg-green-100 text-green-700 border-green-200',
-  OUT_FOR_DELIVERY: 'bg-purple-100 text-purple-700 border-purple-200',
-  DELIVERED: 'bg-gray-100 text-gray-700 border-gray-200',
+  PICKED_UP: 'bg-cyan-100 text-cyan-700 border-cyan-200',
   CANCELLED: 'bg-red-100 text-red-700 border-red-200',
 };
 
 const statusLabels = {
   RECEIVED: 'Nouă',
   PREPARING: 'În preparare',
-  READY: 'Gata',
-  OUT_FOR_DELIVERY: 'În livrare',
-  DELIVERED: 'Livrată',
+  READY: 'Gata de ridicare',
+  PICKED_UP: 'Ridicată',
   CANCELLED: 'Anulată',
 };
 
@@ -25,9 +23,8 @@ const statusOptions = [
   { key: 'all', label: 'Toate' },
   { key: 'RECEIVED', label: 'Nouă' },
   { key: 'PREPARING', label: 'În preparare' },
-  { key: 'READY', label: 'Gata' },
-  { key: 'OUT_FOR_DELIVERY', label: 'În livrare' },
-  { key: 'DELIVERED', label: 'Livrată' },
+  { key: 'READY', label: 'Gata de ridicare' },
+  { key: 'PICKED_UP', label: 'Ridicată' },
   { key: 'CANCELLED', label: 'Anulate' },
 ];
 
@@ -104,10 +101,12 @@ function OrderDetailsModal({ order, isOpen, onClose }) {
                     <Phone className="w-4 h-4 text-text-muted" />
                     <span className="text-sm text-text-primary">{order.customerPhone}</span>
                   </div>
-                  <div className="flex items-center gap-2 sm:col-span-2">
-                    <MapPin className="w-4 h-4 text-text-muted" />
-                    <span className="text-sm text-text-primary">{order.customerAddress}</span>
-                  </div>
+                  {order.pickupTime && (
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-text-muted" />
+                      <span className="text-sm text-text-primary">Ridicare: {order.pickupTime}</span>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -146,9 +145,9 @@ function OrderDetailsModal({ order, isOpen, onClose }) {
                     Plată
                   </h3>
                   <p className="text-sm text-text-secondary">
-                    {order.paymentMethod === 'cash' ? 'Cash la livrare' : 
-                     order.paymentMethod === 'card_on_delivery' ? 'Card la livrare' : 
-                     order.paymentMethod || 'Cash'}
+                    {order.paymentMethod === 'cash' ? 'Numerar la ridicare' : 
+                     order.paymentMethod === 'card' ? 'Card POS la ridicare' : 
+                     order.paymentMethod || 'Numerar'}
                   </p>
                 </div>
                 <div className="card p-4">
@@ -376,7 +375,7 @@ export default function Orders() {
                         )}
                         
                         {/* Status Update Dropdown */}
-                        {order.status !== 'DELIVERED' && order.status !== 'CANCELLED' && (
+                        {order.status !== 'PICKED_UP' && order.status !== 'CANCELLED' && (
                           <div className="relative group">
                             <button className="flex items-center gap-1 px-2 py-1.5 rounded-lg bg-primary/10 text-primary text-xs font-medium hover:bg-primary/20 transition-colors">
                               Update

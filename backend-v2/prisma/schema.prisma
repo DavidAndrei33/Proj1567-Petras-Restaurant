@@ -43,17 +43,19 @@ model Category {
 }
 
 model Product {
-  id          Int     @id @default(autoincrement())
-  name        String
-  description String?
-  price       Decimal @db.Decimal(10, 2)
-  image       String?
-  categoryId  Int     @map("category_id")
-  isFeatured  Boolean @default(false) @map("is_featured")
-  isAvailable Boolean @default(true) @map("is_available")
-  sortOrder   Int     @default(0) @map("sort_order")
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  id              Int     @id @default(autoincrement())
+  name            String
+  description     String?
+  price           Decimal @db.Decimal(10, 2)
+  image           String?
+  categoryId      Int     @map("category_id")
+  isFeatured      Boolean @default(false) @map("is_featured")
+  isAvailable     Boolean @default(true) @map("is_available")
+  sortOrder       Int     @default(0) @map("sort_order")
+  allergens       String?
+  preparationTime Int?    @map("preparation_time")
+  createdAt       DateTime @default(now()) @map("created_at")
+  updatedAt       DateTime @updatedAt @map("updated_at")
 
   category    Category     @relation(fields: [categoryId], references: [id])
   orderItems  OrderItem[]
@@ -64,18 +66,20 @@ model Product {
 }
 
 model Order {
-  id          Int      @id @default(autoincrement())
-  userId      Int?     @map("user_id")
-  customerName String  @map("customer_name")
-  customerPhone String @map("customer_phone")
-  customerAddress String @map("customer_address")
-  total       Decimal  @db.Decimal(10, 2)
-  status      OrderStatus @default(RECEIVED)
-  paymentMethod String @map("payment_method")
-  paymentStatus PaymentStatus @default(PENDING) @map("payment_status")
-  notes       String?
-  createdAt   DateTime @default(now()) @map("created_at")
-  updatedAt   DateTime @updatedAt @map("updated_at")
+  id              Int         @id @default(autoincrement())
+  userId          Int?        @map("user_id")
+  orderType       OrderType   @default(TAKEAWAY) @map("order_type")
+  customerName    String      @map("customer_name")
+  customerPhone   String      @map("customer_phone")
+  customerAddress String?     @map("customer_address")
+  pickupTime      String?     @map("pickup_time")
+  total           Decimal     @db.Decimal(10, 2)
+  status          OrderStatus @default(RECEIVED)
+  paymentMethod   String      @map("payment_method")
+  paymentStatus   PaymentStatus @default(PENDING) @map("payment_status")
+  notes           String?
+  createdAt       DateTime    @default(now()) @map("created_at")
+  updatedAt       DateTime    @updatedAt @map("updated_at")
 
   user        User?            @relation(fields: [userId], references: [id])
   items       OrderItem[]
@@ -113,6 +117,43 @@ model OrderStatusHistory {
   @@map("order_status_history")
 }
 
+model Table {
+  id          Int     @id @default(autoincrement())
+  tableNumber String  @unique
+  capacity    Int
+  location    String
+  isActive    Boolean @default(true) @map("is_active")
+  createdAt   DateTime @default(now()) @map("created_at")
+  updatedAt   DateTime @updatedAt @map("updated_at")
+
+  reservations Reservation[]
+
+  @@map("tables")
+}
+
+model Reservation {
+  id              Int               @id @default(autoincrement())
+  customerName    String            @map("customer_name")
+  customerPhone   String            @map("customer_phone")
+  customerEmail   String?           @map("customer_email")
+  reservationDate DateTime          @map("reservation_date") @db.Date
+  reservationTime String            @map("reservation_time")
+  numberOfGuests  Int               @map("number_of_guests")
+  tableId         Int?              @map("table_id")
+  tablePreference String?           @map("table_preference")
+  occasion        String?
+  specialRequests String?           @map("special_requests")
+  status          ReservationStatus @default(PENDING)
+  createdAt       DateTime          @default(now()) @map("created_at")
+  updatedAt       DateTime          @updatedAt @map("updated_at")
+
+  table Table? @relation(fields: [tableId], references: [id])
+
+  @@index([reservationDate, status])
+  @@index([customerPhone])
+  @@map("reservations")
+}
+
 model Setting {
   id    Int    @id @default(autoincrement())
   key   String @unique
@@ -124,9 +165,9 @@ model Setting {
 
 model BusinessHour {
   id        Int      @id @default(autoincrement())
-  dayOfWeek Int      @map("day_of_week") // 0 = Sunday, 1 = Monday, etc.
-  openTime  String   @map("open_time")   // HH:MM format
-  closeTime String   @map("close_time")  // HH:MM format
+  dayOfWeek Int      @map("day_of_week")
+  openTime  String   @map("open_time")
+  closeTime String   @map("close_time")
   isClosed  Boolean  @default(false) @map("is_closed")
   createdAt DateTime @default(now()) @map("created_at")
   updatedAt DateTime @updatedAt @map("updated_at")
@@ -142,13 +183,17 @@ enum Role {
   SUPERADMIN
 }
 
+enum OrderType {
+  TAKEAWAY
+  DINE_IN
+}
+
 enum OrderStatus {
   RECEIVED
   ACCEPTED
   PREPARING
   READY
-  OUT_FOR_DELIVERY
-  DELIVERED
+  PICKED_UP
   CANCELLED
 }
 
@@ -157,4 +202,12 @@ enum PaymentStatus {
   PAID
   FAILED
   REFUNDED
+}
+
+enum ReservationStatus {
+  PENDING
+  CONFIRMED
+  CANCELLED
+  COMPLETED
+  NO_SHOW
 }

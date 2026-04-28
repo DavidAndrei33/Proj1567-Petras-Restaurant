@@ -6,9 +6,11 @@ export const orderItemSchema = z.object({
 });
 
 export const createOrderSchema = z.object({
+  orderType: z.enum(["TAKEAWAY", "DINE_IN"]).optional().default("TAKEAWAY"),
   customerName: z.string().min(2).max(200),
   customerPhone: z.string().min(5).max(20),
-  customerAddress: z.string().min(5).max(500),
+  customerAddress: z.string().min(5).max(500).optional(),
+  pickupTime: z.string().optional(),
   items: z.array(orderItemSchema).min(1, "Order must have at least one item"),
   paymentMethod: z.enum(["cash", "card", "online"]),
   notes: z.string().max(1000).optional(),
@@ -20,8 +22,7 @@ export const updateStatusSchema = z.object({
     "ACCEPTED",
     "PREPARING",
     "READY",
-    "OUT_FOR_DELIVERY",
-    "DELIVERED",
+    "PICKED_UP",
     "CANCELLED",
   ]),
   notes: z.string().max(500).optional(),

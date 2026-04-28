@@ -6,8 +6,7 @@ const filters: FilterTab[] = [
   { id: 'RECEIVED', label: 'Comenzi Noi' },
   { id: 'PREPARING', label: 'În prep' },
   { id: 'READY', label: 'Gata' },
-  { id: 'OUT_FOR_DELIVERY', label: 'Livrare' },
-  { id: 'DELIVERED', label: 'Livrate' },
+  { id: 'PICKED_UP', label: 'Ridicate' },
   { id: 'CANCELLED', label: 'Anulate' },
 ];
 

@@ -1,8 +1,9 @@
 import { create } from 'zustand';
-import type { Order, OrderStatus } from './types';
+import type { Order, OrderStatus, Reservation } from './types';
 
 interface KDSStore {
   orders: Order[];
+  reservations: Reservation[];
   activeFilter: 'all' | OrderStatus;
   isOnline: boolean;
   soundEnabled: boolean;
@@ -11,6 +12,9 @@ interface KDSStore {
   setOrders: (orders: Order[]) => void;
   addOrder: (order: Order) => void;
   updateOrderStatus: (orderId: string, status: OrderStatus) => void;
+  setReservations: (reservations: Reservation[]) => void;
+  addReservation: (reservation: Reservation) => void;
+  updateReservationStatus: (id: number, status: Reservation['status']) => void;
   setActiveFilter: (filter: 'all' | OrderStatus) => void;
   setIsOnline: (online: boolean) => void;
   toggleSound: () => void;
@@ -19,6 +23,7 @@ interface KDSStore {
 
 export const useKDSStore = create<KDSStore>((set) => ({
   orders: [],
+  reservations: [],
   activeFilter: 'RECEIVED',
   isOnline: true,
   soundEnabled: true,
@@ -36,6 +41,22 @@ export const useKDSStore = create<KDSStore>((set) => ({
     set((state) => ({
       orders: state.orders.map((order) =>
         order.id === orderId ? { ...order, status } : order
+      ),
+      lastUpdated: new Date(),
+    })),
+
+  setReservations: (reservations) => set({ reservations, lastUpdated: new Date() }),
+
+  addReservation: (reservation) =>
+    set((state) => ({
+      reservations: [reservation, ...state.reservations],
+      lastUpdated: new Date(),
+    })),
+
+  updateReservationStatus: (id, status) =>
+    set((state) => ({
+      reservations: state.reservations.map((r) =>
+        r.id === id ? { ...r, status } : r
       ),
       lastUpdated: new Date(),
     })),

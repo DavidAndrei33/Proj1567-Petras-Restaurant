@@ -24,8 +24,7 @@ const statusColors = {
   RECEIVED: 'bg-red-100 text-red-700',
   PREPARING: 'bg-amber-100 text-amber-700',
   READY: 'bg-green-100 text-green-700',
-  OUT_FOR_DELIVERY: 'bg-purple-100 text-purple-700',
-  DELIVERED: 'bg-gray-100 text-gray-700',
+  PICKED_UP: 'bg-cyan-100 text-cyan-700',
   CANCELLED: 'bg-red-100 text-red-700',
   ACCEPTED: 'bg-blue-100 text-blue-700',
 };
@@ -33,9 +32,8 @@ const statusColors = {
 const statusLabels = {
   RECEIVED: 'Nouă',
   PREPARING: 'În preparare',
-  READY: 'Gata',
-  OUT_FOR_DELIVERY: 'În livrare',
-  DELIVERED: 'Livrată',
+  READY: 'Gata de ridicare',
+  PICKED_UP: 'Ridicată',
   CANCELLED: 'Anulată',
   ACCEPTED: 'Acceptată',
 };
@@ -111,10 +109,12 @@ function OrderDetailsModal({ order, isOpen, onClose }) {
                     <Phone className="w-4 h-4 text-text-muted" />
                     <span className="text-sm text-text-primary">{order.customerPhone}</span>
                   </div>
-                  <div className="flex items-center gap-2 sm:col-span-2">
-                    <MapPin className="w-4 h-4 text-text-muted" />
-                    <span className="text-sm text-text-primary">{order.customerAddress}</span>
-                  </div>
+                  {order.pickupTime && (
+                    <div className="flex items-center gap-2">
+                      <Clock className="w-4 h-4 text-text-muted" />
+                      <span className="text-sm text-text-primary">Ridicare: {order.pickupTime}</span>
+                    </div>
+                  )}
                 </div>
               </div>
 
@@ -153,9 +153,9 @@ function OrderDetailsModal({ order, isOpen, onClose }) {
                     Plată
                   </h3>
                   <p className="text-sm text-text-secondary">
-                    {order.paymentMethod === 'cash' ? 'Cash la livrare' : 
-                     order.paymentMethod === 'card_on_delivery' ? 'Card la livrare' : 
-                     order.paymentMethod || 'Cash'}
+                    {order.paymentMethod === 'cash' ? 'Numerar la ridicare' : 
+                     order.paymentMethod === 'card' ? 'Card POS la ridicare' : 
+                     order.paymentMethod || 'Numerar'}
                   </p>
                 </div>
                 <div className="card p-4">

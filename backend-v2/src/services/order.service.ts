@@ -10,7 +10,6 @@ import type {
 
 export async function createOrder(input: CreateOrderInput) {
   return prisma.$transaction(async (tx) => {
-    // Fetch products and validate stock
     const productIds = input.items.map((i) => i.productId);
     const products = await tx.product.findMany({
       where: { id: { in: productIds }, isAvailable: true },
@@ -25,7 +24,6 @@ export async function createOrder(input: CreateOrderInput) {
       );
     }
 
-    // Calculate total
     let total = new Prisma.Decimal(0);
     const orderItems = input.items.map((item) => {
       const product = products.find((p) => p.id === item.productId)!;
@@ -39,24 +37,27 @@ export async function createOrder(input: CreateOrderInput) {
       };
     });
 
-    // Create order with items
-    const order = await tx.order.create({
-      data: {
-        customerName: input.customerName,
-        customerPhone: input.customerPhone,
-        customerAddress: input.customerAddress,
-        total,
-        status: OrderStatus.RECEIVED,
-        paymentMethod: input.paymentMethod,
-        notes: input.notes,
-        items: { create: orderItems },
-        statusHistory: {
-          create: {
-            status: OrderStatus.RECEIVED,
-            notes: "Comanda primita",
-          },
+    const orderData: any = {
+      orderType: input.orderType,
+      customerName: input.customerName,
+      customerPhone: input.customerPhone,
+      customerAddress: input.customerAddress || null,
+      pickupTime: input.pickupTime || null,
+      total,
+      status: OrderStatus.RECEIVED,
+      paymentMethod: input.paymentMethod,
+      notes: input.notes,
+      items: { create: orderItems },
+      statusHistory: {
+        create: {
+          status: OrderStatus.RECEIVED,
+          notes: "Comanda primita",
         },
       },
+    };
+
+    const order = await tx.order.create({
+      data: orderData,
       include: {
         items: { include: { product: true } },
         statusHistory: true,
@@ -74,6 +75,7 @@ export async function createOrder(input: CreateOrderInput) {
         customerName: order.customerName,
         total: order.total,
         itemCount: order.items.length,
+        orderType: order.orderType,
       },
     });
     return order;
@@ -140,10 +142,7 @@ export async function getOrderById(id: number) {
 
 export async function getOrderByIdAndPhone(id: number, phone: string) {
   return prisma.order.findFirst({
-    where: {
-      id,
-      customerPhone: { contains: phone },
-    },
+    where: { id, customerPhone: phone },
     include: {
       items: { include: { product: true } },
       statusHistory: { orderBy: { createdAt: "asc" } },
@@ -151,24 +150,11 @@ export async function getOrderByIdAndPhone(id: number, phone: string) {
   });
 }
 
-export async function getMyOrders(userId: number) {
-  return prisma.order.findMany({
-    where: { userId },
-    include: {
-      items: { include: { product: true } },
-      statusHistory: { orderBy: { createdAt: "asc" } },
-    },
-    orderBy: { createdAt: "desc" },
-  });
-}
-
-export async function updateOrderStatus(
-  orderId: number,
-  input: UpdateStatusInput
-) {
+export async function updateOrderStatus(id: number, input: UpdateStatusInput) {
   return prisma.$transaction(async (tx) => {
     const order = await tx.order.findUnique({
-      where: { id: orderId },
+      where: { id },
+      include: { statusHistory: true },
     });
 
     if (!order) {
@@ -180,26 +166,26 @@ export async function updateOrderStatus(
     if (!canTransition(order.status, newStatus)) {
       throw Object.assign(
         new Error(
-          `Invalid status transition from ${STATUS_LABELS[order.status]} to ${STATUS_LABELS[newStatus]}`
+          `Cannot transition from ${STATUS_LABELS[order.status]} to ${STATUS_LABELS[newStatus]}`
         ),
         { statusCode: 400 }
       );
     }
 
     const updated = await tx.order.update({
-      where: { id: orderId },
-      data: { status: newStatus },
+      where: { id },
+      data: {
+        status: newStatus,
+        statusHistory: {
+          create: {
+            status: newStatus,
+            notes: input.notes || `Status changed to ${STATUS_LABELS[newStatus]}`,
+          },
+        },
+      },
       include: {
         items: { include: { product: true } },
-        statusHistory: { orderBy: { createdAt: "asc" } },
-      },
-    });
-
-    await tx.orderStatusHistory.create({
-      data: {
-        orderId,
-        status: newStatus,
-        notes: input.notes || `Status updated to ${STATUS_LABELS[newStatus]}`,
+        statusHistory: true,
       },
     });
 
@@ -211,7 +197,8 @@ export async function updateOrderStatus(
       status: order.status,
       timestamp: new Date().toISOString(),
       data: {
-        notes: input.notes,
+        customerName: order.customerName,
+        status: order.status,
       },
     });
     return order;
@@ -219,77 +206,52 @@ export async function updateOrderStatus(
 }
 
 export async function getOrderStats() {
-  const today = new Date();
-  today.setHours(0, 0, 0, 0);
-
-  const yesterday = new Date(today);
-  yesterday.setDate(yesterday.getDate() - 1);
+  const now = new Date();
+  const todayStart = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const todayEnd = new Date(todayStart);
+  todayEnd.setDate(todayEnd.getDate() + 1);
 
   const [
     totalOrders,
     todayOrders,
-    todayRevenue,
     pendingOrders,
-    statusCounts,
+    preparingOrders,
+    readyOrders,
+    revenueToday,
   ] = await Promise.all([
     prisma.order.count(),
-    prisma.order.count({ where: { createdAt: { gte: today } } }),
+    prisma.order.count({
+      where: { createdAt: { gte: todayStart, lt: todayEnd } },
+    }),
+    prisma.order.count({ where: { status: OrderStatus.RECEIVED } }),
+    prisma.order.count({ where: { status: OrderStatus.PREPARING } }),
+    prisma.order.count({ where: { status: OrderStatus.READY } }),
     prisma.order.aggregate({
-      where: { createdAt: { gte: today } },
+      where: {
+        createdAt: { gte: todayStart, lt: todayEnd },
+        status: { not: OrderStatus.CANCELLED },
+      },
       _sum: { total: true },
     }),
-    prisma.order.count({ where: { status: { in: ["RECEIVED", "ACCEPTED", "PREPARING", "READY", "OUT_FOR_DELIVERY"] } } }),
-    prisma.order.groupBy({
-      by: ["status"],
-      _count: { status: true },
-    }),
   ]);
-
-  const statusMap = statusCounts.reduce((acc, curr) => {
-    acc[curr.status] = curr._count.status;
-    return acc;
-  }, {} as Record<string, number>);
 
   return {
     totalOrders,
     todayOrders,
-    todayRevenue: todayRevenue._sum.total?.toNumber() || 0,
     pendingOrders,
-    statusCounts: statusMap,
-    // Weekly sales data for chart
-    weeklySales: await getWeeklySales(),
+    preparingOrders,
+    readyOrders,
+    revenueToday: revenueToday._sum.total?.toNumber() ?? 0,
   };
 }
 
-async function getWeeklySales() {
-  const days = ["Dum", "Lun", "Mar", "Mie", "Joi", "Vin", "Sâm"];
-  const result = [];
-
-  for (let i = 6; i >= 0; i--) {
-    const date = new Date();
-    date.setDate(date.getDate() - i);
-    date.setHours(0, 0, 0, 0);
-
-    const nextDate = new Date(date);
-    nextDate.setDate(nextDate.getDate() + 1);
-
-    const dayOrders = await prisma.order.aggregate({
-      where: {
-        createdAt: {
-          gte: date,
-          lt: nextDate,
-        },
-      },
-      _sum: { total: true },
-      _count: { id: true },
-    });
-
-    result.push({
-      day: days[date.getDay()],
-      sales: dayOrders._sum.total?.toNumber() || 0,
-      orders: dayOrders._count.id,
-    });
-  }
-
-  return result;
+export async function getMyOrders(userId: number) {
+  return prisma.order.findMany({
+    where: { userId },
+    include: {
+      items: { include: { product: true } },
+      statusHistory: { orderBy: { createdAt: "asc" } },
+    },
+    orderBy: { createdAt: "desc" },
+  });
 }

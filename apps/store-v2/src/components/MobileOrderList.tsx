@@ -6,14 +6,14 @@ import type { OrderStatus } from '../types';
 
 const statusConfig: Record<OrderStatus, { label: string; color: string }> = {
   RECEIVED: { label: 'Comenzi Noi', color: 'text-status-new' },
+  ACCEPTED: { label: 'Acceptate', color: 'text-[#06b6d4]' },
   PREPARING: { label: 'În Preparare', color: 'text-status-preparing' },
   READY: { label: 'Gata', color: 'text-status-ready' },
-  OUT_FOR_DELIVERY: { label: 'În Livrare', color: 'text-purple-400' },
-  DELIVERED: { label: 'Livrate', color: 'text-cyan-400' },
+  PICKED_UP: { label: 'Ridicate', color: 'text-cyan-400' },
   CANCELLED: { label: 'Anulate', color: 'text-red-400' },
 };
 
-const statuses: OrderStatus[] = ['RECEIVED', 'PREPARING', 'READY', 'OUT_FOR_DELIVERY', 'DELIVERED', 'CANCELLED'];
+const statuses: OrderStatus[] = ['RECEIVED', 'PREPARING', 'READY', 'PICKED_UP', 'CANCELLED'];
 
 export function MobileOrderList() {
   const { orders, activeFilter, setActiveFilter } = useKDSStore();
@@ -101,8 +101,7 @@ export function MobileOrderList() {
                 ? status === 'RECEIVED' ? 'bg-status-new w-4' 
                   : status === 'PREPARING' ? 'bg-status-preparing w-4'
                   : status === 'READY' ? 'bg-status-ready w-4'
-                  : status === 'OUT_FOR_DELIVERY' ? 'bg-purple-400 w-4'
-                  : status === 'DELIVERED' ? 'bg-cyan-400 w-4'
+                  : status === 'PICKED_UP' ? 'bg-cyan-400 w-4'
                   : 'bg-red-400 w-4'
                 : 'bg-border-subtle'
             }`}

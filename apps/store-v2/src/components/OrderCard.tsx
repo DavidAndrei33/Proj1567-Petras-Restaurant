@@ -2,7 +2,6 @@ import { motion } from 'framer-motion';
 import {
   Clock,
   Phone,
-  MapPin,
   User,
   CreditCard,
   Banknote,
@@ -50,29 +49,29 @@ const statusConfig: Record<
     next: 'READY',
     prev: null,
   },
+  ACCEPTED: {
+    label: 'Acceptată',
+    color: 'text-[#06b6d4]',
+    bg: 'bg-[#06b6d4]/10',
+    border: 'border-[#06b6d4]/30',
+    next: 'PREPARING',
+    prev: null,
+  },
   READY: {
     label: 'Gata',
     color: 'text-status-ready',
     bg: 'bg-status-ready/10',
     border: 'border-status-ready/30',
-    next: 'OUT_FOR_DELIVERY',
+    next: 'PICKED_UP',
     prev: 'PREPARING',
   },
-  OUT_FOR_DELIVERY: {
-    label: 'În Livrare',
-    color: 'text-purple-400',
-    bg: 'bg-purple-400/10',
-    border: 'border-purple-400/30',
-    next: 'DELIVERED',
-    prev: 'READY',
-  },
-  DELIVERED: {
-    label: 'Livrată',
+  PICKED_UP: {
+    label: 'Ridicată',
     color: 'text-cyan-400',
     bg: 'bg-cyan-400/10',
     border: 'border-cyan-400/30',
     next: null,
-    prev: 'OUT_FOR_DELIVERY',
+    prev: 'READY',
   },
   CANCELLED: {
     label: 'Anulată',
@@ -153,11 +152,13 @@ export function OrderCard({ order, index }: OrderCardProps) {
           <Phone className="w-3.5 h-3.5 text-text-muted" />
           <span className="text-sm">{order.phone}</span>
         </div>
-        {/* Address */}
-        <div className="flex items-center gap-2 text-text-secondary">
-          <MapPin className="w-3.5 h-3.5 text-text-muted" />
-          <span className="text-sm text-text-muted truncate">{order.customerAddress}</span>
-        </div>
+        {/* Pickup Time */}
+        {order.pickupTime && (
+          <div className="flex items-center gap-2 text-text-secondary">
+            <Clock className="w-3.5 h-3.5 text-text-muted" />
+            <span className="text-sm text-text-muted">Ridicare: {order.pickupTime}</span>
+          </div>
+        )}
         {/* Payment Method */}
         <div className="flex items-center gap-2">
           {(() => {

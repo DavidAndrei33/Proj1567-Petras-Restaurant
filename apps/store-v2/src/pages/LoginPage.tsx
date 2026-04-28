@@ -1,6 +1,6 @@
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { Flame, Loader2 } from 'lucide-react';
+import { Utensils, Loader2 } from 'lucide-react';
 import { useAuth } from '../context/AuthContext';
 
 export default function LoginPage() {
@@ -49,10 +49,10 @@ export default function LoginPage() {
           {/* Logo */}
           <div className="text-center mb-8">
             <div className="w-16 h-16 bg-primary rounded-2xl flex items-center justify-center mx-auto mb-4">
-              <Flame className="w-8 h-8 text-white" />
+              <Utensils className="w-8 h-8 text-white" />
             </div>
-            <h1 className="text-2xl font-bold text-text-primary">Rotiserie & Pizza</h1>
-            <p className="text-text-muted mt-1">KDS Bucătărie — Moinești</p>
+            <h1 className="text-2xl font-bold text-text-primary">Petra's Restaurant</h1>
+            <p className="text-text-muted mt-1">KDS Bucătărie — Takeaway</p>
           </div>
 
           {/* PIN Display */}

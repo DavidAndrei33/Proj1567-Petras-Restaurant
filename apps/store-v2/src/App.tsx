@@ -1,3 +1,4 @@
+import { useState } from 'react';
 import { useAuth, AuthProvider } from './context/AuthContext';
 import { useKDSStore } from './store';
 import { useOrders } from './hooks/useOrders';
@@ -9,9 +10,10 @@ import { ConnectionBanner } from './components/ConnectionBanner';
 import { KanbanColumn } from './components/KanbanColumn';
 import { MobileOrderList } from './components/MobileOrderList';
 import LoginPage from './pages/LoginPage';
+import ReservationsPage from './pages/ReservationsPage';
 import type { OrderStatus } from './types';
 
-const columns: {
+const orderColumns: {
   status: OrderStatus;
   title: string;
   textColor: string;
@@ -28,6 +30,14 @@ const columns: {
     columnBg: 'bg-status-new/[0.02]',
   },
   {
+    status: 'ACCEPTED',
+    title: 'Acceptate',
+    textColor: 'text-[#06b6d4]',
+    bgColor: 'bg-[#06b6d4]',
+    badgeBg: 'bg-[#06b6d4]/15',
+    columnBg: 'bg-[#06b6d4]/[0.02]',
+  },
+  {
     status: 'PREPARING',
     title: 'În Preparare',
     textColor: 'text-status-preparing',
@@ -37,23 +47,15 @@ const columns: {
   },
   {
     status: 'READY',
-    title: 'Gata',
+    title: 'Gata de Ridicare',
     textColor: 'text-status-ready',
     bgColor: 'bg-status-ready',
     badgeBg: 'bg-status-ready/15',
     columnBg: 'bg-status-ready/[0.02]',
   },
   {
-    status: 'OUT_FOR_DELIVERY',
-    title: 'În Livrare',
-    textColor: 'text-purple-400',
-    bgColor: 'bg-purple-400',
-    badgeBg: 'bg-purple-400/15',
-    columnBg: 'bg-purple-400/[0.02]',
-  },
-  {
-    status: 'DELIVERED',
-    title: 'Livrate',
+    status: 'PICKED_UP',
+    title: 'Ridicate',
     textColor: 'text-cyan-400',
     bgColor: 'bg-cyan-400',
     badgeBg: 'bg-cyan-400/15',
@@ -70,6 +72,7 @@ const columns: {
 ];
 
 function KDSApp() {
+  const [activeTab, setActiveTab] = useState<'orders' | 'reservations'>('orders');
   const { orders } = useKDSStore();
   const setOrders = useKDSStore((s) => s.setOrders);
   const setIsOnline = useKDSStore((s) => s.setIsOnline);
@@ -91,28 +94,38 @@ function KDSApp() {
 
   return (
     <div className="h-screen flex flex-col bg-bg-primary">
-      <Header />
+      <Header activeTab={activeTab} onTabChange={setActiveTab} />
       <ConnectionBanner />
-      <FilterTabs />
 
-      {isMobile ? (
-        <MobileOrderList />
-      ) : (
-        <div className="flex-1 overflow-hidden px-6 pb-5 pt-2">
-          <div className="flex gap-3 h-full overflow-x-auto">
-            {columns.map((col) => (
-              <KanbanColumn
-                key={col.status}
-                status={col.status}
-                title={col.title}
-                textColor={col.textColor}
-                bgColor={col.bgColor}
-                badgeBg={col.badgeBg}
-                columnBg={col.columnBg}
-                orders={getOrdersByStatus(col.status)}
-              />
-            ))}
-          </div>
+      {activeTab === 'orders' && (
+        <>
+          <FilterTabs />
+          {isMobile ? (
+            <MobileOrderList />
+          ) : (
+            <div className="flex-1 overflow-hidden px-6 pb-5 pt-2">
+              <div className="flex gap-3 h-full overflow-x-auto">
+                {orderColumns.map((col) => (
+                  <KanbanColumn
+                    key={col.status}
+                    status={col.status}
+                    title={col.title}
+                    textColor={col.textColor}
+                    bgColor={col.bgColor}
+                    badgeBg={col.badgeBg}
+                    columnBg={col.columnBg}
+                    orders={getOrdersByStatus(col.status)}
+                  />
+                ))}
+              </div>
+            </div>
+          )}
+        </>
+      )}
+
+      {activeTab === 'reservations' && (
+        <div className="flex-1 overflow-hidden">
+          <ReservationsPage />
         </div>
       )}
     </div>

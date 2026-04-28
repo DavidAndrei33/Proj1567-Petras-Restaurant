@@ -19,7 +19,7 @@ async function fetchOrders(): Promise<Order[]> {
     })) || [],
     customerName: order.customerName || 'Client',
     phone: order.customerPhone || '',
-    customerAddress: order.customerAddress || '',
+    pickupTime: order.pickupTime || '',
     paymentMethod: order.paymentMethod || 'cash',
     total: parseFloat(order.total) || 0,
     notes: order.notes || '',

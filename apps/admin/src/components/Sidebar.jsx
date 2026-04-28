@@ -8,9 +8,11 @@ import {
   Settings,
   ChevronLeft,
   ChevronRight,
-  Flame,
+  Utensils,
   X,
   Users,
+  Calendar,
+  Armchair,
 } from 'lucide-react';
 import { motion, AnimatePresence } from 'framer-motion';
 
@@ -18,6 +20,8 @@ const navItems = [
   { path: '/', icon: LayoutDashboard, label: 'Dashboard' },
   { path: '/meniu', icon: UtensilsCrossed, label: 'Meniu' },
   { path: '/comenzi', icon: ClipboardList, label: 'Comenzi' },
+  { path: '/rezervari', icon: Calendar, label: 'Rezervări' },
+  { path: '/mese', icon: Armchair, label: 'Mese' },
   { path: '/rapoarte', icon: BarChart3, label: 'Rapoarte' },
   { path: '/utilizatori', icon: Users, label: 'Utilizatori' },
   { path: '/setari', icon: Settings, label: 'Setări' },
@@ -26,7 +30,6 @@ const navItems = [
 export default function Sidebar({ open, setOpen, isMobile }) {
   const location = useLocation();
 
-  // Mobile drawer
   if (isMobile) {
     return (
       <AnimatePresence>
@@ -38,14 +41,13 @@ export default function Sidebar({ open, setOpen, isMobile }) {
             transition={{ duration: 0.3, ease: 'easeInOut' }}
             className="fixed left-0 top-0 h-full w-[280px] bg-white border-r border-gray-200 z-50 flex flex-col shadow-2xl"
           >
-            {/* Logo */}
             <div className="flex items-center gap-3 px-4 py-5 border-b border-gray-100">
               <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center flex-shrink-0">
-                <Flame className="w-5 h-5 text-white" />
+                <Utensils className="w-5 h-5 text-white" />
               </div>
               <div>
                 <h1 className="font-bold text-text-primary text-sm leading-tight">
-                  Rotiserie & Pizza
+                  La Trattoria Petra's
                 </h1>
                 <p className="text-xs text-text-muted">Moinești</p>
               </div>
@@ -57,7 +59,6 @@ export default function Sidebar({ open, setOpen, isMobile }) {
               </button>
             </div>
 
-            {/* Navigation */}
             <nav className="flex-1 px-3 py-4 space-y-1">
               {navItems.map((item) => {
                 const Icon = item.icon;
@@ -80,9 +81,8 @@ export default function Sidebar({ open, setOpen, isMobile }) {
               })}
             </nav>
 
-            {/* Bottom */}
             <div className="px-4 py-4 border-t border-gray-100">
-              <p className="text-xs text-text-muted text-center">v1.0.0</p>
+              <p className="text-xs text-text-muted text-center">v2.0.0 · Petra's</p>
             </div>
           </motion.aside>
         )}
@@ -90,7 +90,6 @@ export default function Sidebar({ open, setOpen, isMobile }) {
     );
   }
 
-  // Desktop sidebar
   return (
     <motion.aside
       initial={false}
@@ -98,10 +97,9 @@ export default function Sidebar({ open, setOpen, isMobile }) {
       transition={{ duration: 0.3, ease: 'easeInOut' }}
       className="fixed left-0 top-0 h-full bg-white border-r border-gray-200 z-50 flex flex-col hidden lg:flex"
     >
-      {/* Logo */}
       <div className="flex items-center gap-3 px-4 py-5 border-b border-gray-100">
         <div className="w-10 h-10 bg-primary rounded-xl flex items-center justify-center flex-shrink-0">
-          <Flame className="w-5 h-5 text-white" />
+          <Utensils className="w-5 h-5 text-white" />
         </div>
         <AnimatePresence>
           {open && (
@@ -113,7 +111,7 @@ export default function Sidebar({ open, setOpen, isMobile }) {
               className="overflow-hidden"
             >
               <h1 className="font-bold text-text-primary text-sm leading-tight whitespace-nowrap">
-                Rotiserie & Pizza
+                La Trattoria Petra's
               </h1>
               <p className="text-xs text-text-muted whitespace-nowrap">Moinești</p>
             </motion.div>
@@ -127,7 +125,6 @@ export default function Sidebar({ open, setOpen, isMobile }) {
         </button>
       </div>
 
-      {/* Navigation */}
       <nav className="flex-1 px-3 py-4 space-y-1">
         {navItems.map((item) => {
           const Icon = item.icon;
@@ -158,7 +155,6 @@ export default function Sidebar({ open, setOpen, isMobile }) {
         })}
       </nav>
 
-      {/* Bottom */}
       <div className="px-4 py-4 border-t border-gray-100">
         <AnimatePresence>
           {open && (
@@ -168,7 +164,7 @@ export default function Sidebar({ open, setOpen, isMobile }) {
               exit={{ opacity: 0 }}
               className="text-xs text-text-muted text-center"
             >
-              v1.0.0
+              v2.0.0 · Petra's
             </motion.p>
           )}
         </AnimatePresence>

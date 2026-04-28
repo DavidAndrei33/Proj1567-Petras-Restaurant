@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, Menu, X, Flame, MapPin, Phone, LogIn, User, UserPlus } from 'lucide-react';
+import { ShoppingCart, Menu, X, Utensils, MapPin, Phone, LogIn, User, UserPlus, Calendar } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
 
@@ -29,7 +29,6 @@ export default function Header() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
-  // Close auth menu on click outside
   useEffect(() => {
     const handleClickOutside = (e) => {
       if (!e.target.closest('.auth-menu-container')) {
@@ -43,6 +42,7 @@ export default function Header() {
   const navLinks = [
     { path: '/', label: 'Acasă' },
     { path: '/meniu', label: 'Meniu' },
+    { path: '/rezervare', label: 'Rezervare' },
     { path: '/cos', label: 'Coș' },
   ];
 
@@ -50,27 +50,27 @@ export default function Header() {
 
   return (
     <>
-      {/* Top bar - Cinematic */}
+      {/* Top bar */}
       <div className="bg-[#0a0a0e] border-b border-white/[0.06] text-white/70 text-xs py-2.5 px-4 hidden md:block">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-8">
             <span className="flex items-center gap-2 text-white/60">
               <MapPin size={13} className="text-[#f59e0b]" />
-              Str. Tudor Vladimirescu 10, Moinești
+              Str. Eremia Grigorescu nr. 2, Moinești
             </span>
             <span className="flex items-center gap-2 text-white/60">
               <Phone size={13} className="text-[#f59e0b]" />
-              <a href="tel:+40754292740" className="hover:text-[#fbbf24] transition-colors">+40 754 292 740</a>
+              <a href="tel:+40749107787" className="hover:text-[#fbbf24] transition-colors">+40 749 107 787</a>
             </span>
           </div>
           <div className="flex items-center gap-2 text-white/60">
             <div className="w-1.5 h-1.5 rounded-full bg-[#f59e0b] animate-pulse" />
-            <span>Deschis acum · Livrare rapidă</span>
+            <span>Rezervări online · Experiență italiană autentică</span>
           </div>
         </div>
       </div>
 
-      {/* Main header - Cinematic Glass */}
+      {/* Main header */}
       <motion.header
         className={`fixed top-0 md:top-[42px] left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
@@ -83,20 +83,20 @@ export default function Header() {
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-            {/* Logo - Cinematic */}
+            {/* Logo */}
             <Link to="/" className="flex items-center gap-3 group">
               <div className="w-11 h-11 rounded-full border-2 border-[#f59e0b]/30 flex items-center justify-center bg-[#f59e0b]/10 shadow-[0_0_30px_rgba(245,158,11,0.2)] group-hover:shadow-[0_0_50px_rgba(245,158,11,0.3)] transition-all duration-500">
-                <Flame size={20} className="text-[#fbbf24]" />
+                <Utensils size={20} className="text-[#fbbf24]" />
               </div>
               <div className="hidden sm:block">
                 <h1 className="font-cinzel font-semibold text-base tracking-wider text-white">
-                  ROTISERIE <span className="text-[#fbbf24]">&</span> PIZZA
+                  LA TRATTORIA <span className="text-[#fbbf24]">PETRA'S</span>
                 </h1>
-                <p className="text-[10px] text-white/40 font-medium tracking-[0.3em] uppercase">Moinești</p>
+                <p className="text-[10px] text-white/40 font-medium tracking-[0.3em] uppercase">una fetta d'Italia</p>
               </div>
             </Link>
 
-            {/* Desktop nav - Cinematic */}
+            {/* Desktop nav */}
             <nav className="hidden md:flex items-center gap-1">
               {navLinks.map((link) => (
                 <Link
@@ -113,8 +113,17 @@ export default function Header() {
               ))}
             </nav>
 
-            {/* Actions - Cinematic */}
+            {/* Actions */}
             <div className="flex items-center gap-3">
+              {/* Reservation button */}
+              <Link
+                to="/rezervare"
+                className="hidden md:flex items-center gap-2 px-4 py-2 rounded-xl bg-gradient-to-r from-[#f59e0b] to-[#f97316] text-[#020204] text-sm font-semibold hover:shadow-[0_0_20px_rgba(245,158,11,0.4)] transition-all"
+              >
+                <Calendar size={16} />
+                Rezervă
+              </Link>
+
               {/* Auth icon button */}
               <div className="auth-menu-container relative">
                 <motion.button
@@ -131,7 +140,6 @@ export default function Header() {
                   {isLoggedIn ? <User size={20} /> : <LogIn size={20} />}
                 </motion.button>
 
-                {/* Auth dropdown - Cinematic */}
                 <AnimatePresence>
                   {authMenuOpen && (
                     <motion.div
@@ -188,7 +196,7 @@ export default function Header() {
                 </AnimatePresence>
               </div>
 
-              {/* Cart button - Cinematic */}
+              {/* Cart button */}
               <motion.button
                 onClick={() => {
                   if (location.pathname !== '/meniu') {
@@ -215,7 +223,7 @@ export default function Header() {
                 </AnimatePresence>
               </motion.button>
 
-              {/* Mobile menu toggle - Cinematic */}
+              {/* Mobile menu toggle */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
                 className="md:hidden p-2.5 rounded-xl bg-white/5 border border-white/10 text-white/70 hover:bg-white/10 hover:text-white transition-all"
@@ -227,7 +235,7 @@ export default function Header() {
         </div>
       </motion.header>
 
-      {/* Mobile menu - Cinematic */}
+      {/* Mobile menu */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div

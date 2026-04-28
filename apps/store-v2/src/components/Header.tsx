@@ -6,15 +6,21 @@ import {
   Package,
   CheckCircle2,
   RefreshCw,
-  Truck,
-  MapPin,
+  ShoppingBag,
   XCircle,
+  Calendar,
+  Users,
 } from 'lucide-react';
 import { useKDSStore } from '../store';
 import { formatTime } from '../utils/time';
 import { useEffect, useState } from 'react';
 
-export function Header() {
+interface HeaderProps {
+  activeTab: 'orders' | 'reservations';
+  onTabChange: (tab: 'orders' | 'reservations') => void;
+}
+
+export function Header({ activeTab, onTabChange }: HeaderProps) {
   const { orders, toggleSound, soundEnabled } = useKDSStore();
   const [currentTime, setCurrentTime] = useState(new Date());
   const [isRefreshing, setIsRefreshing] = useState(false);
@@ -33,8 +39,7 @@ export function Header() {
   const newCount = orders.filter((o) => o.status === 'RECEIVED').length;
   const preparingCount = orders.filter((o) => o.status === 'PREPARING').length;
   const readyCount = orders.filter((o) => o.status === 'READY').length;
-  const outForDeliveryCount = orders.filter((o) => o.status === 'OUT_FOR_DELIVERY').length;
-  const deliveredCount = orders.filter((o) => o.status === 'DELIVERED').length;
+  const pickedUpCount = orders.filter((o) => o.status === 'PICKED_UP').length;
   const cancelledCount = orders.filter((o) => o.status === 'CANCELLED').length;
 
   const stats = [
@@ -60,16 +65,9 @@ export function Header() {
       bg: 'bg-status-ready/10',
     },
     {
-      label: 'În Livrare',
-      value: outForDeliveryCount,
-      icon: Truck,
-      color: 'text-purple-400',
-      bg: 'bg-purple-400/10',
-    },
-    {
-      label: 'Livrate',
-      value: deliveredCount,
-      icon: MapPin,
+      label: 'Ridicate',
+      value: pickedUpCount,
+      icon: ShoppingBag,
       color: 'text-cyan-400',
       bg: 'bg-cyan-400/10',
     },
@@ -95,10 +93,40 @@ export function Header() {
           </div>
           <div>
             <h1 className="text-base md:text-xl font-bold text-text-primary">
-              Rotiserie KDS
+              Petra's Restaurant
             </h1>
             <p className="text-[10px] md:text-xs text-text-muted">Kitchen Display System</p>
           </div>
+        </div>
+
+        {/* Tab switcher */}
+        <div className="flex items-center bg-bg-primary rounded-xl p-1 border border-border-subtle">
+          <button
+            onClick={() => onTabChange('orders')}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              activeTab === 'orders'
+                ? 'bg-status-preparing/20 text-status-preparing'
+                : 'text-text-muted hover:text-text-secondary'
+            }`}
+          >
+            <span className="flex items-center gap-2">
+              <Package size={16} />
+              Comenzi
+            </span>
+          </button>
+          <button
+            onClick={() => onTabChange('reservations')}
+            className={`px-4 py-2 rounded-lg text-sm font-medium transition-all ${
+              activeTab === 'reservations'
+                ? 'bg-status-preparing/20 text-status-preparing'
+                : 'text-text-muted hover:text-text-secondary'
+            }`}
+          >
+            <span className="flex items-center gap-2">
+              <Calendar size={16} />
+              Rezervări
+            </span>
+          </button>
         </div>
 
         <div className="flex items-center gap-3">
@@ -138,27 +166,42 @@ export function Header() {
         </div>
       </div>
 
-      <div className="grid grid-cols-3 md:grid-cols-6 gap-2 md:gap-3">
-        {stats.map((stat, index) => (
-          <motion.div
-            key={stat.label}
-            initial={{ opacity: 0, y: 10 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.05 }}
-            className="bg-bg-primary border border-border-subtle rounded-xl p-2 md:p-3 flex items-center gap-2 md:gap-3"
-          >
-            <div className={`p-1 md:p-1.5 rounded-md md:rounded-lg ${stat.bg}`}>
-              <stat.icon className={`w-3.5 h-3.5 md:w-4 md:h-4 ${stat.color}`} />
-            </div>
-            <div className="min-w-0">
-              <div className="text-sm md:text-base font-bold text-text-primary truncate">
-                {stat.value}
+      {activeTab === 'orders' && (
+        <div className="grid grid-cols-3 md:grid-cols-5 gap-2 md:gap-3">
+          {stats.map((stat, index) => (
+            <motion.div
+              key={stat.label}
+              initial={{ opacity: 0, y: 10 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ delay: index * 0.05 }}
+              className="bg-bg-primary border border-border-subtle rounded-xl p-2 md:p-3 flex items-center gap-2 md:gap-3"
+            >
+              <div className={`p-1 md:p-1.5 rounded-md md:rounded-lg ${stat.bg}`}>
+                <stat.icon className={`w-3.5 h-3.5 md:w-4 md:h-4 ${stat.color}`} />
               </div>
-              <div className="text-[9px] md:text-[10px] text-text-muted truncate">{stat.label}</div>
-            </div>
-          </motion.div>
-        ))}
-      </div>
+              <div className="min-w-0">
+                <div className="text-sm md:text-base font-bold text-text-primary truncate">
+                  {stat.value}
+                </div>
+                <div className="text-[9px] md:text-[10px] text-text-muted truncate">{stat.label}</div>
+              </div>
+            </motion.div>
+          ))}
+        </div>
+      )}
+
+      {activeTab === 'reservations' && (
+        <div className="flex items-center gap-4 text-text-muted text-sm">
+          <span className="flex items-center gap-2">
+            <Calendar size={16} className="text-status-preparing" />
+            Rezervări
+          </span>
+          <span className="flex items-center gap-2">
+            <Users size={16} className="text-status-ready" />
+            Management mese
+          </span>
+        </div>
+      )}
     </motion.header>
   );
 }

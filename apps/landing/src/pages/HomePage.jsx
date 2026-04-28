@@ -2,35 +2,36 @@ import React from 'react';
 import HeroSection from '../components/HeroSection';
 import MenuPreview from '../components/MenuPreview';
 import { motion } from 'framer-motion';
-import { Truck, Clock, ShieldCheck, ChefHat } from 'lucide-react';
+import { Calendar, UtensilsCrossed, Wine, ChefHat } from 'lucide-react';
+import { Link } from 'react-router-dom';
 
 export default function HomePage() {
   const features = [
     {
-      icon: Truck,
-      title: 'Livrare gratuită',
-      description: 'Livrare gratuită în toată zona Moineștiului pentru comenzi peste 50 lei.',
+      icon: UtensilsCrossed,
+      title: 'Bucătărie Italiană Autentică',
+      description: 'Paste artizanale, pizza napoletană și preparate din carne premium, gătite după rețete tradiționale italiene.',
       color: 'text-[#fbbf24]',
       bg: 'bg-[#f59e0b]/10 border-[#f59e0b]/20',
     },
     {
-      icon: Clock,
-      title: 'Livrare rapidă',
-      description: 'Primești comanda în maxim 35 de minute. Rapid și proaspăt!',
+      icon: Calendar,
+      title: 'Rezervări Online',
+      description: 'Rezervă-ți masa în avans pentru o experiență perfectă. Aniversări, cine romantice sau întâlniri de afaceri.',
       color: 'text-[#06b6d4]',
       bg: 'bg-[#06b6d4]/10 border-[#06b6d4]/20',
     },
     {
-      icon: ShieldCheck,
-      title: 'Calitate garantată',
-      description: 'Folosim doar ingrediente proaspete și de cea mai bună calitate.',
+      icon: Wine,
+      title: 'Vinotecă Selectă',
+      description: 'Colecție de vinuri românești și italiene alese cu grijă, perfecte pentru a însoți fiecare preparat.',
       color: 'text-[#10b981]',
       bg: 'bg-[#10b981]/10 border-[#10b981]/20',
     },
     {
       icon: ChefHat,
-      title: 'Bucătari experimentați',
-      description: 'Echipa noastră de bucătari cu experiență pregătește fiecare fel cu pasiune.',
+      title: 'Chef cu Experiență',
+      description: 'Echipa noastră de bucătari aduce autenticitatea Italiei în farfuriile tale, cu pasiune și măiestrie.',
       color: 'text-[#f97316]',
       bg: 'bg-[#f97316]/10 border-[#f97316]/20',
     },
@@ -41,9 +42,66 @@ export default function HomePage() {
       <HeroSection />
       <MenuPreview />
 
+      {/* About section */}
+      <section className="py-20 bg-[#0a0a0e] relative">
+        <div className="absolute top-0 left-0 w-[500px] h-[500px] rounded-full opacity-20 pointer-events-none"
+          style={{
+            background: 'radial-gradient(ellipse, rgba(245,158,11,0.15) 0%, transparent 60%)',
+            filter: 'blur(80px)'
+          }}
+        />
+
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="grid md:grid-cols-2 gap-12 items-center"
+          >
+            <div>
+              <h2 className="font-cinzel font-bold text-3xl sm:text-4xl text-white mb-6 tracking-wide">
+                O <span className="gradient-honey-text">felie din Italia</span> în inima Moineștiului
+              </h2>
+              <p className="text-white/60 mb-4 leading-relaxed">
+                La Trattoria Petra's aducem autenticul gust italian în orașul tău. De la paste al dente la pizza 
+                napoletană cu blat pufos, fiecare preparat este o călătorie culinară prin regiunile Italiei.
+              </p>
+              <p className="text-white/60 mb-6 leading-relaxed">
+                Folosim ingrediente proaspete, importate direct din Italia – de la mozzarella di bufala 
+                la uleiul de măsline extra virgin și parmigiano reggiano DOP.
+              </p>
+              <div className="flex flex-wrap gap-4">
+                <div className="px-5 py-3 rounded-xl bg-white/5 border border-white/10">
+                  <p className="text-2xl font-bold text-[#fbbf24]">4.8★</p>
+                  <p className="text-xs text-white/50">Rating Google</p>
+                </div>
+                <div className="px-5 py-3 rounded-xl bg-white/5 border border-white/10">
+                  <p className="text-2xl font-bold text-[#fbbf24]">287+</p>
+                  <p className="text-xs text-white/50">Recenzii</p>
+                </div>
+                <div className="px-5 py-3 rounded-xl bg-white/5 border border-white/10">
+                  <p className="text-2xl font-bold text-[#fbbf24]">2020</p>
+                  <p className="text-xs text-white/50">Deschis din</p>
+                </div>
+              </div>
+            </div>
+            <div className="relative">
+              <div className="aspect-[4/3] rounded-2xl bg-gradient-to-br from-[#f59e0b]/20 to-[#f97316]/10 border border-white/10 flex items-center justify-center">
+                <UtensilsCrossed size={80} className="text-[#fbbf24]/30" />
+              </div>
+              <div className="absolute -bottom-4 -right-4 w-32 h-32 rounded-2xl bg-gradient-to-br from-[#f59e0b] to-[#f97316] flex items-center justify-center shadow-2xl">
+                <div className="text-center">
+                  <p className="text-2xl font-bold text-[#020204]">SINCE</p>
+                  <p className="text-3xl font-bold text-[#020204]">2020</p>
+                </div>
+              </div>
+            </div>
+          </motion.div>
+        </div>
+      </section>
+
       {/* Features section */}
       <section className="py-20 bg-[#0a0a0e] relative">
-        {/* Background glow */}
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full opacity-20 pointer-events-none"
           style={{
             background: 'radial-gradient(ellipse, rgba(245,158,11,0.15) 0%, transparent 60%)',
@@ -62,7 +120,7 @@ export default function HomePage() {
               De ce să ne <span className="gradient-honey-text">alegi?</span>
             </h2>
             <p className="text-white/50 max-w-xl mx-auto">
-              Suntem dedicați să oferim cea mai bună experiență culinară din Moinești
+              Suntem dedicați să oferim cea mai bună experiență culinară italiană din Moinești
             </p>
           </motion.div>
 
@@ -99,18 +157,28 @@ export default function HomePage() {
             viewport={{ once: true }}
           >
             <h2 className="font-cinzel font-bold text-3xl sm:text-5xl text-white mb-6 tracking-wide">
-              Comandă acum și bucură-te de <span className="text-[#fbbf24]">gustul autentic</span>
+              Rezervă-ți masa și trăiește <span className="text-[#fbbf24]">experiența italiană</span>
             </h2>
             <p className="text-white/60 text-lg mb-10 max-w-2xl mx-auto">
-              Pizza proaspătă din cuptor, pui rotisat aromat și garnituri delicioase te așteaptă. 
-              Plasează comanda acum și te vom răsplăti cu o reducere de 20%!
+              Fie că ești în căutarea unei cine romantice, a unei întâlniri de afaceri sau pur și simplu 
+              vrei să savurezi autenticul gust italian, te așteptăm cu brațele deschise.
             </p>
-            <a
-              href="/meniu"
-              className="inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-[#f59e0b] to-[#f97316] text-[#020204] font-semibold rounded-xl shadow-[0_10px_40px_rgba(245,158,11,0.3)] hover:shadow-[0_15px_50px_rgba(245,158,11,0.4)] transition-all duration-300 text-lg"
-            >
-              Comandă acum
-            </a>
+            <div className="flex flex-col sm:flex-row gap-4 justify-center">
+              <Link
+                to="/rezervare"
+                className="inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-[#f59e0b] to-[#f97316] text-[#020204] font-semibold rounded-xl shadow-[0_10px_40px_rgba(245,158,11,0.3)] hover:shadow-[0_15px_50px_rgba(245,158,11,0.4)] transition-all duration-300 text-lg"
+              >
+                <Calendar size={20} />
+                Rezervă o masă
+              </Link>
+              <Link
+                to="/meniu"
+                className="inline-flex items-center gap-2 px-10 py-4 border-2 border-[#f59e0b] text-[#fbbf24] font-semibold rounded-xl hover:bg-[#f59e0b]/10 transition-all duration-300 text-lg"
+              >
+                <UtensilsCrossed size={20} />
+                Vezi meniul
+              </Link>
+            </div>
           </motion.div>
         </div>
       </section>

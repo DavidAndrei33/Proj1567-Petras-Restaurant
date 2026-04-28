@@ -44,9 +44,11 @@ export async function orderRoutes(app: FastifyInstance): Promise<void> {
       body: {
         type: "object",
         properties: {
+          orderType: { type: "string", enum: ["TAKEAWAY", "DINE_IN"], default: "TAKEAWAY" },
           customerName: { type: "string", minLength: 2 },
           customerPhone: { type: "string", minLength: 5 },
           customerAddress: { type: "string", minLength: 5 },
+          pickupTime: { type: "string" },
           items: {
             type: "array",
             items: {
@@ -59,20 +61,20 @@ export async function orderRoutes(app: FastifyInstance): Promise<void> {
             },
             minItems: 1,
           },
-          paymentMethod: { type: "string", enum: ["cash", "card_on_delivery"] },
+          paymentMethod: { type: "string", enum: ["cash", "card", "online"] },
           notes: { type: "string" },
         },
-        required: ["customerName", "customerPhone", "customerAddress", "items", "paymentMethod"],
+        required: ["customerName", "customerPhone", "items", "paymentMethod"],
       },
     },
     handler: async (request, reply) => {
       const data = createOrderSchema.parse(request.body);
-      
+
       if (request.user) {
         (data as any).userId = request.user.userId;
         (data as any).customerEmail = request.user.email;
       }
-      
+
       const order = await createOrder(data);
       reply.status(201).send({ success: true, data: order });
     },
@@ -120,26 +122,25 @@ export async function orderRoutes(app: FastifyInstance): Promise<void> {
     handler: async (request, reply) => {
       const id = Number((request.params as any).id);
       const order = await getOrderById(id);
-      
+
       if (!order) {
         return reply.status(404).send({
           success: false,
           error: "Order not found",
         });
       }
-      
-      // Allow kitchen/admin OR the customer who owns the order
+
       const userRole = request.user!.role;
       const isKitchenOrAdmin = ["KITCHEN", "ADMIN", "SUPERADMIN"].includes(userRole);
       const isOwner = order.userId === request.user!.userId;
-      
+
       if (!isKitchenOrAdmin && !isOwner) {
         return reply.status(403).send({
           success: false,
           error: "Forbidden. You can only view your own orders.",
         });
       }
-      
+
       reply.send({ success: true, data: order });
     },
   });
@@ -207,8 +208,7 @@ export async function orderRoutes(app: FastifyInstance): Promise<void> {
               "ACCEPTED",
               "PREPARING",
               "READY",
-              "OUT_FOR_DELIVERY",
-              "DELIVERED",
+              "PICKED_UP",
               "CANCELLED",
             ],
           },

@@ -9,6 +9,8 @@ import Orders from './pages/Orders.jsx';
 import Reports from './pages/Reports.jsx';
 import Settings from './pages/Settings.jsx';
 import UsersPage from './pages/UsersPage.jsx';
+import ReservationsPage from './pages/ReservationsPage.jsx';
+import TablesPage from './pages/TablesPage.jsx';
 
 function PrivateRoute({ children }) {
   const { isAuthenticated, user, loading } = useContext(AuthContext);
@@ -21,7 +23,6 @@ function PrivateRoute({ children }) {
     );
   }
   
-  // Only allow ADMIN or MANAGER roles
   const isAdmin = user?.role === 'ADMIN' || user?.role === 'MANAGER';
   
   return isAuthenticated && isAdmin ? children : <Navigate to="/login" replace />;
@@ -40,6 +41,8 @@ function App() {
                 <Route path="/" element={<Dashboard />} />
                 <Route path="/meniu" element={<Products />} />
                 <Route path="/comenzi" element={<Orders />} />
+                <Route path="/rezervari" element={<ReservationsPage />} />
+                <Route path="/mese" element={<TablesPage />} />
                 <Route path="/rapoarte" element={<Reports />} />
                 <Route path="/utilizatori" element={<UsersPage />} />
                 <Route path="/setari" element={<Settings />} />

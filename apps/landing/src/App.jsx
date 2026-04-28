@@ -15,6 +15,7 @@ import LoginPage from './pages/LoginPage';
 import RegisterPage from './pages/RegisterPage';
 import AccountPage from './pages/AccountPage';
 import OrderTrackingPage from './pages/OrderTrackingPage';
+import ReservationPage from './pages/ReservationPage';
 
 function App() {
   return (
@@ -30,6 +31,7 @@ function App() {
               <Route path="/cos" element={<CartPage />} />
               <Route path="/checkout" element={<CheckoutPage />} />
               <Route path="/comanda-confirmata" element={<OrderSuccessPage />} />
+              <Route path="/rezervare" element={<ReservationPage />} />
               <Route path="/login" element={<LoginPage />} />
               <Route path="/inregistrare" element={<RegisterPage />} />
               <Route path="/cont" element={<AccountPage />} />
