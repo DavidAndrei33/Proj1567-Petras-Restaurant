@@ -25,7 +25,7 @@ function PrivateRoute({ children }) {
   
   const isAdmin = user?.role === 'ADMIN' || user?.role === 'MANAGER';
   
-  return isAuthenticated && isAdmin ? children : <Navigate to="login" replace />;
+  return isAuthenticated && isAdmin ? children : <Navigate to="/login" replace />;
 }
 
 function App() {
@@ -46,6 +46,7 @@ function App() {
                 <Route path="/rapoarte" element={<Reports />} />
                 <Route path="/utilizatori" element={<UsersPage />} />
                 <Route path="/setari" element={<Settings />} />
+                <Route path="*" element={<Navigate to="/" replace />} />
               </Routes>
             </AdminLayout>
           </PrivateRoute>
