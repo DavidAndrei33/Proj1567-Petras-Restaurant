@@ -50,62 +50,62 @@ export default function Header() {
 
   return (
     <>
-      {/* Top bar */}
-      <div className="bg-dark text-white text-xs py-2 px-4 hidden md:block">
+      {/* Top bar - Cinematic */}
+      <div className="bg-[#0a0a0e] border-b border-white/[0.06] text-white/70 text-xs py-2.5 px-4 hidden md:block">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <span className="flex items-center gap-1.5 text-white/80">
-              <MapPin size={13} className="text-primary" />
+          <div className="flex items-center gap-8">
+            <span className="flex items-center gap-2 text-white/60">
+              <MapPin size={13} className="text-[#f59e0b]" />
               Str. Tudor Vladimirescu 10, Moinești
             </span>
-            <span className="flex items-center gap-1.5 text-white/80">
-              <Phone size={13} className="text-primary" />
-              <a href="tel:+40754292740" className="hover:text-primary transition-colors">+40 754 292 740</a>
+            <span className="flex items-center gap-2 text-white/60">
+              <Phone size={13} className="text-[#f59e0b]" />
+              <a href="tel:+40754292740" className="hover:text-[#fbbf24] transition-colors">+40 754 292 740</a>
             </span>
           </div>
-          <div className="flex items-center gap-1.5 text-white/80">
-            <Flame size={13} className="text-primary" />
+          <div className="flex items-center gap-2 text-white/60">
+            <div className="w-1.5 h-1.5 rounded-full bg-[#f59e0b] animate-pulse" />
             <span>Deschis acum · Livrare rapidă</span>
           </div>
         </div>
       </div>
 
-      {/* Main header */}
+      {/* Main header - Cinematic Glass */}
       <motion.header
-        className={`fixed top-0 md:top-8 left-0 right-0 z-50 transition-all duration-300 ${
+        className={`fixed top-0 md:top-[42px] left-0 right-0 z-50 transition-all duration-500 ${
           scrolled
-            ? 'glass shadow-lg py-2'
+            ? 'header-glass py-2'
             : 'bg-transparent py-4'
-        } md:top-8 top-0`}
+        } md:top-[42px] top-0`}
         initial={{ y: -100 }}
         animate={{ y: 0 }}
-        transition={{ duration: 0.5, ease: 'easeOut' }}
+        transition={{ duration: 0.6, ease: 'easeOut' }}
       >
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between">
-            {/* Logo */}
-            <Link to="/" className="flex items-center gap-2 group">
-              <div className="w-10 h-10 rounded-xl gradient-primary flex items-center justify-center shadow-lg group-hover:scale-105 transition-transform">
-                <Flame size={20} className="text-white" />
+            {/* Logo - Cinematic */}
+            <Link to="/" className="flex items-center gap-3 group">
+              <div className="w-11 h-11 rounded-full border-2 border-[#f59e0b]/30 flex items-center justify-center bg-[#f59e0b]/10 shadow-[0_0_30px_rgba(245,158,11,0.2)] group-hover:shadow-[0_0_50px_rgba(245,158,11,0.3)] transition-all duration-500">
+                <Flame size={20} className="text-[#fbbf24]" />
               </div>
               <div className="hidden sm:block">
-                <h1 className="font-playfair font-bold text-lg leading-tight text-dark">
-                  Rotiserie <span className="text-primary">&</span> Pizza
+                <h1 className="font-cinzel font-semibold text-base tracking-wider text-white">
+                  ROTISERIE <span className="text-[#fbbf24]">&</span> PIZZA
                 </h1>
-                <p className="text-[10px] text-dark/60 font-medium tracking-widest uppercase">Moinești</p>
+                <p className="text-[10px] text-white/40 font-medium tracking-[0.3em] uppercase">Moinești</p>
               </div>
             </Link>
 
-            {/* Desktop nav */}
+            {/* Desktop nav - Cinematic */}
             <nav className="hidden md:flex items-center gap-1">
               {navLinks.map((link) => (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`px-4 py-2 rounded-lg text-sm font-medium transition-all duration-200 ${
+                  className={`px-5 py-2.5 rounded-lg text-sm font-medium tracking-wide transition-all duration-300 ${
                     isActive(link.path)
-                      ? 'text-primary bg-primary/10'
-                      : 'text-dark/70 hover:text-dark hover:bg-dark/5'
+                      ? 'text-[#fbbf24] bg-[#f59e0b]/10 border border-[#f59e0b]/30'
+                      : 'text-white/60 hover:text-white hover:bg-white/5'
                   }`}
                 >
                   {link.label}
@@ -113,16 +113,16 @@ export default function Header() {
               ))}
             </nav>
 
-            {/* Actions */}
-            <div className="flex items-center gap-2">
+            {/* Actions - Cinematic */}
+            <div className="flex items-center gap-3">
               {/* Auth icon button */}
               <div className="auth-menu-container relative">
                 <motion.button
                   onClick={() => setAuthMenuOpen(!authMenuOpen)}
-                  className={`relative p-2.5 rounded-xl transition-colors ${
+                  className={`relative p-2.5 rounded-xl transition-all duration-300 border ${
                     isLoggedIn
-                      ? 'bg-wine/10 text-wine hover:bg-wine/20'
-                      : 'bg-dark/5 text-dark hover:bg-dark/10'
+                      ? 'bg-[#f59e0b]/10 border-[#f59e0b]/30 text-[#fbbf24] hover:bg-[#f59e0b]/20'
+                      : 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:text-white'
                   }`}
                   whileHover={{ scale: 1.05 }}
                   whileTap={{ scale: 0.95 }}
@@ -131,7 +131,7 @@ export default function Header() {
                   {isLoggedIn ? <User size={20} /> : <LogIn size={20} />}
                 </motion.button>
 
-                {/* Auth dropdown */}
+                {/* Auth dropdown - Cinematic */}
                 <AnimatePresence>
                   {authMenuOpen && (
                     <motion.div
@@ -139,25 +139,25 @@ export default function Header() {
                       animate={{ opacity: 1, y: 0, scale: 1 }}
                       exit={{ opacity: 0, y: -8, scale: 0.95 }}
                       transition={{ duration: 0.15 }}
-                      className="absolute right-0 top-full mt-2 w-48 bg-white rounded-xl shadow-xl border border-dark/10 py-2 z-50"
+                      className="absolute right-0 top-full mt-2 w-52 glass-cinematic rounded-xl shadow-2xl py-2 z-50"
                     >
                       {isLoggedIn ? (
                         <>
-                          <div className="px-4 py-2 border-b border-dark/5">
-                            <p className="text-sm font-semibold text-dark truncate">{user?.name}</p>
-                            <p className="text-xs text-dark/50 truncate">{user?.email}</p>
+                          <div className="px-4 py-3 border-b border-white/10">
+                            <p className="text-sm font-semibold text-white truncate">{user?.name}</p>
+                            <p className="text-xs text-white/50 truncate">{user?.email}</p>
                           </div>
                           <Link
                             to="/cont"
                             onClick={() => setAuthMenuOpen(false)}
-                            className="flex items-center gap-2 px-4 py-2.5 text-sm text-dark/70 hover:text-wine hover:bg-wine/5 transition-colors"
+                            className="flex items-center gap-3 px-4 py-3 text-sm text-white/70 hover:text-[#fbbf24] hover:bg-[#f59e0b]/10 transition-colors"
                           >
                             <User size={16} />
                             Contul meu
                           </Link>
                           <button
                             onClick={() => { logout(); setAuthMenuOpen(false); }}
-                            className="w-full flex items-center gap-2 px-4 py-2.5 text-sm text-dark/70 hover:text-red-500 hover:bg-red-50 transition-colors text-left"
+                            className="w-full flex items-center gap-3 px-4 py-3 text-sm text-white/70 hover:text-red-400 hover:bg-red-500/10 transition-colors text-left"
                           >
                             <LogIn size={16} />
                             Ieșire
@@ -168,7 +168,7 @@ export default function Header() {
                           <Link
                             to="/login"
                             onClick={() => setAuthMenuOpen(false)}
-                            className="flex items-center gap-2 px-4 py-2.5 text-sm text-dark/70 hover:text-wine hover:bg-wine/5 transition-colors"
+                            className="flex items-center gap-3 px-4 py-3 text-sm text-white/70 hover:text-[#fbbf24] hover:bg-[#f59e0b]/10 transition-colors"
                           >
                             <LogIn size={16} />
                             Intră în cont
@@ -176,7 +176,7 @@ export default function Header() {
                           <Link
                             to="/inregistrare"
                             onClick={() => setAuthMenuOpen(false)}
-                            className="flex items-center gap-2 px-4 py-2.5 text-sm text-dark/70 hover:text-wine hover:bg-wine/5 transition-colors"
+                            className="flex items-center gap-3 px-4 py-3 text-sm text-white/70 hover:text-[#fbbf24] hover:bg-[#f59e0b]/10 transition-colors"
                           >
                             <UserPlus size={16} />
                             Creează cont
@@ -188,7 +188,7 @@ export default function Header() {
                 </AnimatePresence>
               </div>
 
-              {/* Cart button */}
+              {/* Cart button - Cinematic */}
               <motion.button
                 onClick={() => {
                   if (location.pathname !== '/meniu') {
@@ -196,18 +196,18 @@ export default function Header() {
                   }
                   setIsOpen(true);
                 }}
-                className="relative p-2.5 rounded-xl bg-dark/5 hover:bg-dark/10 transition-colors"
+                className="relative p-2.5 rounded-xl bg-white/5 border border-white/10 text-white/70 hover:bg-white/10 hover:text-white transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >
-                <ShoppingCart size={20} className="text-dark" />
+                <ShoppingCart size={20} />
                 <AnimatePresence>
                   {totalItems > 0 && (
                     <motion.span
                       initial={{ scale: 0 }}
                       animate={{ scale: 1 }}
                       exit={{ scale: 0 }}
-                      className="absolute -top-1 -right-1 w-5 h-5 bg-primary text-white text-[10px] font-bold rounded-full flex items-center justify-center"
+                      className="absolute -top-1.5 -right-1.5 w-5 h-5 bg-[#f59e0b] text-[#020204] text-[10px] font-bold rounded-full flex items-center justify-center shadow-[0_0_15px_rgba(245,158,11,0.5)]"
                     >
                       {totalItems}
                     </motion.span>
@@ -215,10 +215,10 @@ export default function Header() {
                 </AnimatePresence>
               </motion.button>
 
-              {/* Mobile menu toggle */}
+              {/* Mobile menu toggle - Cinematic */}
               <button
                 onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-                className="md:hidden p-2.5 rounded-xl bg-dark/5 hover:bg-dark/10 transition-colors"
+                className="md:hidden p-2.5 rounded-xl bg-white/5 border border-white/10 text-white/70 hover:bg-white/10 hover:text-white transition-all"
               >
                 {mobileMenuOpen ? <X size={20} /> : <Menu size={20} />}
               </button>
@@ -227,14 +227,14 @@ export default function Header() {
         </div>
       </motion.header>
 
-      {/* Mobile menu */}
+      {/* Mobile menu - Cinematic */}
       <AnimatePresence>
         {mobileMenuOpen && (
           <motion.div
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             exit={{ opacity: 0, y: -20 }}
-            className="fixed top-16 left-0 right-0 z-40 md:hidden glass shadow-xl"
+            className="fixed top-16 left-0 right-0 z-40 md:hidden glass-cinematic shadow-2xl"
           >
             <nav className="flex flex-col p-4 gap-1">
               {navLinks.map((link) => (
@@ -242,31 +242,31 @@ export default function Header() {
                   key={link.path}
                   to={link.path}
                   onClick={() => setMobileMenuOpen(false)}
-                  className={`px-4 py-3 rounded-lg text-sm font-medium transition-all ${
+                  className={`px-4 py-3.5 rounded-lg text-sm font-medium tracking-wide transition-all ${
                     isActive(link.path)
-                      ? 'text-primary bg-primary/10'
-                      : 'text-dark/70'
+                      ? 'text-[#fbbf24] bg-[#f59e0b]/10 border border-[#f59e0b]/20'
+                      : 'text-white/70 hover:text-white hover:bg-white/5'
                   }`}
                 >
                   {link.label}
                 </Link>
               ))}
-              <div className="border-t border-dark/10 mt-2 pt-2">
+              <div className="border-t border-white/10 mt-3 pt-3">
                 {isLoggedIn ? (
                   <>
                     <Link
                       to="/cont"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium text-wine"
+                      className="flex items-center gap-3 px-4 py-3.5 rounded-lg text-sm font-medium text-[#fbbf24]"
                     >
-                      <User size={16} />
+                      <User size={18} />
                       Contul meu
                     </Link>
                     <button
                       onClick={() => { logout(); setMobileMenuOpen(false); }}
-                      className="w-full flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium text-red-500 text-left"
+                      className="w-full flex items-center gap-3 px-4 py-3.5 rounded-lg text-sm font-medium text-red-400 text-left"
                     >
-                      <LogIn size={16} />
+                      <LogIn size={18} />
                       Ieșire
                     </button>
                   </>
@@ -275,17 +275,17 @@ export default function Header() {
                     <Link
                       to="/login"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium text-dark/70"
+                      className="flex items-center gap-3 px-4 py-3.5 rounded-lg text-sm font-medium text-white/70"
                     >
-                      <LogIn size={16} />
+                      <LogIn size={18} />
                       Intră în cont
                     </Link>
                     <Link
                       to="/inregistrare"
                       onClick={() => setMobileMenuOpen(false)}
-                      className="flex items-center gap-2 px-4 py-3 rounded-lg text-sm font-medium text-wine"
+                      className="flex items-center gap-3 px-4 py-3.5 rounded-lg text-sm font-medium text-[#fbbf24]"
                     >
-                      <UserPlus size={16} />
+                      <UserPlus size={18} />
                       Creează cont
                     </Link>
                   </>

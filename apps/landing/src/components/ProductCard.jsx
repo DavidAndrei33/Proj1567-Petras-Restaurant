@@ -3,9 +3,9 @@ import { AnimatePresence, motion } from 'framer-motion';
 import { Plus, Minus, ShoppingCart, Timer, Flame, Check, ImageOff } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 
-const PLACEHOLDER_IMG = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"%3E%3Crect width="400" height="300" fill="%23f3f4f6"/%3E%3Ctext x="200" y="150" font-family="Arial" font-size="18" fill="%239ca3af" text-anchor="middle" dominant-baseline="middle"%3EFără imagine%3C/text%3E%3C/svg%3E';
+const PLACEHOLDER_IMG = 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 400 300"%3E%3Crect width="400" height="300" fill="%2312121a"/%3E%3Ctext x="200" y="150" font-family="Inter" font-size="16" fill="%23666" text-anchor="middle" dominant-baseline="middle"%3EFără imagine%3C/text%3E%3C/svg%3E';
 
-// Memoized ProductCard with custom comparison to prevent unnecessary re-renders
+// Memoized ProductCard with cinematic styling
 const ProductCard = memo(function ProductCard({ product, index }) {
   const { addItem } = useCart();
   const [quantity, setQuantity] = useState(1);
@@ -21,12 +21,12 @@ const ProductCard = memo(function ProductCard({ product, index }) {
 
   const getBadgeColor = (badge) => {
     switch (badge) {
-      case 'Popular': return 'bg-primary/90';
-      case 'Recomandat': return 'bg-secondary/90';
-      case 'Picant': return 'bg-orange-500/90';
-      case 'Fresh': return 'bg-emerald-500/90';
-      case 'Top': return 'bg-accent/90';
-      default: return 'bg-dark/70';
+      case 'Popular': return 'bg-[#f59e0b]/90';
+      case 'Recomandat': return 'bg-[#10b981]/90';
+      case 'Picant': return 'bg-[#ef4444]/90';
+      case 'Fresh': return 'bg-[#06b6d4]/90';
+      case 'Top': return 'bg-[#8b5cf6]/90';
+      default: return 'bg-white/20';
     }
   };
 
@@ -37,15 +37,15 @@ const ProductCard = memo(function ProductCard({ product, index }) {
 
   return (
     <div 
-      className="group product-card-entrance"
+      className="group product-card-cinematic stagger-item"
       style={{ '--delay': animationDelay }}
     >
-      <div className="bg-white rounded-2xl overflow-hidden card-shadow hover:card-shadow-hover transition-all duration-500 hover:-translate-y-2 h-full flex flex-col">
+      <div className="card-cinematic rounded-2xl overflow-hidden h-full flex flex-col">
         {/* Image */}
-        <div className="relative h-48 overflow-hidden bg-gray-100">
+        <div className="relative h-48 overflow-hidden bg-[#0a0a0e]">
           {imageUrl === PLACEHOLDER_IMG ? (
             <div className="w-full h-full flex items-center justify-center">
-              <ImageOff size={32} className="text-gray-300" />
+              <ImageOff size={32} className="text-white/20" />
             </div>
           ) : (
             <img
@@ -57,21 +57,21 @@ const ProductCard = memo(function ProductCard({ product, index }) {
               onError={() => setImgError(true)}
             />
           )}
-          <div className="absolute inset-0 bg-gradient-to-t from-black/40 to-transparent" />
+          <div className="absolute inset-0 bg-gradient-to-t from-[#0a0a0e] via-transparent to-transparent" />
           
           {product.badge && (
-            <span className={`absolute top-3 left-3 ${getBadgeColor(product.badge)} text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1 rounded-full`}>
+            <span className={`absolute top-3 left-3 ${getBadgeColor(product.badge)} text-white text-[10px] font-bold uppercase tracking-wider px-3 py-1.5 rounded-full backdrop-blur-sm`}>
               {product.badge}
             </span>
           )}
 
           <div className="absolute bottom-3 left-3 flex items-center gap-2">
-            <span className="flex items-center gap-1 bg-white/90 backdrop-blur-sm text-dark/80 text-[10px] font-medium px-2 py-1 rounded-full">
-              <Timer size={10} />
+            <span className="flex items-center gap-1.5 bg-black/40 backdrop-blur-sm text-white/80 text-[10px] font-medium px-2.5 py-1 rounded-full border border-white/10">
+              <Timer size={10} className="text-[#fbbf24]" />
               {product.prepTime}
             </span>
-            <span className="flex items-center gap-1 bg-white/90 backdrop-blur-sm text-dark/80 text-[10px] font-medium px-2 py-1 rounded-full">
-              <Flame size={10} />
+            <span className="flex items-center gap-1.5 bg-black/40 backdrop-blur-sm text-white/80 text-[10px] font-medium px-2.5 py-1 rounded-full border border-white/10">
+              <Flame size={10} className="text-[#fbbf24]" />
               {product.calories}
             </span>
           </div>
@@ -79,42 +79,42 @@ const ProductCard = memo(function ProductCard({ product, index }) {
 
         {/* Content */}
         <div className="p-5 flex-1 flex flex-col">
-          <h3 className="font-playfair font-semibold text-lg text-dark mb-2 group-hover:text-primary transition-colors">
+          <h3 className="font-cinzel font-semibold text-lg text-white mb-2 group-hover:text-[#fbbf24] transition-colors tracking-wide">
             {product.name}
           </h3>
-          <p className="text-dark/50 text-xs leading-relaxed mb-4 flex-1 line-clamp-3">
+          <p className="text-white/40 text-sm leading-relaxed mb-4 flex-1 line-clamp-3">
             {product.description}
           </p>
 
           <div className="flex items-center justify-between mt-auto">
             <div>
-              <span className="font-playfair font-bold text-2xl text-primary">{product.price}</span>
-              <span className="text-dark/40 text-sm ml-1">lei</span>
+              <span className="font-cinzel font-bold text-2xl text-[#fbbf24]">{product.price}</span>
+              <span className="text-white/40 text-sm ml-1">lei</span>
             </div>
 
             <div className="flex items-center gap-2">
               {/* Quantity selector */}
-              <div className="flex items-center bg-light rounded-lg overflow-hidden">
+              <div className="flex items-center bg-white/5 rounded-lg overflow-hidden border border-white/10">
                 <button
                   onClick={() => setQuantity(Math.max(1, quantity - 1))}
-                  className="min-w-[36px] min-h-[36px] w-9 h-9 flex items-center justify-center text-dark/50 hover:text-dark hover:bg-dark/5 transition-colors"
+                  className="min-w-[36px] min-h-[36px] w-9 h-9 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-colors"
                   aria-label="Scade cantitate"
                 >
                   <Minus size={14} />
                 </button>
-                <span className="min-w-[28px] min-h-[36px] w-7 h-9 flex items-center justify-center text-sm font-semibold text-dark">
+                <span className="min-w-[28px] min-h-[36px] w-7 h-9 flex items-center justify-center text-sm font-semibold text-white">
                   {quantity}
                 </span>
                 <button
                   onClick={() => setQuantity(quantity + 1)}
-                  className="min-w-[36px] min-h-[36px] w-9 h-9 flex items-center justify-center text-dark/50 hover:text-dark hover:bg-dark/5 transition-colors"
+                  className="min-w-[36px] min-h-[36px] w-9 h-9 flex items-center justify-center text-white/50 hover:text-white hover:bg-white/10 transition-colors"
                   aria-label="Adaugă cantitate"
                 >
                   <Plus size={14} />
                 </button>
               </div>
 
-              {/* Add to cart button with micro-interaction */}
+              {/* Add to cart button */}
               <motion.button
                 onClick={handleAdd}
                 whileHover={{ scale: 1.05 }}
@@ -122,7 +122,7 @@ const ProductCard = memo(function ProductCard({ product, index }) {
                 className={`min-w-[40px] min-h-[40px] w-10 h-10 rounded-xl flex items-center justify-center shadow-lg transition-all duration-300 relative overflow-hidden ${
                   added
                     ? 'bg-green-500 shadow-green-500/30'
-                    : 'gradient-primary shadow-primary/30 hover:shadow-primary/50'
+                    : 'bg-gradient-to-r from-[#f59e0b] to-[#f97316] shadow-[0_8px_30px_rgba(245,158,11,0.3)] hover:shadow-[0_12px_40px_rgba(245,158,11,0.4)]'
                 }`}
                 aria-label="Adaugă în coș"
               >
@@ -156,7 +156,6 @@ const ProductCard = memo(function ProductCard({ product, index }) {
     </div>
   );
 }, (prevProps, nextProps) => {
-  // Custom comparison: only re-render if product data actually changed
   return (
     prevProps.product.id === nextProps.product.id &&
     prevProps.product.name === nextProps.product.name &&
