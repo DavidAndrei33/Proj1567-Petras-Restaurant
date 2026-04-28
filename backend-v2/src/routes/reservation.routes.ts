@@ -181,6 +181,47 @@ export async function reservationRoutes(app: FastifyInstance): Promise<void> {
     },
   });
 
+  // Kitchen/Admin: Update reservation status (for Store KDS)
+  app.patch("/:id/status", {
+    preHandler: [authenticate, authorize("KITCHEN", "ADMIN", "SUPERADMIN")],
+    schema: {
+      tags: ["Reservations"],
+      description: "Update reservation status",
+      security: [{ bearerAuth: [] }],
+      params: {
+        type: "object",
+        properties: { id: { type: "integer" } },
+        required: ["id"],
+      },
+      body: {
+        type: "object",
+        properties: {
+          status: { type: "string", enum: ["PENDING", "CONFIRMED", "CANCELLED", "COMPLETED", "NO_SHOW"] },
+        },
+        required: ["status"],
+      },
+    },
+    handler: async (request, reply) => {
+      const id = Number((request.params as any).id);
+      const { status } = request.body as { status: any };
+
+      const reservation = await prisma.reservation.update({
+        where: { id },
+        data: { status: status as any },
+        include: { table: true },
+      });
+
+      publishOrderEvent({
+        type: "RESERVATION_UPDATED",
+        reservationId: reservation.id,
+        status: reservation.status,
+        timestamp: new Date().toISOString(),
+      });
+
+      reply.send({ success: true, data: reservation });
+    },
+  });
+
   // Admin: Delete reservation
   app.delete("/:id", {
     preHandler: [authenticate, authorize("ADMIN", "SUPERADMIN")],
