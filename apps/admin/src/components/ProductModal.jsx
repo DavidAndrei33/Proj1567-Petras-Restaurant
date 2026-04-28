@@ -73,7 +73,18 @@ export default function ProductModal({ isOpen, onClose, onSave, product, categor
     }
   };
 
-  const handleRemoveImage = () => {
+  const handleRemoveImage = async () => {
+    // Delete the old image file from server if it exists
+    if (form.image && form.image.startsWith('/uploads/')) {
+      try {
+        const filename = form.image.split('/').pop();
+        await client.delete(`/upload/${filename}`);
+      } catch (err) {
+        // Ignore errors - file might not exist or user might not have permission
+        console.log('Could not delete old image file:', err);
+      }
+    }
+    
     setForm((prev) => ({ ...prev, image: '' }));
     setImagePreview(null);
     if (fileInputRef.current) {
