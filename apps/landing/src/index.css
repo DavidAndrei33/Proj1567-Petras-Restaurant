@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 /* ============================================
-   CINEMATIC DARK THEME - OPTIMIZED
+   CINEMATIC DARK THEME - 60FPS OPTIMIZED
    ============================================ */
 
 :root {
@@ -13,12 +13,7 @@
   --elevated: #1a1a22;
   --honey: #f59e0b;
   --honey-bright: #fbbf24;
-  --honey-glow: rgba(245, 158, 11, 0.4);
   --amber: #f97316;
-  --amber-glow: rgba(249, 115, 22, 0.3);
-  --text-primary: #ffffff;
-  --text-secondary: rgba(255, 255, 255, 0.75);
-  --text-muted: rgba(255, 255, 255, 0.45);
 }
 
 @layer base {
@@ -28,14 +23,14 @@
   
   body {
     font-family: 'Inter', sans-serif;
-    background-color: #020204 !important;
+    background-color: #0a0a0e !important;
     color: #ffffff;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
   }
   
-  /* Cinematic Background - Optimized */
+  /* Static background - no animation, no complex gradients */
   body::before {
     content: '';
     position: fixed;
@@ -43,31 +38,12 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: 
-      radial-gradient(ellipse 80% 50% at 20% 40%, rgba(245, 158, 11, 0.06) 0%, transparent 50%),
-      radial-gradient(ellipse 70% 40% at 80% 60%, rgba(249, 115, 22, 0.04) 0%, transparent 45%),
-      radial-gradient(ellipse 60% 50% at 50% 100%, rgba(234, 179, 8, 0.03) 0%, transparent 50%);
+    background: radial-gradient(ellipse at 20% 30%, rgba(245, 158, 11, 0.08) 0%, transparent 50%);
     z-index: -2;
     pointer-events: none;
-    will-change: transform;
-    animation: slow-pan 120s ease-in-out infinite alternate;
   }
   
-  /* Reduced motion preference */
-  @media (prefers-reduced-motion: reduce) {
-    body::before {
-      animation: none;
-    }
-  }
-  
-  /* Disable animation on mobile for better performance */
-  @media (max-width: 768px) {
-    body::before {
-      animation: none;
-    }
-  }
-  
-  /* Vignette - Static, no animation */
+  /* Simple vignette - no animation */
   body::after {
     content: '';
     position: fixed;
@@ -75,43 +51,22 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(ellipse at center, transparent 0%, transparent 50%, var(--void) 100%);
+    background: radial-gradient(ellipse at center, transparent 40%, #020204 100%);
     z-index: -1;
     pointer-events: none;
   }
 }
 
-/* Optimized animation with GPU acceleration */
-@keyframes slow-pan {
-  0% { 
-    transform: translate3d(-1%, -1%, 0) scale(1.05);
-  }
-  100% { 
-    transform: translate3d(1%, 1%, 0) scale(1.1);
-  }
-}
-
 @layer utilities {
-  /* Cinematic Glass - Reduced blur for performance */
+  /* Glass effect - minimal blur for 60fps */
   .glass-cinematic {
-    background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
+    background: rgba(18, 18, 26, 0.95);
     border: 1px solid rgba(255, 255, 255, 0.08);
   }
   
-  /* Mobile: even less blur */
-  @media (max-width: 768px) {
-    .glass-cinematic {
-      backdrop-filter: blur(8px);
-      -webkit-backdrop-filter: blur(8px);
-    }
-  }
-  
   .glass-cinematic-hover:hover {
-    background: rgba(245, 158, 11, 0.05);
-    border-color: rgba(245, 158, 11, 0.3);
-    box-shadow: 0 0 30px rgba(245, 158, 11, 0.12);
+    background: rgba(245, 158, 11, 0.1);
+    border-color: rgba(245, 158, 11, 0.4);
   }
   
   /* Honey Gradients */
@@ -126,74 +81,33 @@
     background-clip: text;
   }
   
-  /* Honey Glow - Subtle on mobile */
-  .glow-honey {
-    box-shadow: 0 0 20px var(--honey-glow);
+  /* Subtle shadow - no glow */
+  .shadow-cinematic {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.4);
   }
   
-  .glow-honey-hover:hover {
-    box-shadow: 0 0 30px var(--honey-glow);
-  }
-  
-  @media (max-width: 768px) {
-    .glow-honey-hover:hover {
-      box-shadow: 0 0 15px var(--honey-glow);
-    }
-  }
-  
-  /* Cinematic Card - Optimized */
+  /* Card - simple, fast hover */
   .card-cinematic {
-    background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
-    border: 1px solid rgba(255,255,255,0.08);
-    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
-    will-change: transform;
+    background: #12121a;
+    border: 1px solid rgba(255, 255, 255, 0.06);
+    transition: transform 0.2s ease-out, border-color 0.2s ease-out;
   }
   
   .card-cinematic:hover {
-    background: linear-gradient(180deg, rgba(245, 158, 11, 0.05) 0%, rgba(255,255,255,0.02) 100%);
-    border-color: rgba(245, 158, 11, 0.25);
-    transform: translateY(-4px);
-    box-shadow: 0 15px 40px rgba(0,0,0,0.4), 0 0 25px rgba(245, 158, 11, 0.08);
+    border-color: rgba(245, 158, 11, 0.3);
+    transform: translateY(-2px);
   }
   
-  /* Mobile: simpler hover */
-  @media (max-width: 768px) {
-    .card-cinematic:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
-    }
-  }
-  
-  /* Honey Button */
+  /* Honey Button - simplified */
   .btn-honey {
-    background: transparent;
-    border: 2px solid var(--honey);
-    color: var(--honey-bright);
-    transition: all 0.3s ease;
-    position: relative;
-    overflow: hidden;
-  }
-  
-  .btn-honey::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 100%;
-    height: 100%;
     background: linear-gradient(135deg, var(--honey) 0%, var(--amber) 100%);
-    transition: left 0.3s ease;
-    z-index: -1;
+    color: #020204;
+    transition: opacity 0.2s ease, transform 0.2s ease;
   }
   
   .btn-honey:hover {
-    color: var(--void);
-    border-color: var(--honey-bright);
-    box-shadow: 0 0 25px var(--honey-glow);
-  }
-  
-  .btn-honey:hover::before {
-    left: 0;
+    opacity: 0.9;
+    transform: scale(1.02);
   }
   
   /* Cinematic Text */
@@ -212,91 +126,54 @@
   }
 }
 
-/* Animations - Optimized */
-@keyframes fadeInUp {
-  from {
-    opacity: 0;
-    transform: translate3d(0, 20px, 0);
-  }
-  to {
-    opacity: 1;
-    transform: translate3d(0, 0, 0);
-  }
-}
-
+/* Animations - only opacity, no transform */
 @keyframes fadeIn {
   from { opacity: 0; }
   to { opacity: 1; }
 }
 
-@keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 10px var(--honey-glow); }
-  50% { box-shadow: 0 0 20px var(--honey-glow); }
-}
-
-/* Product Card Cinematic */
+/* Product Card - simple fade */
 .product-card-cinematic {
-  animation: fadeInUp 0.4s ease-out forwards;
+  animation: fadeIn 0.3s ease-out forwards;
   animation-delay: var(--delay, 0s);
   opacity: 0;
-  will-change: opacity, transform;
 }
 
 /* Stagger animations */
 .stagger-1 { --delay: 0s; }
-.stagger-2 { --delay: 0.08s; }
-.stagger-3 { --delay: 0.16s; }
-.stagger-4 { --delay: 0.24s; }
-.stagger-5 { --delay: 0.32s; }
-.stagger-6 { --delay: 0.4s; }
+.stagger-2 { --delay: 0.05s; }
+.stagger-3 { --delay: 0.1s; }
+.stagger-4 { --delay: 0.15s; }
+.stagger-5 { --delay: 0.2s; }
+.stagger-6 { --delay: 0.25s; }
 
-/* Reduced motion */
-@media (prefers-reduced-motion: reduce) {
-  .product-card-cinematic {
-    animation: none;
-    opacity: 1;
-  }
-}
-
-/* Category Filter Cinematic */
+/* Category Filter */
 .category-cinematic {
-  background: rgba(255,255,255,0.03);
-  border: 1px solid rgba(255,255,255,0.08);
-  transition: all 0.25s ease;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  transition: background-color 0.2s ease, border-color 0.2s ease;
 }
 
 .category-cinematic:hover,
 .category-cinematic.active {
   background: rgba(245, 158, 11, 0.1);
-  border-color: rgba(245, 158, 11, 0.4);
+  border-color: rgba(245, 158, 11, 0.3);
   color: var(--honey-bright);
 }
 
-/* Header Glass Cinematic - Optimized */
+/* Header - solid background, no blur */
 .header-glass {
-  background: rgba(10, 10, 14, 0.85);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
+  background: rgba(10, 10, 14, 0.98);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
 }
 
-@media (max-width: 768px) {
-  .header-glass {
-    backdrop-filter: blur(8px);
-    -webkit-backdrop-filter: blur(8px);
-  }
-}
-
-/* Cart Badge Honey */
+/* Cart Badge */
 .cart-badge {
   background: var(--honey);
-  color: var(--void);
-  box-shadow: 0 0 10px var(--honey-glow);
+  color: #020204;
 }
 
-/* GPU acceleration for animated elements */
-.gpu-accelerated {
-  transform: translateZ(0);
-  will-change: transform;
-  backface-visibility: hidden;
+/* GPU layer promotion for scrolling elements */
+.scroll-container {
+  contain: layout style paint;
 }
