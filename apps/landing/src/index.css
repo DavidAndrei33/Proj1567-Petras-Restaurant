@@ -2,7 +2,10 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Cinematic Dark Theme with Honey Accents */
+/* ============================================
+   CINEMATIC DARK THEME - OPTIMIZED
+   ============================================ */
+
 :root {
   --void: #020204;
   --depth: #0a0a0e;
@@ -32,7 +35,7 @@
     overflow-x: hidden;
   }
   
-  /* Cinematic Background */
+  /* Cinematic Background - Optimized */
   body::before {
     content: '';
     position: fixed;
@@ -41,15 +44,30 @@
     width: 100%;
     height: 100%;
     background: 
-      radial-gradient(ellipse 80% 50% at 20% 40%, rgba(245, 158, 11, 0.08) 0%, transparent 50%),
-      radial-gradient(ellipse 70% 40% at 80% 60%, rgba(249, 115, 22, 0.05) 0%, transparent 45%),
-      radial-gradient(ellipse 60% 50% at 50% 100%, rgba(234, 179, 8, 0.04) 0%, transparent 50%);
+      radial-gradient(ellipse 80% 50% at 20% 40%, rgba(245, 158, 11, 0.06) 0%, transparent 50%),
+      radial-gradient(ellipse 70% 40% at 80% 60%, rgba(249, 115, 22, 0.04) 0%, transparent 45%),
+      radial-gradient(ellipse 60% 50% at 50% 100%, rgba(234, 179, 8, 0.03) 0%, transparent 50%);
     z-index: -2;
     pointer-events: none;
-    animation: slow-pan 60s ease-in-out infinite alternate;
+    will-change: transform;
+    animation: slow-pan 120s ease-in-out infinite alternate;
   }
   
-  /* Vignette */
+  /* Reduced motion preference */
+  @media (prefers-reduced-motion: reduce) {
+    body::before {
+      animation: none;
+    }
+  }
+  
+  /* Disable animation on mobile for better performance */
+  @media (max-width: 768px) {
+    body::before {
+      animation: none;
+    }
+  }
+  
+  /* Vignette - Static, no animation */
   body::after {
     content: '';
     position: fixed;
@@ -63,24 +81,37 @@
   }
 }
 
+/* Optimized animation with GPU acceleration */
 @keyframes slow-pan {
-  0% { transform: translate(-2%, -2%) scale(1.1); }
-  100% { transform: translate(2%, 2%) scale(1.15); }
+  0% { 
+    transform: translate3d(-1%, -1%, 0) scale(1.05);
+  }
+  100% { 
+    transform: translate3d(1%, 1%, 0) scale(1.1);
+  }
 }
 
 @layer utilities {
-  /* Cinematic Glass */
+  /* Cinematic Glass - Reduced blur for performance */
   .glass-cinematic {
     background: rgba(255, 255, 255, 0.03);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
     border: 1px solid rgba(255, 255, 255, 0.08);
+  }
+  
+  /* Mobile: even less blur */
+  @media (max-width: 768px) {
+    .glass-cinematic {
+      backdrop-filter: blur(8px);
+      -webkit-backdrop-filter: blur(8px);
+    }
   }
   
   .glass-cinematic-hover:hover {
     background: rgba(245, 158, 11, 0.05);
     border-color: rgba(245, 158, 11, 0.3);
-    box-shadow: 0 0 40px rgba(245, 158, 11, 0.15);
+    box-shadow: 0 0 30px rgba(245, 158, 11, 0.12);
   }
   
   /* Honey Gradients */
@@ -95,27 +126,42 @@
     background-clip: text;
   }
   
-  /* Honey Glow */
+  /* Honey Glow - Subtle on mobile */
   .glow-honey {
-    box-shadow: 0 0 30px var(--honey-glow);
+    box-shadow: 0 0 20px var(--honey-glow);
   }
   
   .glow-honey-hover:hover {
-    box-shadow: 0 0 50px var(--honey-glow), 0 0 80px var(--amber-glow);
+    box-shadow: 0 0 30px var(--honey-glow);
   }
   
-  /* Cinematic Card */
+  @media (max-width: 768px) {
+    .glow-honey-hover:hover {
+      box-shadow: 0 0 15px var(--honey-glow);
+    }
+  }
+  
+  /* Cinematic Card - Optimized */
   .card-cinematic {
     background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
     border: 1px solid rgba(255,255,255,0.08);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease, border-color 0.3s ease;
+    will-change: transform;
   }
   
   .card-cinematic:hover {
     background: linear-gradient(180deg, rgba(245, 158, 11, 0.05) 0%, rgba(255,255,255,0.02) 100%);
     border-color: rgba(245, 158, 11, 0.25);
     transform: translateY(-4px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(245, 158, 11, 0.1);
+    box-shadow: 0 15px 40px rgba(0,0,0,0.4), 0 0 25px rgba(245, 158, 11, 0.08);
+  }
+  
+  /* Mobile: simpler hover */
+  @media (max-width: 768px) {
+    .card-cinematic:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    }
   }
   
   /* Honey Button */
@@ -123,7 +169,7 @@
     background: transparent;
     border: 2px solid var(--honey);
     color: var(--honey-bright);
-    transition: all 0.4s ease;
+    transition: all 0.3s ease;
     position: relative;
     overflow: hidden;
   }
@@ -136,14 +182,14 @@
     width: 100%;
     height: 100%;
     background: linear-gradient(135deg, var(--honey) 0%, var(--amber) 100%);
-    transition: left 0.4s ease;
+    transition: left 0.3s ease;
     z-index: -1;
   }
   
   .btn-honey:hover {
     color: var(--void);
     border-color: var(--honey-bright);
-    box-shadow: 0 0 40px var(--honey-glow);
+    box-shadow: 0 0 25px var(--honey-glow);
   }
   
   .btn-honey:hover::before {
@@ -166,15 +212,15 @@
   }
 }
 
-/* Animations */
+/* Animations - Optimized */
 @keyframes fadeInUp {
   from {
     opacity: 0;
-    transform: translateY(30px);
+    transform: translate3d(0, 20px, 0);
   }
   to {
     opacity: 1;
-    transform: translateY(0);
+    transform: translate3d(0, 0, 0);
   }
 }
 
@@ -184,30 +230,39 @@
 }
 
 @keyframes pulse-glow {
-  0%, 100% { box-shadow: 0 0 15px var(--honey-glow); }
-  50% { box-shadow: 0 0 35px var(--honey-glow), 0 0 60px var(--amber-glow); }
+  0%, 100% { box-shadow: 0 0 10px var(--honey-glow); }
+  50% { box-shadow: 0 0 20px var(--honey-glow); }
 }
 
 /* Product Card Cinematic */
 .product-card-cinematic {
-  animation: fadeInUp 0.5s ease-out forwards;
+  animation: fadeInUp 0.4s ease-out forwards;
   animation-delay: var(--delay, 0s);
   opacity: 0;
+  will-change: opacity, transform;
 }
 
 /* Stagger animations */
 .stagger-1 { --delay: 0s; }
-.stagger-2 { --delay: 0.1s; }
-.stagger-3 { --delay: 0.2s; }
-.stagger-4 { --delay: 0.3s; }
-.stagger-5 { --delay: 0.4s; }
-.stagger-6 { --delay: 0.5s; }
+.stagger-2 { --delay: 0.08s; }
+.stagger-3 { --delay: 0.16s; }
+.stagger-4 { --delay: 0.24s; }
+.stagger-5 { --delay: 0.32s; }
+.stagger-6 { --delay: 0.4s; }
+
+/* Reduced motion */
+@media (prefers-reduced-motion: reduce) {
+  .product-card-cinematic {
+    animation: none;
+    opacity: 1;
+  }
+}
 
 /* Category Filter Cinematic */
 .category-cinematic {
   background: rgba(255,255,255,0.03);
   border: 1px solid rgba(255,255,255,0.08);
-  transition: all 0.3s ease;
+  transition: all 0.25s ease;
 }
 
 .category-cinematic:hover,
@@ -217,17 +272,31 @@
   color: var(--honey-bright);
 }
 
-/* Header Glass Cinematic */
+/* Header Glass Cinematic - Optimized */
 .header-glass {
-  background: rgba(10, 10, 14, 0.8);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  background: rgba(10, 10, 14, 0.85);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
   border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+@media (max-width: 768px) {
+  .header-glass {
+    backdrop-filter: blur(8px);
+    -webkit-backdrop-filter: blur(8px);
+  }
 }
 
 /* Cart Badge Honey */
 .cart-badge {
   background: var(--honey);
   color: var(--void);
-  box-shadow: 0 0 15px var(--honey-glow);
+  box-shadow: 0 0 10px var(--honey-glow);
+}
+
+/* GPU acceleration for animated elements */
+.gpu-accelerated {
+  transform: translateZ(0);
+  will-change: transform;
+  backface-visibility: hidden;
 }
