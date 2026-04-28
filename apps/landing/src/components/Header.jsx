@@ -52,20 +52,20 @@ export default function Header() {
 
   return (
     <>
-      {/* Top bar - Cinematic */}
-      <div className="bg-[#0a0a0e] border-b border-white/[0.06] text-white/70 text-xs py-2.5 px-4 hidden md:block">
+      {/* Top bar - Theme aware */}
+      <div className="text-xs py-2.5 px-4 hidden md:block transition-colors duration-500" style={{ backgroundColor: 'var(--bg-depth)', borderBottom: '1px solid var(--border-subtle)', color: 'var(--text-secondary)' }}>
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-8">
-            <span className="flex items-center gap-2 text-white/60">
+            <span className="flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
               <MapPin size={13} className="text-[#f59e0b]" />
               Str. Tudor Vladimirescu 10, Moinești
             </span>
-            <span className="flex items-center gap-2 text-white/60">
+            <span className="flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
               <Phone size={13} className="text-[#f59e0b]" />
               <a href="tel:+40754292740" className="hover:text-[#fbbf24] transition-colors">+40 754 292 740</a>
             </span>
           </div>
-          <div className="flex items-center gap-2 text-white/60">
+          <div className="flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
             <div className="w-1.5 h-1.5 rounded-full bg-[#f59e0b] animate-pulse" />
             <span>Deschis acum · Livrare rapidă</span>
           </div>
@@ -91,24 +91,27 @@ export default function Header() {
                 <Flame size={20} className="text-[#fbbf24]" />
               </div>
               <div className="hidden sm:block">
-                <h1 className="font-cinzel font-semibold text-base tracking-wider text-white">
+                <h1 className="font-cinzel font-semibold text-base tracking-wider" style={{ color: 'var(--text-primary)' }}>
                   ROTISERIE <span className="text-[#fbbf24]">&</span> PIZZA
                 </h1>
-                <p className="text-[10px] text-white/40 font-medium tracking-[0.3em] uppercase">Moinești</p>
+                <p className="text-[10px] font-medium tracking-[0.3em] uppercase" style={{ color: 'var(--text-muted)' }}>Moinești</p>
               </div>
             </Link>
 
-            {/* Desktop nav - Cinematic */}
+            {/* Desktop nav - Theme aware */}
             <nav className="hidden md:flex items-center gap-1">
               {navLinks.map((link) => (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`px-5 py-2.5 rounded-lg text-sm font-medium tracking-wide transition-all duration-300 ${
+                  className={`px-5 py-2.5 rounded-lg text-sm font-medium tracking-wide transition-all duration-300 border ${
                     isActive(link.path)
-                      ? 'text-[#fbbf24] bg-[#f59e0b]/10 border border-[#f59e0b]/30'
-                      : 'text-white/60 hover:text-white hover:bg-white/5'
+                      ? 'text-[#fbbf24] bg-[#f59e0b]/10 border-[#f59e0b]/30'
+                      : 'hover:bg-white/5 border-transparent'
                   }`}
+                  style={{ color: isActive(link.path) ? '#fbbf24' : 'var(--text-muted)' }}
+                  onMouseEnter={(e) => { if (!isActive(link.path)) e.target.style.color = 'var(--text-primary)'; }}
+                  onMouseLeave={(e) => { if (!isActive(link.path)) e.target.style.color = 'var(--text-muted)'; }}
                 >
                   {link.label}
                 </Link>

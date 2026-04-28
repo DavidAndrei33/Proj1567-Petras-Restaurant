@@ -63,18 +63,20 @@ export default function HeroSection() {
               initial={{ opacity: 0, y: 30 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.4, duration: 0.8 }}
-              className="font-cinzel font-semibold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl text-white leading-[1.1] mb-8 tracking-wide"
+              className="font-cinzel font-semibold text-4xl sm:text-5xl lg:text-6xl xl:text-7xl leading-[1.1] mb-8 tracking-wide"
+              style={{ color: 'var(--text-primary)' }}
             >
               <span className="block">PIZZA</span>
               <span className="block gradient-honey-text">ARTIZANALĂ</span>
-              <span className="block text-white/80">& PUI ROTISAT</span>
+              <span className="block" style={{ color: 'var(--text-secondary)' }}>& PUI ROTISAT</span>
             </motion.h1>
 
             <motion.p 
               initial={{ opacity: 0, y: 20 }}
               animate={{ opacity: 1, y: 0 }}
               transition={{ delay: 0.6, duration: 0.6 }}
-              className="text-white/50 text-base sm:text-lg max-w-lg mb-10 leading-relaxed"
+              className="text-base sm:text-lg max-w-lg mb-10 leading-relaxed"
+              style={{ color: 'var(--text-muted)' }}
             >
               Comandă online preparatele noastre delicioase, pregătite cu pasiune 
               din ingrediente proaspete. Livrare rapidă direct la ușa ta în Moinești.
@@ -88,14 +90,16 @@ export default function HeroSection() {
             >
               <Link
                 to="/meniu"
-                className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#f59e0b] to-[#f97316] text-[#020204] font-semibold rounded-xl shadow-[0_10px_40px_rgba(245,158,11,0.3)] hover:shadow-[0_15px_50px_rgba(245,158,11,0.4)] transition-all duration-300"
+                className="group inline-flex items-center gap-3 px-8 py-4 bg-gradient-to-r from-[#f59e0b] to-[#f97316] font-semibold rounded-xl shadow-[0_10px_40px_rgba(245,158,11,0.3)] hover:shadow-[0_15px_50px_rgba(245,158,11,0.4)] transition-all duration-300"
+                style={{ color: 'var(--text-inverse)' }}
               >
                 Vezi meniul
                 <ArrowRight size={18} className="group-hover:translate-x-1 transition-transform" />
               </Link>
               <Link
                 to="/meniu"
-                className="inline-flex items-center gap-3 px-8 py-4 bg-white/5 backdrop-blur-sm text-white font-medium rounded-xl hover:bg-white/10 transition-all duration-300 border border-white/10"
+                className="inline-flex items-center gap-3 px-8 py-4 bg-white/5 backdrop-blur-sm font-medium rounded-xl hover:bg-white/10 transition-all duration-300 border border-white/10"
+                style={{ color: 'var(--text-primary)' }}
               >
                 Comandă acum
               </Link>
@@ -113,8 +117,8 @@ export default function HeroSection() {
                   <Star size={20} className="text-[#fbbf24]" />
                 </div>
                 <div>
-                  <p className="text-white font-bold text-lg">4.9</p>
-                  <p className="text-white/40 text-xs tracking-wider uppercase">Rating</p>
+                  <p className="font-bold text-lg" style={{ color: 'var(--text-primary)' }}>4.9</p>
+                  <p className="text-xs tracking-wider uppercase" style={{ color: 'var(--text-muted)' }}>Rating</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -122,8 +126,8 @@ export default function HeroSection() {
                   <Clock size={20} className="text-[#fbbf24]" />
                 </div>
                 <div>
-                  <p className="text-white font-bold text-lg">25 min</p>
-                  <p className="text-white/40 text-xs tracking-wider uppercase">Livrare</p>
+                  <p className="font-bold text-lg" style={{ color: 'var(--text-primary)' }}>25 min</p>
+                  <p className="text-xs tracking-wider uppercase" style={{ color: 'var(--text-muted)' }}>Livrare</p>
                 </div>
               </div>
               <div className="flex items-center gap-3">
@@ -131,8 +135,8 @@ export default function HeroSection() {
                   <Truck size={20} className="text-[#fbbf24]" />
                 </div>
                 <div>
-                  <p className="text-white font-bold text-lg">Gratuit</p>
-                  <p className="text-white/40 text-xs tracking-wider uppercase">Livrare</p>
+                  <p className="font-bold text-lg" style={{ color: 'var(--text-primary)' }}>Gratuit</p>
+                  <p className="text-xs tracking-wider uppercase" style={{ color: 'var(--text-muted)' }}>Livrare</p>
                 </div>
               </div>
             </motion.div>
@@ -163,7 +167,7 @@ export default function HeroSection() {
                 decoding="async"
               />
 
-              {/* Floating badge - Proaspăt */}
+              {/* Floating badge - Proaspät */}
               <motion.div 
                 initial={{ opacity: 0, x: 50 }}
                 animate={{ opacity: 1, x: 0 }}
@@ -175,8 +179,8 @@ export default function HeroSection() {
                     <Flame size={24} className="text-[#fbbf24]" />
                   </div>
                   <div>
-                    <p className="font-semibold text-white text-sm">Proaspăt gătit</p>
-                    <p className="text-white/50 text-xs">La comandă</p>
+                    <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>Proaspăt gătit</p>
+                    <p className="text-xs" style={{ color: 'var(--text-muted)' }}>La comandă</p>
                   </div>
                 </div>
               </motion.div>
@@ -193,8 +197,8 @@ export default function HeroSection() {
                     <span className="text-[#fbbf24] font-bold text-xl">%</span>
                   </div>
                   <div>
-                    <p className="font-semibold text-white text-sm">-20% reducere</p>
-                    <p className="text-white/50 text-xs">La prima comandă</p>
+                    <p className="font-semibold text-sm" style={{ color: 'var(--text-primary)' }}>-20% reducere</p>
+                    <p className="text-xs" style={{ color: 'var(--text-muted)' }}>La prima comandă</p>
                   </div>
                 </div>
               </motion.div>
