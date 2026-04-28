@@ -25,7 +25,7 @@ function PrivateRoute({ children }) {
   
   const isAdmin = user?.role === 'ADMIN' || user?.role === 'MANAGER';
   
-  return isAuthenticated && isAdmin ? children : <Navigate to="/login" replace />;
+  return isAuthenticated && isAdmin ? children : <Navigate to="login" replace />;
 }
 
 function App() {
