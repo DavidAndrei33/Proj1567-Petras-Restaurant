@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { motion, AnimatePresence } from 'framer-motion';
-import { ShoppingCart, Menu, X, Flame, MapPin, Phone, LogIn, User, UserPlus, Moon, Sun } from 'lucide-react';
+import { ShoppingCart, Menu, X, Flame, MapPin, Phone, LogIn, User, UserPlus } from 'lucide-react';
 import { useCart } from '../context/CartContext';
 import { useAuth } from '../context/AuthContext';
-import { useTheme } from '../context/ThemeContext';
 
 export default function Header() {
   const [scrolled, setScrolled] = useState(false);
@@ -12,7 +11,6 @@ export default function Header() {
   const [authMenuOpen, setAuthMenuOpen] = useState(false);
   const { totalItems, setIsOpen } = useCart();
   const { isLoggedIn, user, logout } = useAuth();
-  const { isCinematic, toggleTheme } = useTheme();
   const location = useLocation();
   const navigate = useNavigate();
 
@@ -52,20 +50,20 @@ export default function Header() {
 
   return (
     <>
-      {/* Top bar - Theme aware */}
-      <div className="text-xs py-2.5 px-4 hidden md:block transition-colors duration-500" style={{ backgroundColor: 'var(--bg-depth)', borderBottom: '1px solid var(--border-subtle)', color: 'var(--text-secondary)' }}>
+      {/* Top bar - Cinematic */}
+      <div className="bg-[#0a0a0e] border-b border-white/[0.06] text-white/70 text-xs py-2.5 px-4 hidden md:block">
         <div className="max-w-7xl mx-auto flex items-center justify-between">
           <div className="flex items-center gap-8">
-            <span className="flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
+            <span className="flex items-center gap-2 text-white/60">
               <MapPin size={13} className="text-[#f59e0b]" />
               Str. Tudor Vladimirescu 10, Moinești
             </span>
-            <span className="flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
+            <span className="flex items-center gap-2 text-white/60">
               <Phone size={13} className="text-[#f59e0b]" />
               <a href="tel:+40754292740" className="hover:text-[#fbbf24] transition-colors">+40 754 292 740</a>
             </span>
           </div>
-          <div className="flex items-center gap-2" style={{ color: 'var(--text-muted)' }}>
+          <div className="flex items-center gap-2 text-white/60">
             <div className="w-1.5 h-1.5 rounded-full bg-[#f59e0b] animate-pulse" />
             <span>Deschis acum · Livrare rapidă</span>
           </div>
@@ -91,27 +89,24 @@ export default function Header() {
                 <Flame size={20} className="text-[#fbbf24]" />
               </div>
               <div className="hidden sm:block">
-                <h1 className="font-cinzel font-semibold text-base tracking-wider" style={{ color: 'var(--text-primary)' }}>
+                <h1 className="font-cinzel font-semibold text-base tracking-wider text-white">
                   ROTISERIE <span className="text-[#fbbf24]">&</span> PIZZA
                 </h1>
-                <p className="text-[10px] font-medium tracking-[0.3em] uppercase" style={{ color: 'var(--text-muted)' }}>Moinești</p>
+                <p className="text-[10px] text-white/40 font-medium tracking-[0.3em] uppercase">Moinești</p>
               </div>
             </Link>
 
-            {/* Desktop nav - Theme aware */}
+            {/* Desktop nav - Cinematic */}
             <nav className="hidden md:flex items-center gap-1">
               {navLinks.map((link) => (
                 <Link
                   key={link.path}
                   to={link.path}
-                  className={`px-5 py-2.5 rounded-lg text-sm font-medium tracking-wide transition-all duration-300 border ${
+                  className={`px-5 py-2.5 rounded-lg text-sm font-medium tracking-wide transition-all duration-300 ${
                     isActive(link.path)
-                      ? 'text-[#fbbf24] bg-[#f59e0b]/10 border-[#f59e0b]/30'
-                      : 'hover:bg-white/5 border-transparent'
+                      ? 'text-[#fbbf24] bg-[#f59e0b]/10 border border-[#f59e0b]/30'
+                      : 'text-white/60 hover:text-white hover:bg-white/5'
                   }`}
-                  style={{ color: isActive(link.path) ? '#fbbf24' : 'var(--text-muted)' }}
-                  onMouseEnter={(e) => { if (!isActive(link.path)) e.target.style.color = 'var(--text-primary)'; }}
-                  onMouseLeave={(e) => { if (!isActive(link.path)) e.target.style.color = 'var(--text-muted)'; }}
                 >
                   {link.label}
                 </Link>
@@ -193,21 +188,6 @@ export default function Header() {
                 </AnimatePresence>
               </div>
 
-              {/* Theme toggle button */}
-              <motion.button
-                onClick={toggleTheme}
-                className={`relative p-2.5 rounded-xl transition-all duration-300 border ${
-                  isCinematic
-                    ? 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:text-white'
-                    : 'bg-amber-50 border-amber-200 text-amber-600 hover:bg-amber-100'
-                }`}
-                whileHover={{ scale: 1.05 }}
-                whileTap={{ scale: 0.95 }}
-                title={isCinematic ? 'Tema Light' : 'Tema Cinematic'}
-              >
-                {isCinematic ? <Sun size={20} /> : <Moon size={20} />}
-              </motion.button>
-
               {/* Cart button - Cinematic */}
               <motion.button
                 onClick={() => {
@@ -216,11 +196,7 @@ export default function Header() {
                   }
                   setIsOpen(true);
                 }}
-                className={`relative p-2.5 rounded-xl transition-all duration-300 border ${
-                  isCinematic
-                    ? 'bg-white/5 border-white/10 text-white/70 hover:bg-white/10 hover:text-white'
-                    : 'bg-white border-gray-200 text-gray-600 hover:bg-gray-50'
-                }`}
+                className="relative p-2.5 rounded-xl bg-white/5 border border-white/10 text-white/70 hover:bg-white/10 hover:text-white transition-all duration-300"
                 whileHover={{ scale: 1.05 }}
                 whileTap={{ scale: 0.95 }}
               >

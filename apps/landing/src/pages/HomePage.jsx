@@ -37,12 +37,12 @@ export default function HomePage() {
   ];
 
   return (
-    <div style={{ backgroundColor: 'var(--bg-depth)' }}>
+    <div className="bg-[#0a0a0e]">
       <HeroSection />
       <MenuPreview />
 
       {/* Features section */}
-      <section className="py-20 relative" style={{ backgroundColor: 'var(--bg-depth)' }}>
+      <section className="py-20 bg-[#0a0a0e] relative">
         {/* Background glow */}
         <div className="absolute bottom-0 left-0 w-[500px] h-[500px] rounded-full opacity-20 pointer-events-none"
           style={{
@@ -58,10 +58,10 @@ export default function HomePage() {
             viewport={{ once: true }}
             className="text-center mb-14"
           >
-            <h2 className="font-cinzel font-bold text-3xl sm:text-4xl mb-4 tracking-wide" style={{ color: 'var(--text-primary)' }}>
+            <h2 className="font-cinzel font-bold text-3xl sm:text-4xl text-white mb-4 tracking-wide">
               De ce să ne <span className="gradient-honey-text">alegi?</span>
             </h2>
-            <p className="max-w-xl mx-auto" style={{ color: 'var(--text-muted)' }}>
+            <p className="text-white/50 max-w-xl mx-auto">
               Suntem dedicați să oferim cea mai bună experiență culinară din Moinești
             </p>
           </motion.div>
@@ -79,8 +79,8 @@ export default function HomePage() {
                 <div className={`w-16 h-16 ${feature.bg} rounded-2xl flex items-center justify-center mx-auto mb-5 group-hover:scale-110 transition-transform duration-300 border`}>
                   <feature.icon size={28} className={feature.color} />
                 </div>
-                <h3 className="font-cinzel font-semibold text-lg mb-2" style={{ color: 'var(--text-primary)' }}>{feature.title}</h3>
-                <p className="text-sm leading-relaxed" style={{ color: 'var(--text-muted)' }}>{feature.description}</p>
+                <h3 className="font-cinzel font-semibold text-lg text-white mb-2">{feature.title}</h3>
+                <p className="text-white/50 text-sm leading-relaxed">{feature.description}</p>
               </motion.div>
             ))}
           </div>
@@ -88,7 +88,7 @@ export default function HomePage() {
       </section>
 
       {/* CTA section */}
-      <section className="py-20 relative overflow-hidden" style={{ backgroundColor: 'var(--bg-depth)' }}>
+      <section className="py-20 bg-[#0a0a0e] relative overflow-hidden">
         <div className="absolute top-0 right-0 w-96 h-96 bg-[#f59e0b]/10 rounded-full blur-[150px]" />
         <div className="absolute bottom-0 left-0 w-96 h-96 bg-[#f97316]/10 rounded-full blur-[150px]" />
         
@@ -98,17 +98,16 @@ export default function HomePage() {
             whileInView={{ opacity: 1, y: 0 }}
             viewport={{ once: true }}
           >
-            <h2 className="font-cinzel font-bold text-3xl sm:text-5xl mb-6 tracking-wide" style={{ color: 'var(--text-primary)' }}>
-              Comandă acum și bucură-te de <span className="gradient-honey-text">gustul autentic</span>
+            <h2 className="font-cinzel font-bold text-3xl sm:text-5xl text-white mb-6 tracking-wide">
+              Comandă acum și bucură-te de <span className="text-[#fbbf24]">gustul autentic</span>
             </h2>
-            <p className="text-lg mb-10 max-w-2xl mx-auto" style={{ color: 'var(--text-secondary)' }}>
+            <p className="text-white/60 text-lg mb-10 max-w-2xl mx-auto">
               Pizza proaspătă din cuptor, pui rotisat aromat și garnituri delicioase te așteaptă. 
               Plasează comanda acum și te vom răsplăti cu o reducere de 20%!
             </p>
             <a
               href="/meniu"
-              className="inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-[#f59e0b] to-[#f97316] font-semibold rounded-xl shadow-[0_10px_40px_rgba(245,158,11,0.3)] hover:shadow-[0_15px_50px_rgba(245,158,11,0.4)] transition-all duration-300 text-lg"
-              style={{ color: 'var(--text-inverse)' }}
+              className="inline-flex items-center gap-2 px-10 py-4 bg-gradient-to-r from-[#f59e0b] to-[#f97316] text-[#020204] font-semibold rounded-xl shadow-[0_10px_40px_rgba(245,158,11,0.3)] hover:shadow-[0_15px_50px_rgba(245,158,11,0.4)] transition-all duration-300 text-lg"
             >
               Comandă acum
             </a>

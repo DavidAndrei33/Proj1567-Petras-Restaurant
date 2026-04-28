@@ -2,70 +2,20 @@
 @tailwind components;
 @tailwind utilities;
 
-/* ============================================
-   DUAL THEME SYSTEM - Cinematic & Light
-   ============================================ */
-
-/* Default (Cinematic Dark) Theme Variables */
+/* Cinematic Dark Theme with Honey Accents */
 :root {
-  /* Backgrounds */
-  --bg-void: #020204;
-  --bg-depth: #0a0a0e;
-  --bg-surface: #12121a;
-  --bg-elevated: #1a1a22;
-  --bg-card: #12121a;
-  --bg-input: #1a1a22;
-  
-  /* Accents */
-  --accent-primary: #f59e0b;
-  --accent-bright: #fbbf24;
-  --accent-secondary: #f97316;
-  --accent-glow: rgba(245, 158, 11, 0.4);
-  
-  /* Text */
+  --void: #020204;
+  --depth: #0a0a0e;
+  --surface: #12121a;
+  --elevated: #1a1a22;
+  --honey: #f59e0b;
+  --honey-bright: #fbbf24;
+  --honey-glow: rgba(245, 158, 11, 0.4);
+  --amber: #f97316;
+  --amber-glow: rgba(249, 115, 22, 0.3);
   --text-primary: #ffffff;
   --text-secondary: rgba(255, 255, 255, 0.75);
-  --text-muted: rgba(255, 255, 255, 0.5);
-  --text-inverse: #020204;
-  
-  /* Borders */
-  --border-subtle: rgba(255, 255, 255, 0.08);
-  --border-accent: rgba(245, 158, 11, 0.3);
-  
-  /* Shadows */
-  --shadow-glow: rgba(245, 158, 11, 0.3);
-  --shadow-card: rgba(0, 0, 0, 0.5);
-}
-
-/* Light Theme Variables */
-[data-theme="light"] {
-  /* Backgrounds */
-  --bg-void: #FFF8F0;
-  --bg-depth: #FFF8F0;
-  --bg-surface: #ffffff;
-  --bg-elevated: #ffffff;
-  --bg-card: #ffffff;
-  --bg-input: #f5f5f0;
-  
-  /* Accents */
-  --accent-primary: #d4a574;
-  --accent-bright: #c49a6c;
-  --accent-secondary: #2A9D8F;
-  --accent-glow: rgba(212, 165, 116, 0.3);
-  
-  /* Text */
-  --text-primary: #1a1a1a;
-  --text-secondary: rgba(26, 26, 26, 0.7);
-  --text-muted: rgba(26, 26, 26, 0.5);
-  --text-inverse: #ffffff;
-  
-  /* Borders */
-  --border-subtle: rgba(0, 0, 0, 0.08);
-  --border-accent: rgba(212, 165, 116, 0.5);
-  
-  /* Shadows */
-  --shadow-glow: rgba(212, 165, 116, 0.2);
-  --shadow-card: rgba(0, 0, 0, 0.1);
+  --text-muted: rgba(255, 255, 255, 0.45);
 }
 
 @layer base {
@@ -75,21 +25,14 @@
   
   body {
     font-family: 'Inter', sans-serif;
-    background-color: var(--bg-void);
-    color: var(--text-primary);
+    background-color: #020204 !important;
+    color: #ffffff;
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
     overflow-x: hidden;
-    transition: background-color 0.5s ease, color 0.5s ease;
   }
   
-  /* App container */
-  .app-container {
-    background-color: var(--bg-depth);
-    transition: background-color 0.5s ease;
-  }
-  
-  /* Cinematic Background - only in dark mode */
+  /* Cinematic Background */
   body::before {
     content: '';
     position: fixed;
@@ -104,15 +47,9 @@
     z-index: -2;
     pointer-events: none;
     animation: slow-pan 60s ease-in-out infinite alternate;
-    opacity: 1;
-    transition: opacity 0.5s ease;
   }
   
-  [data-theme="light"] body::before {
-    opacity: 0;
-  }
-  
-  /* Vignette - only in dark mode */
+  /* Vignette */
   body::after {
     content: '';
     position: fixed;
@@ -120,15 +57,9 @@
     left: 0;
     width: 100%;
     height: 100%;
-    background: radial-gradient(ellipse at center, transparent 0%, transparent 50%, var(--bg-void) 100%);
+    background: radial-gradient(ellipse at center, transparent 0%, transparent 50%, var(--void) 100%);
     z-index: -1;
     pointer-events: none;
-    opacity: 1;
-    transition: opacity 0.5s ease;
-  }
-  
-  [data-theme="light"] body::after {
-    opacity: 0;
   }
 }
 
@@ -138,78 +69,60 @@
 }
 
 @layer utilities {
-  /* Theme-aware Glass */
+  /* Cinematic Glass */
   .glass-cinematic {
     background: rgba(255, 255, 255, 0.03);
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--border-subtle);
-    transition: all 0.5s ease;
+    border: 1px solid rgba(255, 255, 255, 0.08);
   }
   
-  [data-theme="light"] .glass-cinematic {
-    background: rgba(255, 255, 255, 0.8);
-    border: 1px solid var(--border-subtle);
-    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.1);
+  .glass-cinematic-hover:hover {
+    background: rgba(245, 158, 11, 0.05);
+    border-color: rgba(245, 158, 11, 0.3);
+    box-shadow: 0 0 40px rgba(245, 158, 11, 0.15);
   }
   
-  /* Theme-aware Header */
-  .header-glass {
-    background: rgba(10, 10, 14, 0.8);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border-bottom: 1px solid rgba(255,255,255,0.06);
-    transition: all 0.5s ease;
-  }
-  
-  [data-theme="light"] .header-glass {
-    background: rgba(255, 255, 255, 0.9);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
-  }
-  
-  /* Theme-aware Card */
-  .card-cinematic {
-    background: var(--bg-card);
-    border: 1px solid var(--border-subtle);
-    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
-  }
-  
-  .card-cinematic:hover {
-    border-color: var(--border-accent);
-    transform: translateY(-4px);
-    box-shadow: 0 20px 60px var(--shadow-card), 0 0 40px var(--shadow-glow);
-  }
-  
-  [data-theme="light"] .card-cinematic:hover {
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-  }
-  
-  /* Gradient Honey - adapts to theme */
+  /* Honey Gradients */
   .gradient-honey {
-    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+    background: linear-gradient(135deg, var(--honey) 0%, var(--amber) 100%);
   }
   
   .gradient-honey-text {
-    background: linear-gradient(135deg, var(--accent-bright) 0%, var(--accent-secondary) 100%);
+    background: linear-gradient(135deg, var(--honey-bright) 0%, var(--amber) 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
     background-clip: text;
   }
   
-  /* Glow effects - reduced in light mode */
+  /* Honey Glow */
   .glow-honey {
-    box-shadow: 0 0 30px var(--accent-glow);
+    box-shadow: 0 0 30px var(--honey-glow);
   }
   
   .glow-honey-hover:hover {
-    box-shadow: 0 0 50px var(--accent-glow);
+    box-shadow: 0 0 50px var(--honey-glow), 0 0 80px var(--amber-glow);
   }
   
-  /* Theme-aware Button */
+  /* Cinematic Card */
+  .card-cinematic {
+    background: linear-gradient(180deg, rgba(255,255,255,0.03) 0%, rgba(255,255,255,0.01) 100%);
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+  }
+  
+  .card-cinematic:hover {
+    background: linear-gradient(180deg, rgba(245, 158, 11, 0.05) 0%, rgba(255,255,255,0.02) 100%);
+    border-color: rgba(245, 158, 11, 0.25);
+    transform: translateY(-4px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.5), 0 0 40px rgba(245, 158, 11, 0.1);
+  }
+  
+  /* Honey Button */
   .btn-honey {
     background: transparent;
-    border: 2px solid var(--accent-primary);
-    color: var(--accent-bright);
+    border: 2px solid var(--honey);
+    color: var(--honey-bright);
     transition: all 0.4s ease;
     position: relative;
     overflow: hidden;
@@ -222,15 +135,15 @@
     left: -100%;
     width: 100%;
     height: 100%;
-    background: linear-gradient(135deg, var(--accent-primary) 0%, var(--accent-secondary) 100%);
+    background: linear-gradient(135deg, var(--honey) 0%, var(--amber) 100%);
     transition: left 0.4s ease;
     z-index: -1;
   }
   
   .btn-honey:hover {
-    color: var(--text-inverse);
-    border-color: var(--accent-bright);
-    box-shadow: 0 0 40px var(--accent-glow);
+    color: var(--void);
+    border-color: var(--honey-bright);
+    box-shadow: 0 0 40px var(--honey-glow);
   }
   
   .btn-honey:hover::before {
@@ -270,7 +183,12 @@
   to { opacity: 1; }
 }
 
-/* Product Card */
+@keyframes pulse-glow {
+  0%, 100% { box-shadow: 0 0 15px var(--honey-glow); }
+  50% { box-shadow: 0 0 35px var(--honey-glow), 0 0 60px var(--amber-glow); }
+}
+
+/* Product Card Cinematic */
 .product-card-cinematic {
   animation: fadeInUp 0.5s ease-out forwards;
   animation-delay: var(--delay, 0s);
@@ -285,23 +203,31 @@
 .stagger-5 { --delay: 0.4s; }
 .stagger-6 { --delay: 0.5s; }
 
-/* Category Filter */
+/* Category Filter Cinematic */
 .category-cinematic {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
+  background: rgba(255,255,255,0.03);
+  border: 1px solid rgba(255,255,255,0.08);
   transition: all 0.3s ease;
 }
 
 .category-cinematic:hover,
 .category-cinematic.active {
   background: rgba(245, 158, 11, 0.1);
-  border-color: var(--border-accent);
-  color: var(--accent-bright);
+  border-color: rgba(245, 158, 11, 0.4);
+  color: var(--honey-bright);
 }
 
-/* Cart Badge */
+/* Header Glass Cinematic */
+.header-glass {
+  background: rgba(10, 10, 14, 0.8);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+}
+
+/* Cart Badge Honey */
 .cart-badge {
-  background: var(--accent-primary);
-  color: var(--text-inverse);
-  box-shadow: 0 0 15px var(--accent-glow);
+  background: var(--honey);
+  color: var(--void);
+  box-shadow: 0 0 15px var(--honey-glow);
 }
